@@ -3,6 +3,9 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+        // Abrufen der wichtigesten Daten in Variablen
+        new Variablen();
+	    // starten mit dem Hauptmenue
+        new Hauptmenue();
     }
 }
