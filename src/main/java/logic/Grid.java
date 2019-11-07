@@ -26,8 +26,6 @@ public class Grid {
         int width = c.isVertical() ? 1 : c.getSize();
         for(int y = 0; y < height; ++y) {
             int tmpPos = c.getPosition() + (y*bound);
-            grid[tmpPos] = null;
-
             for(int x = 0; x < width; ++x) {
                 grid[tmpPos+x] = null;
             }
@@ -44,9 +42,7 @@ public class Grid {
         int width = inst.isVertical() ? 1 : inst.getSize();
         for(int y = 0; y < height; ++y) {
             int tmpPos = pos + (y*bound);
-            grid[tmpPos] = inst;
-
-            for(int x = 1; x < width; ++x) {
+            for(int x = 0; x < width; ++x) {
                 grid[tmpPos+x] = inst;
             }
         }
@@ -93,11 +89,7 @@ public class Grid {
         int width = isVertical ? 1 : size;
         for(int y = 0; y < height; ++y) {
             int tmpPos = pos + (y*bound);
-            if(grid[tmpPos] != null) {
-                return false;
-            }
-
-            for(int x = 1; x < width; ++x) {
+            for(int x = 0; x < width; ++x) {
                 if(grid[tmpPos+x] != null) {
                     return false;
                 }
