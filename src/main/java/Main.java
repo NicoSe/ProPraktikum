@@ -1,9 +1,12 @@
 import logic.Grid;
 import logic.Ship;
 import logic.Character;
+import Network.Server;
+
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //Grid grid = new Grid(5);
         //Character c = new Ship(2);
         //grid.put(0, c);
@@ -13,7 +16,11 @@ public class Main {
         //grid.rotate(0);
         //System.out.println(grid);
 
-        Sever s = new Server(50000);
-        s.listenToNetwork();
+        int port = 50000;
+        Server s = new Server(port);
+        s.connectClient();
+        //s.sendShoot(5,3);
+        //s.listenToNetwork();
+        //s.closeServer();
     }
 }
