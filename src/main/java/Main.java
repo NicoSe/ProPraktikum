@@ -1,4 +1,5 @@
 import GUI.MainFrame;
+import Network.Client;
 import logic.Grid;
 import logic.Ship;
 import logic.Character;
@@ -18,19 +19,18 @@ public class Main {
         //System.out.println(grid);
 
         int port = 50000;
-        Server s = new Server(port);
-        s.connectClient();
-        //s.sendShoot(5,3);
-        //s.listenToNetwork();
-        //s.closeServer();
+        Server s = new Server();
+        Client c = new Client("localhost");
+        c.listenToNetwork();
+        s.sendmsg("SIZE 10");
 
         //GUI
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 MainFrame mf = new MainFrame();
 
             }
-        });
+        });*/
     }
 }
