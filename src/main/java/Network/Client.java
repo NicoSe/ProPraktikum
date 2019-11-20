@@ -1,8 +1,6 @@
 package Network;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 
 public class Client {
@@ -10,100 +8,106 @@ public class Client {
     private int port = 50000;
     private InetSocketAddress address;
     Socket client;
+    public boolean Close_Socket = false;
+    BufferedReader usr;
+
+
+    public static void main(String[] args) {
+        Client client = new Client("localhost");
+        client.listenToNetwork();
+        return;
+    }
+
 
     public Client(String host) {
-        new Thread(new Runnable() {
-            public void run() {
-                address = new InetSocketAddress(host, port);                //save current server address for reconnection
-                System.out.println("Searching for Server");
-                try {
-                    client = new Socket();                           //create socket
-                    client.connect(address, 10000);                 //connect to server
-                } catch (SocketException e) {
-                    System.out.println("Can´t create Socket!");
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    System.out.println("Can´t find server at " + address);
-                    e.printStackTrace();
-                }
-                System.out.println("Connect to server at " + address + " via " + client.getLocalPort());
-            }
-        }).start();
+        try {
+            address = new InetSocketAddress(host, port);                 //save current server address for reconnection
+            System.out.println("<C>Searching for Server");
+
+            client = new Socket();                                       //create socket
+            client.connect(address, 10000);                      //connect to server
+            usr = new BufferedReader(new InputStreamReader(System.in));
+        } catch (SocketException e) {
+            System.out.println("<C>CanÂ´t create Socket!");
+            //e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("<C>CanÂ´t find server at " + address);
+            //e.printStackTrace();
+        }
+        System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
     }
 
-    public void sendmsg(String msg) {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Socket socket = new Socket();                           //create socket
-                    socket.connect(address, 10000);                 //connect to server
-                } catch (SocketException e) {
-                    System.out.println("Can´t create socket!");
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    System.out.println("Can´t find server at " + address + " via " + client.getLocalPort());
-                    e.printStackTrace();
-                }
 
-                try {
-                    DataOutputStream stream_out = new DataOutputStream(client.getOutputStream());
-                    stream_out.writeUTF(msg);
-
-                    client.close();
-                } catch (IOException e) {
-                    System.out.println("Can´t send message!");
-                    e.printStackTrace();
-                }
-                listenToNetwork();
-            }
-        }).start();
+    public void sendmsg() {
+        try {
+            DataOutputStream stream_out = new DataOutputStream(client.getOutputStream());
+            String msg = usr.readLine();
+            System.out.println("<C>>>> " + msg);
+            stream_out.writeUTF(msg);
+        } catch (IOException e) {
+            System.out.println("<C>CanÂ´t send message!");
+            //e.printStackTrace();
+        }
+        listenToNetwork();
     }
+
 
     public void listenToNetwork(){
-        new Thread(new Runnable() {
-            public void run() {
-                while (true) {
-                    try {
-                        Socket socket = new Socket();                           //create socket
-                        socket.connect(address, 10000);                 //connect to server
-
-                        DataInputStream stream_in = new DataInputStream(client.getInputStream());              //get message from inputstream
-                        if (analyze(stream_in.readUTF()) == true) break;                 //analyze message from client
-
-                        client.close();
-                    } catch (SocketException e) {
-                        System.out.println("Can´t find Server!");
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        System.out.println("Can´t read message from client or don´t get one!");
-                        e.printStackTrace();
-                    }
+        System.out.println("<C> Client is listening.");
+        while (true) {
+            if (Close_Socket == true){
+                Close_Socket = false;
+                try {
+                    client.close();
+                } catch (IOException e) {
+                    System.out.println("Sockets can´t be closed!");
+                    //e.printStackTrace();
                 }
+                break;
             }
 
-            //analyze messages from server and call system function
-            private boolean analyze(String msg){
-                String[] words = msg.split("\\s+");
-                words[0] = words[0].toUpperCase();
-                switch(words[0]) {
-                    case "SHOOT":
+            try {
+                DataInputStream stream_in = new DataInputStream(client.getInputStream());              //get message from inputstream
+                System.out.println("<C><<< " + stream_in.readUTF());
+                if (analyze(stream_in.readUTF()) == true) break;                 //analyze message from client
+            } catch (SocketException e) {
+                System.out.println("<C>CanÂ´t find Server!");
+                //e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("<C>CanÂ´t read message from client or donÂ´t get one!");
+                //e.printStackTrace();
+            }
+        }
+        System.out.println("<C> Client is sending.");
+        sendmsg();
+    }
+
+
+    //analyze messages from server and call system function
+    private boolean analyze(String msg){
+        String[] words = msg.split("\\s+");
+        words[0] = words[0].toUpperCase();
+        System.out.println("geht");
+        switch(words[0]) {
+            case "SHOOT":
+                return true;
+            case "CONFIRM":
+                return true;
+            case "ANSWER":
+                switch (words[1].toUpperCase()) {
+                    case "0":
                         return true;
-                    case "CONFIRM":
+                    case "1":
                         return true;
-                    case "ANSWER":
-                        switch (words[1].toUpperCase()) {
-                            case "0":
-                                return true;
-                            case "1":
-                                return true;
-                            case "2":
-                                return true;
-                        }
-                    case "SAVE":
+                    case "2":
                         return true;
                 }
-                return false;
-            }
-        }).start();
+            case "SAVE":
+                return true;
+            case "SIZE":
+                System.out.println(words[1]);
+                return true;
+        }
+        return false;
     }
 }

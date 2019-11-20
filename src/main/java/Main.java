@@ -6,6 +6,7 @@ import logic.Character;
 import Network.Server;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -22,7 +23,8 @@ public class Main {
         Server s = new Server();
         Client c = new Client("localhost");
         c.listenToNetwork();
-        s.sendmsg("SIZE 10");
+        s.sendmsg();
+        return;
 
         //GUI
         /* Create and display the form */
