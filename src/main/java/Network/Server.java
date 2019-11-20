@@ -6,11 +6,18 @@ import java.net.*;
 
 public class Server{
 
+    private int port = 50000;
     private ServerSocket Server_Socket;
     private Socket Client_Socket;
-    private int port = 50000;
-    public boolean Close_Socket = false;
     BufferedReader usr;
+
+    //Speichert die Addresse des Servers so ist ein eventuelles Wiederverbinden leichter.
+    private InetSocketAddress address;
+
+    //Abbruchvariable für die listenToNetwork()-Funktion
+    public boolean Close_Socket = false;
+
+//______________________________________________________________________________________________________________________
 
     public static void main(String[] args) {
         Server s = new Server();
@@ -18,13 +25,17 @@ public class Server{
         return;
     }
 
+
+//______________________________________________________________________________________________________________________
+    //Erstellt zuerst den Server, dieser wartet bis ein Client sich verbindet sollte sich
+    //keiner verbinden wird abgebrochen. Wird einer gefunden kann dieser aktzeptiert werden.
     public Server () {
         try{
             System.out.println("<S>Starting Server...");
             Server_Socket = new ServerSocket(port);       //create Server
 
             System.out.println("<S>Wait for connection at Port:"+ Server_Socket.getLocalPort());
-            Server_Socket.setSoTimeout(1000000);                    //set timeout
+            Server_Socket.setSoTimeout(100000);                    //set timeout
 
             usr = new BufferedReader(new InputStreamReader(System.in));
 
@@ -39,44 +50,48 @@ public class Server{
         }
     }
 
-    //method should be called from outside, it automatically listen to the client after sending the message
+
+//______________________________________________________________________________________________________________________
+    //Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
+    //Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
     public void sendmsg(){
         try{
             DataOutputStream stream_out = new DataOutputStream((Client_Socket.getOutputStream()));
+            System.out.print("<S>>>> ");
             String msg = usr.readLine();
-            System.out.println("<S>>>> " + msg);
-            stream_out.writeUTF(msg);                                        //send message
+            stream_out.writeUTF(msg);
         }catch(SocketException e) {
             System.out.println("<S>Can´t find Server!");
             e.printStackTrace();
         }catch(IOException e){
             System.out.println("<S>Message can´t be send!");
+            e.printStackTrace();
         }catch(NullPointerException e){
+            System.out.println("<S>NullPointException");
             e.printStackTrace();
         }
         listenToNetwork();
     }
 
 
+//______________________________________________________________________________________________________________________
+    //Ist die Funktion, die den Server anweist das Netwerk zu ueberwachen, bei
+    //lesen einer Nachicht vom Client wird analyze() ausgefuehrt um die
+    //Nachicht zu deuten. Die Funktion kann ueber die Variable
+    //Closed_Socket=true abgebrochen werden, dies geschiet auch beim Beenden(Close())
+    //des Servers.
     public void listenToNetwork(){
-        System.out.println("<S> Server is listening:");
         while(true){
             if (Close_Socket == true){
                 Close_Socket = false;
-                try {
-                    Server_Socket.close();
-                    Client_Socket.close();
-                } catch (IOException e) {
-                    System.out.println("Sockets can´t be closed!");
-                    //e.printStackTrace();
-                }
                 break;
             }
 
             try {
-                DataInputStream stream_in = new DataInputStream(Client_Socket.getInputStream());              //get message from inputstream
-                System.out.println("<S><<< " + stream_in.readUTF());
-                if (analyze(stream_in.readUTF()) == true) break;                 //analyze message from client
+                DataInputStream stream_in = new DataInputStream(Client_Socket.getInputStream());
+                String stream = stream_in.readUTF();
+                System.out.println("<S><<< " + stream);
+                if (analyze(stream)) break;
             }catch(SocketException e){
                 System.out.println("<S>Can´t find client!");
                 e.printStackTrace();
@@ -85,34 +100,59 @@ public class Server{
                 e.printStackTrace();
             }
         }
-        System.out.println("<S> Server is sending");
         sendmsg();
     }
 
-            //analyze messages from client and call system function
-            private boolean analyze(String msg){
-                String[] words = msg.split("\\s+");
-                words[0] = words[0].toUpperCase();
-                switch(words[0]) {
-                    case "SHOOT":
+
+//______________________________________________________________________________________________________________________
+    //Analysiert Nachichten vom Client und fuehrt je nach dem Spielbefehle aus:
+    //CONFIRM: Bestaetigung des Spielbeginns
+    //ANSWER: Info ueber Trefferstatus eines Schusses
+    //SHOOT: Schuss vom Server mit x und y Koordinate
+    //SAVE: Befehl zum speichern des aktuellen Spiels, uebergibt Name der Datei
+    //LOAD: Befehl zum Laden eines bestimmten Spielstandes, uebergibt Name der Datei
+    //PASS: passen des Zuges
+    private boolean analyze(String msg){
+        String[] words = msg.split("\\s+");
+        words[0] = words[0].toUpperCase();
+        switch(words[0]) {
+            case "SHOOT":
+                return true;
+            case "CONFIRM":
+                return true;
+            case "ANSWER":
+                switch (words[1].toUpperCase()) {
+                    case "0":
+                        listenToNetwork();
                         return true;
-                    case "CONFIRM":
+                    case "1":
                         return true;
-                    case "ANSWER":
-                        switch (words[1].toUpperCase()) {
-                            case "0":
-                                return true;
-                            case "1":
-                                return true;
-                            case "2":
-                                return true;
-                        }
-                    case "SAVE":
-                        return true;
-                    case "SIZE" :
-                        System.out.println(words[1]);
+                    case "2":
                         return true;
                 }
-                return false;
-            }
+            case "SAVE":
+                Close_Socket = true;
+                return true;
+            case "SIZE" :
+                System.out.println(words[1]);
+                return true;
+        }
+        return false;
+    }
+
+
+//______________________________________________________________________________________________________________________
+    // Beenden des Serverockets, bei Erfolg true, ansonsten false. Beendet zudem
+    //auch die listenToNetwork() Funktion durch Closed_Socket=true.
+    public boolean Close(){
+        try {
+            Close_Socket = true;
+            Server_Socket.close();
+            Client_Socket.close();
+        } catch (IOException e) {
+            System.out.println("<S>Sockets couldnßt be closed!");
+            return false;
+        }
+        return true;
+    }
 }
