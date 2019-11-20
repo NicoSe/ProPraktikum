@@ -1,14 +1,12 @@
-import GUI.MainFrame;
-import Network.Client;
-import logic.Grid;
-import logic.Ship;
-import logic.Character;
-import Network.Server;
+import Network.*;
+import logic.*;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
+
+    public static Server s;
+
     public static void main(String[] args) throws IOException {
         //Grid grid = new Grid(5);
         //Character c = new Ship(2);
@@ -19,13 +17,10 @@ public class Main {
         //grid.rotate(0);
         //System.out.println(grid);
 
-        int port = 50000;
-        Server s = new Server();
-        Client c = new Client("localhost");
-        c.listenToNetwork();
-        s.sendmsg();
-        return;
 
+        new Save();
+
+        s = new Server();
         //GUI
         /* Create and display the form */
         /*java.awt.EventQueue.invokeLater(new Runnable() {
