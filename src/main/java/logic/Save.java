@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.*;
+import Steuerung.Main;
 
 public class Save {
 
@@ -9,11 +10,11 @@ public class Save {
     public Save(){
         pWriter = null;
         String filename = String.valueOf(System.currentTimeMillis());
-        //Main.s.sendmsg(filename);
+
 
         try {
-            pWriter = new PrintWriter((new BufferedWriter((new FileWriter("src/main/java/logic/SaveGames/" + filename + ".txt")))));
-            pWriter.write("hi, du da.\n");
+            pWriter = new PrintWriter((new BufferedWriter((new FileWriter("src/main/java/logic/SaveGames/" + filename +"-" + Main.grid.getBound() + ".txt")))));
+            pWriter.write(Main.grid.toString());
 
         } catch (IOException e) {
             e.printStackTrace();

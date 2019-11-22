@@ -35,7 +35,7 @@ public class Server{
             Server_Socket = new ServerSocket(port);       //create Server
 
             System.out.println("<S>Wait for connection at Port:"+ Server_Socket.getLocalPort());
-            Server_Socket.setSoTimeout(100000);                    //set timeout
+            Server_Socket.setSoTimeout(10000);                    //set timeout
 
             usr = new BufferedReader(new InputStreamReader(System.in));
 

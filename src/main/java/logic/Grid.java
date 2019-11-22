@@ -1,6 +1,7 @@
 package logic;
 
 public class Grid {
+
     private int bound;
     private Character[] grid;
 
@@ -98,13 +99,24 @@ public class Grid {
         return true;
     }
 
+
+    public int getBound() {
+        return bound;
+    }
+
+    public void setBound(int bound) {
+        this.bound = bound;
+    }
+
+
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("Grid:\n");
+        buf.append("GRID:\n");
         for(int y = 0; y < bound; ++y) {
             for(int x = 0; x < bound; ++x) {
-                buf.append(String.format("|%d(%s)", x, grid[y*bound+x]));
+                buf.append(String.format("|%s", grid[y*bound+x]));      //Nico:"ich hab mal die x Koordinate aus dem String entfernt,
+                                                                                // da ich denke zum speichern brauchen wir die nicht
             }
             buf.append('\n');
         }

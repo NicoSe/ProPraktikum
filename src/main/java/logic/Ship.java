@@ -10,4 +10,8 @@ public class Ship extends Character {
         System.out.println("i go kaboom.");
         return ShotResult.HIT;
     }
+
+    public String toString(){
+        return getSize() + "," + getRotation() ;
+    }
 }
