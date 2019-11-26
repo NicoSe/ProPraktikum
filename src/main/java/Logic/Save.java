@@ -1,7 +1,7 @@
-package logic;
+package Logic;
 
 import java.io.*;
-import Steuerung.Main;
+import Control.Main;
 
 public class Save {
 
@@ -11,10 +11,11 @@ public class Save {
         pWriter = null;
         String filename = String.valueOf(System.currentTimeMillis());
 
-
         try {
-            pWriter = new PrintWriter((new BufferedWriter((new FileWriter("src/main/java/logic/SaveGames/" + filename +"-" + Main.grid.getBound() + ".txt")))));
-            pWriter.write(Main.grid.toString());
+            pWriter = new PrintWriter((new BufferedWriter((new FileWriter("src/main/java/logic/SaveGames/" + filename + ".txt")))));
+            pWriter.write("SIZE\n" + Main.own_grid.getBound() + "\n");
+            pWriter.write("OWNGRID\n" + Main.own_grid.toString());
+            pWriter.write("OTHERGRID\n" + Main.foe_grid.toString());
 
         } catch (IOException e) {
             e.printStackTrace();

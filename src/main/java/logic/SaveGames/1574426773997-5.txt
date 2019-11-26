@@ -1,6 +1,0 @@
-Grid:
-|2,NORTH|null|4,NORTH|null|null
-|2,NORTH|null|4,NORTH|null|null
-|null|null|4,NORTH|null|null
-|null|null|4,NORTH|null|null
-|null|null|null|null|null

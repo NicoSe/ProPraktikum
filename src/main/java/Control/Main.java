@@ -1,29 +1,36 @@
-package Steuerung;
+package Control;
 
 import Network.*;
-import logic.*;
-import logic.Character;
+import Logic.*;
+import Logic.Character;
 
 import java.io.IOException;
 
 public class Main {
 
     public static Server s;
-    public static Grid grid;
+    public static Grid own_grid;
+    public static Grid foe_grid;
 
     public static void main(String[] args) throws IOException {
-        grid = new Grid(5);
+        own_grid = new Grid(5);
         Character c = new Ship(2);
-        grid.put(0, c);
+        own_grid.put(0, c);
         Character c2 = new Ship(4);
-        grid.put(2, c2);
+        own_grid.put(2, c2);
         // System.out.println(grid);
         //grid.rotate(0);
-        System.out.println(grid);
+        Character c3 = new Ship(4);
+        own_grid.put(4, c3);
+        //System.out.println(own_grid);
 
+        foe_grid = new Grid(5);
+        foe_grid.put(1,c3);
+        //System.out.println(foe_grid);
 
-        new Save();
-
+        //new Save();
+        Load lo = new Load();
+        lo.load("1574799643618");
         //Server s = new Server();
 
 

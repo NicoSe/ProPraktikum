@@ -1,4 +1,4 @@
-package logic;
+package Logic;
 
 public class Grid {
 
@@ -112,7 +112,6 @@ public class Grid {
     @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
-        buf.append("GRID:\n");
         for(int y = 0; y < bound; ++y) {
             for(int x = 0; x < bound; ++x) {
                 buf.append(String.format("|%s", grid[y*bound+x]));      //Nico:"ich hab mal die x Koordinate aus dem String entfernt,

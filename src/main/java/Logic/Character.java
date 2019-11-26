@@ -1,4 +1,4 @@
-package logic;
+package Logic;
 
 enum Rotation {
     NORTH,
