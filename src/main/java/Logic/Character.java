@@ -12,6 +12,7 @@ enum ShotResult {
     NONE,
     HIT,
     SUNK,
+    ALREADY,
 }
 
 public abstract class Character {
@@ -58,5 +59,6 @@ public abstract class Character {
         }
     }
 
-    public abstract ShotResult shoot();
+    public abstract boolean isAlive();
+    public abstract ShotResult shoot(int hitpos);
 }
