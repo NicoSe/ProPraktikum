@@ -14,7 +14,7 @@ public class Grid {
         this.grid = new Character[bound*bound];
     }
 
-    public Character remove(int pos) {
+    private Character remove(int pos) {
         if(pos < 0 || pos > bound*bound) {
             return null;
         }
@@ -52,6 +52,20 @@ public class Grid {
         return true;
     }
 
+    public ShotResult shoot(int pos) {
+        Character c = grid[pos];
+        if(c == null) {
+            return ShotResult.NONE;
+        }
+
+        int basePos = c.getPosition();
+
+        if(!c.isVertical()) {
+            return c.shoot(pos-basePos);
+        }
+        return c.shoot((pos-basePos)/bound);
+    }
+
     public void rotate(int pos) {
         Character c = grid[pos];
         if(c == null) {
@@ -61,7 +75,8 @@ public class Grid {
         int basePos = c.getPosition();
         remove(basePos);
 
-        if(!isEmptyAt(pos, c.getSize(), !c.isVertical())) {
+        if(!isEmptyAt(pos, c.getSize(), !c.isVertical()) || !isValidPosition(pos, c.getSize(), !c.isVertical())) {
+            System.out.println("invalid pos on rotate!");
             put(basePos, c);
             return;
         }
@@ -75,7 +90,25 @@ public class Grid {
         grid = new Character[bound*bound];
     }
 
-    public boolean isEmptyAt(int pos, int size, boolean isVertical) {
+    private boolean isValidPosition(int pos, int size, boolean isVertical) {
+        if(!isVertical) {
+            boolean hitBreakpoint = false;
+
+            int alteredSize = size;
+            for(int i = 0; i < size; ++i) {
+                alteredSize--;
+                if((pos+1+i) % bound == 0) {
+                    hitBreakpoint = true;
+                    break;
+                }
+            }
+
+            return hitBreakpoint && alteredSize == 0;
+        }
+        return true;
+    }
+
+    private boolean isEmptyAt(int pos, int size, boolean isVertical) {
         //invalid position
         if(pos < 0 || pos+size > bound*bound) {
             return false;
@@ -98,7 +131,6 @@ public class Grid {
         }
         return true;
     }
-
 
     public int getBound() {
         return bound;
