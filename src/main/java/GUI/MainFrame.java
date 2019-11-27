@@ -6,8 +6,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import javax.swing.*;
 
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
+//import sun.audio.AudioPlayer;
+//import sun.audio.AudioStream;
 
 
 /**
@@ -336,8 +336,8 @@ public class MainFrame{
         InputStream SFX;
         try{
             SFX = new FileInputStream(new File(filepath));
-            AudioStream audio = new AudioStream(SFX);
-            AudioPlayer.player.start(audio);
+            //AudioStream audio = new AudioStream(SFX);
+            //AudioPlayer.player.start(audio);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error music");
         }

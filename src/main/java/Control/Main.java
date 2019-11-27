@@ -31,17 +31,16 @@ public class Main {
 
         //new Save();
         Load lo = new Load();
-        lo.load("1574799643618");
         //Server s = new Server();
 
 
         //GUI
-        /* Create and display the form */
+        /* Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 MainFrame mf = new MainFrame();
 
             }
-        });
+        });*/
     }
 }
