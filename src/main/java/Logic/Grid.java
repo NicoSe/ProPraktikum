@@ -34,6 +34,10 @@ public class Grid {
         return c;
     }
 
+    public int convertXYToLocal(int x, int y) {
+        return y*this.bound + x;
+    }
+
     public boolean put(int pos, Character inst) {
         if(!isEmptyAt(pos, inst.getSize(), inst.isVertical())) {
             return false;
