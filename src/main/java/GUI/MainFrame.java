@@ -1,19 +1,20 @@
 package GUI;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import javax.swing.*;
 
-//import sun.audio.AudioPlayer;
-//import sun.audio.AudioStream;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 
 /**
  *
  * @author Thomas
  */
-public class MainFrame {
+public class MainFrame{
     JFrame jf;
 
 
@@ -24,7 +25,10 @@ public class MainFrame {
         jf = new JFrame();
         jf.setVisible(true);
         initComponents();
+
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,84 +38,109 @@ public class MainFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        lblPlay = new javax.swing.JLabel();
+        lblOptions = new javax.swing.JLabel();
+        lblCredits = new javax.swing.JLabel();
+        lblExit = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        lblBattleships = new javax.swing.JLabel();
+        lblBackground = new javax.swing.JLabel();
 
         jf.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jf.setTitle("Battleships");
         jf.setBackground(new java.awt.Color(51, 51, 255));
         jf.setForeground(java.awt.Color.magenta);
+        jf.setMinimumSize(new java.awt.Dimension(780, 520));
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setForeground(new java.awt.Color(204, 102, 0));
+        jPanel1.setBackground(new java.awt.Color(0, 51, 255));
+        jPanel1.setOpaque(false);
 
-        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 48)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Battleships");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
-
-        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
-
-        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Options");
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel2MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel2MouseExited(evt);
-            }
-        });
-
-        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Play");
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblPlay.setBackground(new java.awt.Color(51, 0, 153));
+        lblPlay.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblPlay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblPlay.setIcon(new javax.swing.ImageIcon(".\\src\\Sprites\\PlayBW.png")); // NOI18N
+        lblPlay.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
+                lblPlayMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel3MouseEntered(evt);
+                lblPlayMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel3MouseExited(evt);
+                lblPlayMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblPlayMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lblPlayMouseReleased(evt);
             }
         });
 
-        jButton1.setText("Real Play");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblOptions.setBackground(new java.awt.Color(255, 255, 255));
+        lblOptions.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblOptions.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblOptions.setIcon(new javax.swing.ImageIcon("src\\Sprites\\OptionsBW.png")); // NOI18N
+        lblOptions.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblOptionsMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButton1MouseEntered(evt);
-
+                lblOptionsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblOptionsMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblOptionsMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lblOptionsMouseReleased(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt)  {
-                jButton1ActionPerformed(evt);
-                jf.setSize(400,400);
 
+        lblCredits.setBackground(new java.awt.Color(255, 255, 255));
+        lblCredits.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblCredits.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCredits.setIcon(new javax.swing.ImageIcon("src\\Sprites\\CreditsBW.png")); // NOI18N
+        lblCredits.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblCreditsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblCreditsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblCreditsMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblCreditsMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lblCreditsMouseReleased(evt);
+            }
+        });
+
+        lblExit.setBackground(new java.awt.Color(255, 255, 255));
+        lblExit.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblExit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblExit.setIcon(new javax.swing.ImageIcon("src\\Sprites\\ExitBW.png")); // NOI18N
+        lblExit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblExitMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblExitMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblExitMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblExitMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lblExitMouseReleased(evt);
             }
         });
 
@@ -121,32 +150,67 @@ public class MainFrame {
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblPlay, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                                        .addComponent(lblOptions, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                                        .addComponent(lblCredits, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                                        .addComponent(lblExit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE))
                                 .addContainerGap())
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(155, 155, 155)
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(157, 157, 157))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addContainerGap()))
         );
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(100, 100, 100)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-                                .addGap(203, 203, 203))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(48, 48, 48)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(286, Short.MAX_VALUE)))
+                                .addContainerGap()
+                                .addComponent(lblPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblCredits, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblExit, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(47, Short.MAX_VALUE))
         );
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setForeground(new java.awt.Color(204, 102, 0));
+        jPanel2.setOpaque(false);
+
+        lblBattleships.setFont(new java.awt.Font("Arial Black", 0, 48)); // NOI18N
+        lblBattleships.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBattleships.setIcon(new javax.swing.ImageIcon("src\\Sprites\\Battleships.png")); // NOI18N
+        lblBattleships.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblBattleshipsMouseClicked(evt);
+            }
+        });
+        lblBattleships.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                lblBattleshipsKeyPressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblBattleships, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblBattleships, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                                .addContainerGap())
+        );
+
+        lblBackground.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBackground.setIcon(new javax.swing.ImageIcon("src\\Sprites\\Preview_143.png")); // NOI18
+        lblBackground.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblBackground.setMaximumSize(new java.awt.Dimension(1920, 1080));
+        lblBackground.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(jf.getContentPane());
         jf.getContentPane().setLayout(layout);
@@ -154,6 +218,8 @@ public class MainFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 804, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,41 +227,107 @@ public class MainFrame {
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 552, Short.MAX_VALUE))
         );
 
         jf.pack();
     }// </editor-fold>
 
-    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {
-        jLabel2.setForeground(Color.WHITE);
-        playSFX("./src/SFX/Coins.wav");
+
+
+    private void lblOptionsMouseEntered(java.awt.event.MouseEvent evt) {
+        lblOptions.setIcon(new javax.swing.ImageIcon("src\\Sprites\\OptionsWB.png"));
+        playSFX("src\\SFX\\Menu_Tick.wav");
     }
 
-    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {
-        jLabel2.setForeground(Color.BLACK);
+    private void lblOptionsMouseExited(java.awt.event.MouseEvent evt) {
+        lblOptions.setIcon(new javax.swing.ImageIcon("src\\Sprites\\OptionsBW.png"));
     }
 
-    private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {
-        jLabel3.setForeground(Color.WHITE);
-        playSFX("./src/SFX/Coins.wav");
+    private void lblPlayMouseEntered(java.awt.event.MouseEvent evt) {
+        lblPlay.setIcon(new javax.swing.ImageIcon("src\\Sprites\\PlayWB.png"));
+        playSFX("src\\SFX\\Menu_Tick.wav");
     }
 
-    private void jLabel3MouseExited(java.awt.event.MouseEvent evt) {
-        jLabel3.setForeground(Color.BLACK);
+    private void lblPlayMouseExited(java.awt.event.MouseEvent evt) {
+        lblPlay.setIcon(new javax.swing.ImageIcon("src\\Sprites\\PlayBW.png"));
     }
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {
-        // TODO add your handling code here:
-        System.out.println("Poopidi Scoop");
+    private void lblPlayMouseClicked(java.awt.event.MouseEvent evt) {
+        playSFX("src\\SFX\\SA2_142.wav");
+        System.out.println("ah fuck");
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        jButton1.setForeground(Color.WHITE);
-        playSFX("./src/SFX/Coins.wav");
+    private void lblBattleshipsKeyPressed(java.awt.event.KeyEvent evt) {
+
+
     }
 
-    private void jButton1MouseEntered(java.awt.event.MouseEvent evt) {
-        jButton1.setForeground(Color.BLACK);
+    private void lblBattleshipsMouseClicked(java.awt.event.MouseEvent evt) {
+        System.out.println("this is battleships");
+    }
+
+    private void lblPlayMousePressed(java.awt.event.MouseEvent evt) {
+        lblPlay.setIcon(new javax.swing.ImageIcon("src\\Sprites\\PlayOnPress.png"));
+    }
+
+    private void lblPlayMouseReleased(java.awt.event.MouseEvent evt) {
+        lblPlay.setIcon(new javax.swing.ImageIcon("src\\Sprites\\PlayWB.png"));
+    }
+
+    private void lblOptionsMousePressed(java.awt.event.MouseEvent evt) {
+        lblOptions.setIcon(new javax.swing.ImageIcon("src\\Sprites\\OptionsOnPress.png"));
+    }
+
+    private void lblOptionsMouseReleased(java.awt.event.MouseEvent evt) {
+        lblOptions.setIcon(new javax.swing.ImageIcon("src\\Sprites\\OptionsWB.png"));
+    }
+
+    private void lblCreditsMouseEntered(java.awt.event.MouseEvent evt) {
+        playSFX("src\\SFX\\Menu_Tick.wav");
+        lblCredits.setIcon(new javax.swing.ImageIcon("src\\Sprites\\CreditsWB.png"));
+    }
+
+    private void lblCreditsMouseExited(java.awt.event.MouseEvent evt) {
+        lblCredits.setIcon(new javax.swing.ImageIcon("src\\Sprites\\CreditsBW.png"));
+    }
+
+    private void lblCreditsMousePressed(java.awt.event.MouseEvent evt) {
+        lblCredits.setIcon(new javax.swing.ImageIcon("src\\Sprites\\CreditsOnPress.png"));
+    }
+
+    private void lblCreditsMouseReleased(java.awt.event.MouseEvent evt) {
+        lblCredits.setIcon(new javax.swing.ImageIcon("src\\Sprites\\CreditsWB.png"));
+    }
+
+    private void lblCreditsMouseClicked(java.awt.event.MouseEvent evt) {
+        playSFX("src\\SFX\\SA2_142.wav");
+    }
+
+    private void lblOptionsMouseClicked(java.awt.event.MouseEvent evt) {
+        playSFX("src\\SFX\\SA2_142.wav");
+    }
+
+    private void lblExitMouseClicked(java.awt.event.MouseEvent evt) {
+        playSFX("src\\SFX\\SA2_142.wav");
+    }
+
+    private void lblExitMouseEntered(java.awt.event.MouseEvent evt) {
+        playSFX("src\\SFX\\Menu_Tick.wav");
+        lblExit.setIcon(new javax.swing.ImageIcon("src\\Sprites\\ExitWB.png"));
+    }
+
+    private void lblExitMouseExited(java.awt.event.MouseEvent evt) {
+        lblExit.setIcon(new javax.swing.ImageIcon("src\\Sprites\\ExitBW.png"));
+    }
+
+    private void lblExitMousePressed(java.awt.event.MouseEvent evt) {
+        lblExit.setIcon(new javax.swing.ImageIcon("src\\Sprites\\ExitOnPress.png"));
+    }
+
+    private void lblExitMouseReleased(java.awt.event.MouseEvent evt) {
+        lblExit.setIcon(new javax.swing.ImageIcon("src\\Sprites\\ExitWB.png"));
     }
 
 
@@ -204,32 +336,21 @@ public class MainFrame {
         InputStream SFX;
         try{
             SFX = new FileInputStream(new File(filepath));
-//            AudioStream audio = new AudioStream(SFX);
-//            AudioPlayer.player.start(audio);
+            AudioStream audio = new AudioStream(SFX);
+            AudioPlayer.player.start(audio);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Error SFX");
+            JOptionPane.showMessageDialog(null,"Error music");
         }
     }
 
-
-    /**
-     * @param args the command line arguments
-     */
-    // public static void main(String args[]) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-     * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-
-    // }
-
     // Variables declaration - do not modify
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblBackground;
+    private javax.swing.JLabel lblBattleships;
+    private javax.swing.JLabel lblCredits;
+    private javax.swing.JLabel lblExit;
+    private javax.swing.JLabel lblOptions;
+    private javax.swing.JLabel lblPlay;
     // End of variables declaration
 }

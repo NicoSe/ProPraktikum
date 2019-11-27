@@ -1,5 +1,6 @@
 package Control;
 
+import GUI.MainFrame;
 import Network.*;
 import Logic.*;
 import Logic.Character;
@@ -36,11 +37,11 @@ public class Main {
 
         //GUI
         /* Create and display the form */
-        /*java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 MainFrame mf = new MainFrame();
 
             }
-        });*/
+        });
     }
 }
