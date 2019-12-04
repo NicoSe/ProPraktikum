@@ -35,12 +35,16 @@ public class Main {
 
 
         //GUI
-        /* Create and display the form
+        // Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                MainFrame mf = new MainFrame();
+                try {
+                    MainFrame mf = new MainFrame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
-        });*/
+        });
     }
 }
