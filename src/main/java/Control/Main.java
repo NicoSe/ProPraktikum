@@ -10,23 +10,23 @@ import java.io.IOException;
 public class Main {
 
     public static Server s;
-    public static Grid own_grid;
-    public static Grid foe_grid;
+    public static Grid2D own_grid;
+    public static Grid2D foe_grid;
 
     public static void main(String[] args) throws IOException {
-        own_grid = new Grid(5);
+        own_grid = new Grid2D(5);
         Character c = new Ship(2);
-        own_grid.put(0, c);
+        own_grid.put(0, 0, c);
         Character c2 = new Ship(4);
-        own_grid.put(2, c2);
+        own_grid.put(2, 0, c2);
         // System.out.println(grid);
         //grid.rotate(0);
         Character c3 = new Ship(4);
-        own_grid.put(4, c3);
+        own_grid.put(4, 0, c3);
         //System.out.println(own_grid);
 
-        foe_grid = new Grid(5);
-        foe_grid.put(1,c3);
+        foe_grid = new Grid2D(5);
+        foe_grid.put(1, 0,c3);
         //System.out.println(foe_grid);
 
         //new Save();
@@ -35,12 +35,17 @@ public class Main {
 
 
         //GUI
-        /* Create and display the form
+        // Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                MainFrame mf = new MainFrame();
+                try {
+                    MainFrame mf = new MainFrame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
-        });*/
+        });
     }
 }
+

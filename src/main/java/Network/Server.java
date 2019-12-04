@@ -17,58 +17,41 @@ public class Server{
     //Abbruchvariable für die listenToNetwork()-Funktion
     public boolean Close_Socket = false;
 
-//______________________________________________________________________________________________________________________
-
-    public static void main(String[] args) {
-        Server s = new Server();
-        s.sendmsg();
-        return;
-    }
-
 
 //______________________________________________________________________________________________________________________
     //Erstellt zuerst den Server, dieser wartet bis ein Client sich verbindet sollte sich
     //keiner verbinden wird abgebrochen. Wird einer gefunden kann dieser aktzeptiert werden.
     public Server () {
-        try{
-            System.out.println("<S>Starting Server...");
-            Server_Socket = new ServerSocket(port);       //create Server
-
-            System.out.println("<S>Wait for connection at Port:"+ Server_Socket.getLocalPort());
-            Server_Socket.setSoTimeout(10000);                    //set timeout
-
-            usr = new BufferedReader(new InputStreamReader(System.in));
-
-            Client_Socket = Server_Socket.accept();                    //accept client
-            System.out.println("<S>Client connected.");
-        } catch(SocketException e){
-            e.printStackTrace();
-        } catch(IOException e){
-            e.printStackTrace();
-        }catch(NullPointerException e){
-            e.printStackTrace();
-        }
+        Create_Server();
     }
 
 
 //______________________________________________________________________________________________________________________
     //Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
     //Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
-    public void sendmsg(){
+    public void sendmsg(String msg){
         try{
             DataOutputStream stream_out = new DataOutputStream((Client_Socket.getOutputStream()));
             System.out.print("<S>>>> ");
-            String msg = usr.readLine();
             stream_out.writeUTF(msg);
         }catch(SocketException e) {
             System.out.println("<S>Can´t find Server!");
             e.printStackTrace();
+            Close();
+            Create_Server();
+            sendmsg(msg);
         }catch(IOException e){
             System.out.println("<S>Message can´t be send!");
             e.printStackTrace();
+            Close();
+            Create_Server();
+            sendmsg(msg);
         }catch(NullPointerException e){
             System.out.println("<S>NullPointException");
             e.printStackTrace();
+            Close();
+            Create_Server();
+            sendmsg(msg);
         }
         listenToNetwork();
     }
@@ -95,12 +78,15 @@ public class Server{
             }catch(SocketException e){
                 System.out.println("<S>Can´t find client!");
                 e.printStackTrace();
+                Close();
+                Create_Server();
             } catch (IOException e) {
                 System.out.println("<S>Can´t read message from client or don´t get one!");
                 e.printStackTrace();
+                Close();
+                Create_Server();
             }
         }
-        sendmsg();
     }
 
 
@@ -154,5 +140,29 @@ public class Server{
             return false;
         }
         return true;
+    }
+
+
+//______________________________________________________________________________________________________________________
+    public void Create_Server(){
+        try{
+            Close_Socket = false;
+            System.out.println("<S>Starting Server...");
+            Server_Socket = new ServerSocket(port);       //create Server
+
+            System.out.println("<S>Wait for connection at Port:"+ Server_Socket.getLocalPort());
+            Server_Socket.setSoTimeout(10000);                    //set timeout
+
+            usr = new BufferedReader(new InputStreamReader(System.in));
+
+            Client_Socket = Server_Socket.accept();                    //accept client
+            System.out.println("<S>Client connected.");
+        } catch(SocketException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
     }
 }
