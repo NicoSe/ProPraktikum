@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.*;
 import java.io.IOException;
 import GUI.Helpers;
-import com.sun.xml.internal.messaging.saaj.soap.JpegDataContentHandler;
+//import com.sun.xml.internal.messaging.saaj.soap.JpegDataContentHandler;
 
 public class MainFrame {
 
