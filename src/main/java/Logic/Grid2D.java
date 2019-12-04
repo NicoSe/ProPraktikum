@@ -105,6 +105,7 @@ public class Grid2D {
             return null;
         }
 
+        // make sure there is no colision between ships
         if(!isValidAt(x, y, width, height)) {
             return null;
         }
@@ -161,6 +162,22 @@ public class Grid2D {
     }
 
     public boolean rotate(int x, int y) {
+        Character c = characters[x][y];
+        if(c == null) {
+            return false;
+        }
+
+        int[] basePos = c.getPosition();
+        remove(basePos[0], basePos[1]);
+        Rotation oldRot = c.getRotation();
+        c.setRotation(c.getNextRotation());
+
+        if(put(basePos[0], basePos[1], c) == null) {
+            System.out.println("couldnt rotate ship.");
+            c.setRotation(oldRot);
+            put(basePos[0], basePos[1], c);
+            return false;
+        }
         return true;
     }
 
