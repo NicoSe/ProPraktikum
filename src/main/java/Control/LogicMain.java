@@ -12,6 +12,8 @@ public class LogicMain {
 
         ShipHarbor harbor = new ShipHarbor();
         harbor.load();
+        harbor.put(5);
+
 
         if(args.length <= 0) {
             System.exit(1);
