@@ -15,13 +15,8 @@ public class Client {
     //Abbruchvariable für die listenToNetwork()-Funktion
     public boolean Close_Socket = false;
 
-//______________________________________________________________________________________________________________________
+    private String host;
 
-    public static void main(String[] args) {
-        Client client = new Client("localhost");
-        client.listenToNetwork();
-        return;
-    }
 
 
 //______________________________________________________________________________________________________________________
@@ -30,36 +25,25 @@ public class Client {
     // auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
     //wird abgebrochen.
     public Client(String host) {
-        try {
-            address = new InetSocketAddress(host, port);
-            System.out.println("<C>Searching for Server");
-
-            client = new Socket();
-            client.connect(address, 10000);
-            usr = new BufferedReader(new InputStreamReader(System.in));
-        } catch (SocketException e) {
-            System.out.println("<C>Can´t create Socket!");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("<C>Can´t find server at " + address);
-            e.printStackTrace();
-        }
-        System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
+        this.host = host;
+        Create_Client();
     }
 
 
 //______________________________________________________________________________________________________________________
     //Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
     //Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
-    public void sendmsg() {
+    public void sendmsg(String msg) {
         try {
             DataOutputStream stream_out = new DataOutputStream(client.getOutputStream());
             System.out.print("<C>>>> ");
-            String msg = usr.readLine();
             stream_out.writeUTF(msg);
         } catch (IOException e) {
             System.out.println("<C>Can´t send message!");
             e.printStackTrace();
+            Close();
+            Create_Client();
+            sendmsg(msg);
         }
         listenToNetwork();
     }
@@ -85,12 +69,15 @@ public class Client {
             } catch (SocketException e) {
                 System.out.println("<C>Can´t find Server!");
                 e.printStackTrace();
+                Close();
+                Create_Client();
             } catch (IOException e) {
                 System.out.println("<C>Can´t read message from client or donÂ´t get one!");
                 e.printStackTrace();
+                Close();
+                Create_Client();
             }
         }
-        sendmsg();
     }
 
 
@@ -144,5 +131,26 @@ public class Client {
             return false;
         }
         return true;
+    }
+
+
+//______________________________________________________________________________________________________________________
+    public void Create_Client(){
+        try {
+            Close_Socket = false;
+            address = new InetSocketAddress(host, port);
+            System.out.println("<C>Searching for Server");
+
+            client = new Socket();
+            client.connect(address, 10000);
+            usr = new BufferedReader(new InputStreamReader(System.in));
+        } catch (SocketException e) {
+            System.out.println("<C>Can´t create Socket!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("<C>Can´t find server at " + address);
+            e.printStackTrace();
+        }
+        System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
     }
 }
