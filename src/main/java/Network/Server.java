@@ -1,5 +1,8 @@
 package Network;
 
+import Logic.Load;
+import Logic.Save;
+
 import java.io.*;
 import java.net.*;
 
@@ -117,10 +120,11 @@ public class Server{
                         return true;
                 }
             case "SAVE":
-                Close_Socket = true;
+                new Save();
+                Close();
                 return true;
-            case "SIZE" :
-                System.out.println(words[1]);
+            case "LOAD" :
+                Load.load(words[1], false);
                 return true;
         }
         return false;

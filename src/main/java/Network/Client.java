@@ -1,5 +1,8 @@
 package Network;
 
+import Logic.Load;
+import Logic.Save;
+
 import java.io.*;
 import java.net.*;
 
@@ -94,6 +97,8 @@ public class Client {
         String[] words = msg.split("\\s+");
         words[0] = words[0].toUpperCase();
         switch(words[0]) {
+            case "SIZE":
+                return true;
             case "SHOOT":
                 return true;
             case "CONFIRM":
@@ -109,10 +114,11 @@ public class Client {
                         return true;
                 }
             case "SAVE":
-                Close_Socket = true;
+                new Save();
+                Close();
                 return true;
-            case "SIZE":
-                System.out.println(words[1]);
+            case "LOAD" :
+                Load.load(words[1], false);
                 return true;
         }
         return false;
