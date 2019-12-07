@@ -78,7 +78,7 @@ public class ShipHarbor {
 
                 harborVolume.put(gridBounds, rowVolume);
                 harbor.put(gridBounds, currentBoundShipData);
-                System.out.println(line);
+                //System.out.println(line);
             }
         } catch (IOException e) {
             e.printStackTrace();

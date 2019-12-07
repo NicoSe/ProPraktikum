@@ -20,8 +20,6 @@ public class Client {
 
     private String host;
 
-
-
 //______________________________________________________________________________________________________________________
     //Erstellt zuerst eine Addresse, die sich aus der IP-Addresse des Servers
     // und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
@@ -30,6 +28,31 @@ public class Client {
     public Client(String host) {
         this.host = host;
         Create_Client();
+    }
+
+
+//______________________________________________________________________________________________________________________
+    public void Create_Client(){
+        try {
+            Close_Socket = false;
+            address = new InetSocketAddress(host, port);
+            System.out.println("<C>Searching for Server");
+
+            client = new Socket();
+            client.connect(address, 10000);
+            usr = new BufferedReader(new InputStreamReader(System.in));
+        } catch (SocketException e) {
+            System.out.println("<C>Can´t create Socket!");
+            e.printStackTrace();
+            Close();
+        } catch (IOException e) {
+            System.out.println("<C>Can´t find server at " + address);
+            e.printStackTrace();
+            Close();
+        }
+        System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
+        listenToNetwork();
+        sendmsg("CONFIRM");
     }
 
 
@@ -114,7 +137,7 @@ public class Client {
                         return true;
                 }
             case "SAVE":
-                new Save();
+                new Save(words[1]);
                 Close();
                 return true;
             case "LOAD" :
@@ -137,26 +160,5 @@ public class Client {
             return false;
         }
         return true;
-    }
-
-
-//______________________________________________________________________________________________________________________
-    public void Create_Client(){
-        try {
-            Close_Socket = false;
-            address = new InetSocketAddress(host, port);
-            System.out.println("<C>Searching for Server");
-
-            client = new Socket();
-            client.connect(address, 10000);
-            usr = new BufferedReader(new InputStreamReader(System.in));
-        } catch (SocketException e) {
-            System.out.println("<C>Can´t create Socket!");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("<C>Can´t find server at " + address);
-            e.printStackTrace();
-        }
-        System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
     }
 }
