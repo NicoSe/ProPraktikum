@@ -25,7 +25,7 @@ public class Konsolenanwendung {
     }
 
     private static void Konsolenanwendung_Client() {
-        Client socket = new Client("localhost");
+        Client socket = new Client();
 
         Scanner s = new Scanner(System.in);
 
@@ -40,17 +40,21 @@ public class Konsolenanwendung {
                     int y = Integer.parseInt(split[2]);
 
                     socket.sendmsg(split[0] + " " + x + " " + y);
+                    socket.listenToNetwork();
                 }
                 else if(split[0].equals("continue")){
                     socket.sendmsg(split[0]);
+                    socket.listenToNetwork();
                 }
                 else if(split[0].equals("save")){
                     String savename = String.valueOf(System.currentTimeMillis());
                     new Save(savename);
                     socket.sendmsg(split[0] + " " + savename);
+                    socket.listenToNetwork();
                 }
                 else if(split[0].equals("load")){
                     socket.sendmsg(split[0] + " " + split[1]);
+                    socket.listenToNetwork();
                 }
                 else{
                     System.out.println("Try again.");
@@ -66,7 +70,7 @@ public class Konsolenanwendung {
 
         Scanner s = new Scanner(System.in);
 
-        System.out.printf("Type your action!");
+        System.out.printf("Type your action:");
         while(s.hasNextLine()) {
             try {
                 String[] split = s.nextLine().split(" ");
@@ -76,23 +80,31 @@ public class Konsolenanwendung {
                     a = new Grid2D(Integer.parseInt(split[1]));
                     a.generateRandom();
                     b = new Grid2D(Integer.parseInt(split[1]));
+                    System.out.printf("Grid A:\n%s\n", a);
+                    System.out.printf("Grid B:\n%s\n", b);
+                    socket.sendmsg(split[0] + " " + split[1]);
+                    socket.listenToNetwork();
                 }
                 else if (split[0].equals("shoot")) {
                     int x = Integer.parseInt(split[1]);
                     int y = Integer.parseInt(split[2]);
 
                     socket.sendmsg(split[0] + " " + x + " " + y);
+                    socket.listenToNetwork();
                 }
                 else if(split[0].equals("continue")){
                     socket.sendmsg(split[0]);
+                    socket.listenToNetwork();
                 }
                 else if(split[0].equals("save")){
                     String savename = String.valueOf(System.currentTimeMillis());
                     new Save(savename);
                     socket.sendmsg(split[0] + " " + savename);
+                    socket.listenToNetwork();
                 }
                 else if(split[0].equals("load")){
                     socket.sendmsg(split[0] + " " + split[1]);
+                    socket.listenToNetwork();
                 }
                 else{
                     System.out.println("Try again.");

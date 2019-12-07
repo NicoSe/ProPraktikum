@@ -61,7 +61,6 @@ public class Server{
     public void sendmsg(String msg){
         try{
             DataOutputStream stream_out = new DataOutputStream((Client_Socket.getOutputStream()));
-            System.out.print("<S>>>> ");
             stream_out.writeUTF(msg);
         }catch(SocketException e) {
             System.out.println("<S>Can´t find Server!");

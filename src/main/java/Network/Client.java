@@ -1,7 +1,10 @@
 package Network;
 
+import Control.Konsolenanwendung;
+import Logic.Grid2D;
 import Logic.Load;
 import Logic.Save;
+import Logic.ShotResult;
 
 import java.io.*;
 import java.net.*;
@@ -25,8 +28,8 @@ public class Client {
     // und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
     // auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
     //wird abgebrochen.
-    public Client(String host) {
-        this.host = host;
+    public Client() {
+        this.host = "localhost";
         Create_Client();
     }
 
@@ -52,7 +55,6 @@ public class Client {
         }
         System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
         listenToNetwork();
-        sendmsg("CONFIRM");
     }
 
 
@@ -62,7 +64,6 @@ public class Client {
     public void sendmsg(String msg) {
         try {
             DataOutputStream stream_out = new DataOutputStream(client.getOutputStream());
-            System.out.print("<C>>>> ");
             stream_out.writeUTF(msg);
         } catch (IOException e) {
             System.out.println("<C>Can´t send message!");
@@ -71,7 +72,6 @@ public class Client {
             Create_Client();
             sendmsg(msg);
         }
-        listenToNetwork();
     }
 
 
@@ -120,27 +120,49 @@ public class Client {
         String[] words = msg.split("\\s+");
         words[0] = words[0].toUpperCase();
         switch(words[0]) {
-            case "SIZE":
+            case "size":
+                Konsolenanwendung.a = new Grid2D(Integer.parseInt(words[1]));
+                Konsolenanwendung.a.generateRandom();
+                Konsolenanwendung.b = new Grid2D(Integer.parseInt(words[1]));
+                System.out.printf("Grid A:\n%s\n", Konsolenanwendung.a);
+                System.out.printf("Grid B:\n%s\n", Konsolenanwendung.b);
                 return true;
-            case "SHOOT":
+            case "shoot":
+                ShotResult result = Konsolenanwendung.a.shoot(Integer.parseInt(words[1]),Integer.parseInt(words[2]));
+                if(result == ShotResult.HIT) {
+                    sendmsg("answer 1");
+                    return false;
+                }
+                else if(result == ShotResult.SUNK) {
+                    sendmsg("answer 2");
+                    return false;
+                }
+                else if(result == ShotResult.NONE) {
+                    sendmsg("answer 0");
+                    return true;
+                }
+                return false;
+            case "confirm":
                 return true;
-            case "CONFIRM":
-                return true;
-            case "ANSWER":
+            case "answer":
                 switch (words[1].toUpperCase()) {
                     case "0":
-                        listenToNetwork();
-                        return true;
+                        sendmsg("pass");
+                        return false;
                     case "1":
+                        //Konsolenanwendung.b.shoot()
                         return true;
                     case "2":
+                        //Konsolenanwendung.b.shoot()
                         return true;
                 }
-            case "SAVE":
+            case "pass":
+                return true;
+            case "save":
                 new Save(words[1]);
                 Close();
                 return true;
-            case "LOAD" :
+            case "load" :
                 Load.load(words[1], false);
                 return true;
         }
