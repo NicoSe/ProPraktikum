@@ -1,7 +1,7 @@
 package GUI.Grid;
 
 import Logic.GridController;
-import org.w3c.dom.css.Rect;
+//import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

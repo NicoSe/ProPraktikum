@@ -12,6 +12,8 @@ public class Konsolenanwendung {
     static Client C_socket;
     public static Grid2D a;
     public static Grid2D b;
+    private static int x;
+    private static int y;
 
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
@@ -33,20 +35,26 @@ public class Konsolenanwendung {
 
         C_analyse(C_socket.listenToNetwork());
         while(true) {
+            System.out.printf("Grid A:\n%s\n", a);
+            System.out.printf("Grid B:\n%s\n", b);
             System.out.printf("Type your action:");
             try {
                 String[] split = s.nextLine().split(" ");
 
                 //simulate shit with x: split[1]&y: split[2]
                 if (split[0].equals("shoot")) {
-                    int x = Integer.parseInt(split[1]);
-                    int y = Integer.parseInt(split[2]);
+                    x = Integer.parseInt(split[1]);
+                    y = Integer.parseInt(split[2]);
 
                     C_socket.sendmsg(split[0] + " " + x + " " + y);
                     C_analyse(C_socket.listenToNetwork());
                 }
                 else if(split[0].equals("confirmed")){
                     C_socket.sendmsg(split[0]);
+                    C_analyse(C_socket.listenToNetwork());
+                }
+                else if(split[0].equals("answer")){
+                    C_socket.sendmsg(split[0]+ " "+ split[1]);
                     C_analyse(C_socket.listenToNetwork());
                 }
                 else if(split[0].equals("save")){
@@ -57,6 +65,10 @@ public class Konsolenanwendung {
                 }
                 else if(split[0].equals("load")){
                     C_socket.sendmsg(split[0] + " " + split[1]);
+                    C_analyse(C_socket.listenToNetwork());
+                }
+                else if(split[0].equals("pass")){
+                    C_socket.sendmsg("pass");
                     C_analyse(C_socket.listenToNetwork());
                 }
                 else if(split[0].equals("end")){
@@ -79,6 +91,8 @@ public class Konsolenanwendung {
         Scanner s = new Scanner(System.in);
 
         while(true) {
+            System.out.printf("Grid A:\n%s\n", a);
+            System.out.printf("Grid B:\n%s\n", b);
             System.out.printf("Type your action:");
             try {
                 String[] split = s.nextLine().split(" ");
@@ -98,14 +112,18 @@ public class Konsolenanwendung {
                     S_analyse(S_socket.listenToNetwork());
                 }
                 else if (split[0].equals("shoot")) {
-                    int x = Integer.parseInt(split[1]);
-                    int y = Integer.parseInt(split[2]);
+                    x = Integer.parseInt(split[1]);
+                    y = Integer.parseInt(split[2]);
 
                     S_socket.sendmsg(split[0] + " " + x + " " + y);
                     S_analyse(S_socket.listenToNetwork());
                 }
                 else if(split[0].equals("confirmed")){
                     S_socket.sendmsg(split[0]);
+                    S_analyse(S_socket.listenToNetwork());
+                }
+                else if(split[0].equals("answer")){
+                    S_socket.sendmsg(split[0]+ " "+ split[1]);
                     S_analyse(S_socket.listenToNetwork());
                 }
                 else if(split[0].equals("save")){
@@ -117,6 +135,9 @@ public class Konsolenanwendung {
                 else if(split[0].equals("load")){
                     S_socket.sendmsg(split[0] + " " + split[1]);
                     S_analyse(S_socket.listenToNetwork());
+                }
+                else if(split[0].equals("pass")){
+                    S_socket.sendmsg("pass");
                 }
                 else if(split[0].equals("end")){
                     break;
@@ -138,7 +159,7 @@ public class Konsolenanwendung {
             case "shoot":
                 ShotResult result = a.shoot(Integer.parseInt(words[1]),Integer.parseInt(words[2]));
                 a.shoot(Integer.parseInt(words[1]),Integer.parseInt(words[2]));
-                if(result == ShotResult.HIT) {
+                /*if(result == ShotResult.HIT) {
                     S_socket.sendmsg("answer 1");
                     S_analyse(S_socket.listenToNetwork());
                 }
@@ -149,18 +170,19 @@ public class Konsolenanwendung {
                 else if(result == ShotResult.NONE) {
                     S_socket.sendmsg("answer 0");
                     S_analyse(S_socket.listenToNetwork());
-                }
+                }*/
                 break;
             case "confirmed":
                 break;
             case "answer":
                 switch (words[1].toUpperCase()) {
                     case "0":
-                        S_socket.sendmsg("pass");
+                        b.shoot(x,y);
+                        //S_socket.sendmsg("pass");
                     case "1":
-                        //Konsolenanwendung.b.shoot()
+                        b.shoot(x,y);
                     case "2":
-                        //Konsolenanwendung.b.shoot()
+                        b.shoot(x,y);
                 }
                 break;
             case "pass":
@@ -189,7 +211,7 @@ public class Konsolenanwendung {
                 break;
             case "shoot":
                 ShotResult result = a.shoot(Integer.parseInt(words[1]),Integer.parseInt(words[2]));
-                if(result == ShotResult.HIT) {
+                /*if(result == ShotResult.HIT) {
                     C_socket.sendmsg("answer 1");
                     C_analyse(C_socket.listenToNetwork());
                 }
@@ -200,18 +222,19 @@ public class Konsolenanwendung {
                 else if(result == ShotResult.NONE) {
                     C_socket.sendmsg("answer 0");
                     C_analyse(C_socket.listenToNetwork());
-                }
+                }*/
                 break;
             case "confirmed":
                 break;
             case "answer":
                 switch (words[1].toUpperCase()) {
                     case "0":
-                        C_socket.sendmsg("pass");
+                        b.shoot(x,y);
+                        //C_socket.sendmsg("pass");
                     case "1":
-                        //Konsolenanwendung.b.shoot()
+                        b.shoot(x,y);
                     case "2":
-                        //Konsolenanwendung.b.shoot()
+                        b.shoot(x,y);
                 }
                 break;
             case "pass":

@@ -2,7 +2,7 @@ package GUI.Grid;
 
 import Control.GUIMain;
 import Logic.Grid2D;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+//import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,7 +70,7 @@ public class BasicGrid extends JPanel {
 
         @Override
         public void addLayoutComponent(String name, Component comp) {
-            throw new NotImplementedException();
+//            throw new NotImplementedException();
         }
 
         @Override
