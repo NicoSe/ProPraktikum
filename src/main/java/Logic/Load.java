@@ -7,11 +7,11 @@ import java.io.IOException;
 
 public class Load {
 
-    private BufferedReader in = null;
+    public Load(){
+    }
 
-    public Load(){}
-
-    public boolean load(String adress, boolean testmodus){
+    public static boolean load(String adress, boolean testmodus){
+        BufferedReader in = null;
         File file = new File("src/main/java/logic/SaveGames/" + adress + ".txt");
         if (!file.exists() || !file.canRead()) {
             return false;
@@ -65,7 +65,7 @@ public class Load {
     }
 
 
-    public boolean create_owngrid(String[] owngrid, int bound){
+    public static boolean create_owngrid(String[] owngrid, int bound){
         try {
             new Thread(new Runnable() {
                 public void run() {
@@ -118,7 +118,7 @@ public class Load {
         return true;
     }
 
-    public boolean create_foegrid(String[] foegrid, int bound){
+    public static boolean create_foegrid(String[] foegrid, int bound){
         try {
             new Thread(new Runnable() {
                 public void run() {
@@ -153,7 +153,7 @@ public class Load {
     }
 
 
-    private boolean create_owngrid_test(String[] owngrid, int bound) {
+    private static boolean create_owngrid_test(String[] owngrid, int bound) {
         boolean[] ids = new boolean[64];
 
         int i = 0;
@@ -189,7 +189,7 @@ public class Load {
         return true;
     }
 
-    private boolean create_foegrid_test(String[] foegrid, int bound) {
+    private static boolean create_foegrid_test(String[] foegrid, int bound) {
         int i = 0;
         while(i < foegrid.length){                                   //Schleife über jede Zeile der Datei
             String[] col = foegrid[i].split("\\|");

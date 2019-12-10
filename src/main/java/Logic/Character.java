@@ -6,13 +6,6 @@ enum Rotation {
     MAX_NUM,
 }
 
-enum ShotResult {
-    NONE,
-    HIT,
-    SUNK,
-    ALREADY,
-}
-
 public abstract class Character {
     private int size;
     private int[] pos;

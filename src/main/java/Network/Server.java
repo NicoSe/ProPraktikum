@@ -1,5 +1,10 @@
 package Network;
 
+import Control.Konsolenanwendung;
+import Logic.Load;
+import Logic.Save;
+import Logic.ShotResult;
+
 import java.io.*;
 import java.net.*;
 
@@ -17,12 +22,36 @@ public class Server{
     //Abbruchvariable für die listenToNetwork()-Funktion
     public boolean Close_Socket = false;
 
-
 //______________________________________________________________________________________________________________________
     //Erstellt zuerst den Server, dieser wartet bis ein Client sich verbindet sollte sich
     //keiner verbinden wird abgebrochen. Wird einer gefunden kann dieser aktzeptiert werden.
     public Server () {
         Create_Server();
+    }
+
+
+
+//______________________________________________________________________________________________________________________
+    public void Create_Server(){
+        try{
+            Close_Socket = false;
+            System.out.println("<S>Starting Server...");
+            Server_Socket = new ServerSocket(port);       //create Server
+
+            System.out.println("<S>Wait for connection at Port:"+ Server_Socket.getLocalPort());
+            Server_Socket.setSoTimeout(10000);                    //set timeout
+
+            usr = new BufferedReader(new InputStreamReader(System.in));
+
+            Client_Socket = Server_Socket.accept();                    //accept client
+            System.out.println("<S>Client connected.");
+        } catch(SocketException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -32,7 +61,6 @@ public class Server{
     public void sendmsg(String msg){
         try{
             DataOutputStream stream_out = new DataOutputStream((Client_Socket.getOutputStream()));
-            System.out.print("<S>>>> ");
             stream_out.writeUTF(msg);
         }catch(SocketException e) {
             System.out.println("<S>Can´t find Server!");
@@ -53,7 +81,6 @@ public class Server{
             Create_Server();
             sendmsg(msg);
         }
-        listenToNetwork();
     }
 
 
@@ -100,27 +127,45 @@ public class Server{
     //PASS: passen des Zuges
     private boolean analyze(String msg){
         String[] words = msg.split("\\s+");
-        words[0] = words[0].toUpperCase();
+        words[0] = words[0].toLowerCase();
         switch(words[0]) {
-            case "SHOOT":
+            case "shoot":
+                ShotResult result = Konsolenanwendung.a.shoot(Integer.parseInt(words[1]),Integer.parseInt(words[2]));
+                if(result == ShotResult.HIT) {
+                    sendmsg("answer 1");
+                    return false;
+                }
+                else if(result == ShotResult.SUNK) {
+                    sendmsg("answer 2");
+                    return false;
+                }
+                else if(result == ShotResult.NONE) {
+                    sendmsg("answer 0");
+                    return true;
+                }
+                return false;
+            case "confirm":
                 return true;
-            case "CONFIRM":
-                return true;
-            case "ANSWER":
+            case "answer":
                 switch (words[1].toUpperCase()) {
                     case "0":
-                        listenToNetwork();
-                        return true;
+                        sendmsg("pass");
+                        return false;
                     case "1":
+                        //Konsolenanwendung.b.shoot()
                         return true;
                     case "2":
+                        //Konsolenanwendung.b.shoot()
                         return true;
                 }
-            case "SAVE":
-                Close_Socket = true;
+            case "pass":
                 return true;
-            case "SIZE" :
-                System.out.println(words[1]);
+            case "save":
+                new Save(words[1]);
+                Close();
+                return true;
+            case "load" :
+                Load.load(words[1], false);
                 return true;
         }
         return false;
@@ -140,29 +185,5 @@ public class Server{
             return false;
         }
         return true;
-    }
-
-
-//______________________________________________________________________________________________________________________
-    public void Create_Server(){
-        try{
-            Close_Socket = false;
-            System.out.println("<S>Starting Server...");
-            Server_Socket = new ServerSocket(port);       //create Server
-
-            System.out.println("<S>Wait for connection at Port:"+ Server_Socket.getLocalPort());
-            Server_Socket.setSoTimeout(10000);                    //set timeout
-
-            usr = new BufferedReader(new InputStreamReader(System.in));
-
-            Client_Socket = Server_Socket.accept();                    //accept client
-            System.out.println("<S>Client connected.");
-        } catch(SocketException e){
-            e.printStackTrace();
-        } catch(IOException e){
-            e.printStackTrace();
-        }catch(NullPointerException e){
-            e.printStackTrace();
-        }
     }
 }
