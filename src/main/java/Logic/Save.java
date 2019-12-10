@@ -1,21 +1,21 @@
 package Logic;
 
 import java.io.*;
-import Control.Main;
+
+import Control.Konsolenanwendung;
 
 public class Save {
 
     private static PrintWriter pWriter;
 
-    public Save(){
+    public Save(String filename){
         pWriter = null;
-        String filename = String.valueOf(System.currentTimeMillis());
 
         try {
             pWriter = new PrintWriter((new BufferedWriter((new FileWriter("src/main/java/logic/SaveGames/" + filename + ".txt")))));
-            pWriter.write("SIZE\n" + Main.own_grid.getBound() + "\n");
-            pWriter.write("OWNGRID\n" + Main.own_grid.toString());
-            pWriter.write("OTHERGRID\n" + Main.foe_grid.toString());
+            pWriter.write("SIZE\n" + Konsolenanwendung.a.getBound() + "\n");
+            pWriter.write("OWNGRID\n" + Konsolenanwendung.a.toString());
+            pWriter.write("OTHERGRID\n" + Konsolenanwendung.a.toString());
 
         } catch (IOException e) {
             e.printStackTrace();

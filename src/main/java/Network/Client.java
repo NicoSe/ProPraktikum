@@ -1,5 +1,11 @@
 package Network;
 
+import Control.Konsolenanwendung;
+import Logic.Grid2D;
+import Logic.Load;
+import Logic.Save;
+import Logic.ShotResult;
+
 import java.io.*;
 import java.net.*;
 
@@ -17,16 +23,38 @@ public class Client {
 
     private String host;
 
-
-
 //______________________________________________________________________________________________________________________
     //Erstellt zuerst eine Addresse, die sich aus der IP-Addresse des Servers
     // und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
     // auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
     //wird abgebrochen.
-    public Client(String host) {
-        this.host = host;
+    public Client() {
+        this.host = "localhost";
         Create_Client();
+    }
+
+
+//______________________________________________________________________________________________________________________
+    public void Create_Client(){
+        try {
+            Close_Socket = false;
+            address = new InetSocketAddress(host, port);
+            System.out.println("<C>Searching for Server");
+
+            client = new Socket();
+            client.connect(address, 10000);
+            usr = new BufferedReader(new InputStreamReader(System.in));
+        } catch (SocketException e) {
+            System.out.println("<C>Can´t create Socket!");
+            e.printStackTrace();
+            Close();
+        } catch (IOException e) {
+            System.out.println("<C>Can´t find server at " + address);
+            e.printStackTrace();
+            Close();
+        }
+        System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
+        listenToNetwork();
     }
 
 
@@ -36,7 +64,6 @@ public class Client {
     public void sendmsg(String msg) {
         try {
             DataOutputStream stream_out = new DataOutputStream(client.getOutputStream());
-            System.out.print("<C>>>> ");
             stream_out.writeUTF(msg);
         } catch (IOException e) {
             System.out.println("<C>Can´t send message!");
@@ -45,7 +72,6 @@ public class Client {
             Create_Client();
             sendmsg(msg);
         }
-        listenToNetwork();
     }
 
 
@@ -94,25 +120,50 @@ public class Client {
         String[] words = msg.split("\\s+");
         words[0] = words[0].toUpperCase();
         switch(words[0]) {
-            case "SHOOT":
+            case "size":
+                Konsolenanwendung.a = new Grid2D(Integer.parseInt(words[1]));
+                Konsolenanwendung.a.generateRandom();
+                Konsolenanwendung.b = new Grid2D(Integer.parseInt(words[1]));
+                System.out.printf("Grid A:\n%s\n", Konsolenanwendung.a);
+                System.out.printf("Grid B:\n%s\n", Konsolenanwendung.b);
                 return true;
-            case "CONFIRM":
+            case "shoot":
+                ShotResult result = Konsolenanwendung.a.shoot(Integer.parseInt(words[1]),Integer.parseInt(words[2]));
+                if(result == ShotResult.HIT) {
+                    sendmsg("answer 1");
+                    return false;
+                }
+                else if(result == ShotResult.SUNK) {
+                    sendmsg("answer 2");
+                    return false;
+                }
+                else if(result == ShotResult.NONE) {
+                    sendmsg("answer 0");
+                    return true;
+                }
+                return false;
+            case "confirm":
                 return true;
-            case "ANSWER":
+            case "answer":
                 switch (words[1].toUpperCase()) {
                     case "0":
-                        listenToNetwork();
-                        return true;
+                        sendmsg("pass");
+                        return false;
                     case "1":
+                        //Konsolenanwendung.b.shoot()
                         return true;
                     case "2":
+                        //Konsolenanwendung.b.shoot()
                         return true;
                 }
-            case "SAVE":
-                Close_Socket = true;
+            case "pass":
                 return true;
-            case "SIZE":
-                System.out.println(words[1]);
+            case "save":
+                new Save(words[1]);
+                Close();
+                return true;
+            case "load" :
+                Load.load(words[1], false);
                 return true;
         }
         return false;
@@ -131,26 +182,5 @@ public class Client {
             return false;
         }
         return true;
-    }
-
-
-//______________________________________________________________________________________________________________________
-    public void Create_Client(){
-        try {
-            Close_Socket = false;
-            address = new InetSocketAddress(host, port);
-            System.out.println("<C>Searching for Server");
-
-            client = new Socket();
-            client.connect(address, 10000);
-            usr = new BufferedReader(new InputStreamReader(System.in));
-        } catch (SocketException e) {
-            System.out.println("<C>Can´t create Socket!");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("<C>Can´t find server at " + address);
-            e.printStackTrace();
-        }
-        System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
     }
 }
