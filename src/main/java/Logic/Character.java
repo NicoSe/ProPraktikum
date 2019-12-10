@@ -1,5 +1,7 @@
 package Logic;
 
+import java.util.Arrays;
+
 enum Rotation {
     VERTICAL,
     HORIZONTAL,
@@ -27,7 +29,7 @@ public abstract class Character {
     }
 
     int[] getPosition() {
-        return this.pos;
+        return Arrays.copyOf(this.pos, this.pos.length);
     }
 
     Rotation getNextRotation() {

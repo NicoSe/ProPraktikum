@@ -8,14 +8,14 @@ public class Save {
 
     private static PrintWriter pWriter;
 
-    public Save(String filename){
+    public Save(String filename, Grid2D a, Grid2D b){
         pWriter = null;
 
         try {
             pWriter = new PrintWriter((new BufferedWriter((new FileWriter("src/main/java/logic/SaveGames/" + filename + ".txt")))));
-            pWriter.write("SIZE\n" + Konsolenanwendung.a.getBound() + "\n");
-            pWriter.write("OWNGRID\n" + Konsolenanwendung.a.toString());
-            pWriter.write("OTHERGRID\n" + Konsolenanwendung.a.toString());
+            pWriter.write("SIZE\n" + a.getBound() + "\n");
+            pWriter.write("OWNGRID\n" + a.toString());
+            pWriter.write("OTHERGRID\n" + b.toString());
 
         } catch (IOException e) {
             e.printStackTrace();

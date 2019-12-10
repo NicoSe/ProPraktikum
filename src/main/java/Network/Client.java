@@ -54,7 +54,6 @@ public class Client {
             Close();
         }
         System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
-        listenToNetwork();
     }
 
 
@@ -81,7 +80,7 @@ public class Client {
     //Nachicht zu deuten. Die Funktion kann ueber die Variable
     //Closed_Socket=true abgebrochen werden, dies geschiet auch beim Beenden(Close())
     //des Clients.
-    public void listenToNetwork(){
+    public String listenToNetwork(){
         while (true) {
             if (Close_Socket == true){
                 Close_Socket = false;
@@ -91,7 +90,7 @@ public class Client {
                 DataInputStream stream_in = new DataInputStream(client.getInputStream());
                 String stream = stream_in.readUTF();
                 System.out.println("<C><<< " + stream);
-                if (analyze(stream)) break;
+                if (analyze(stream)) return stream;
             } catch (SocketException e) {
                 System.out.println("<C>Can´t find Server!");
                 e.printStackTrace();
@@ -104,6 +103,7 @@ public class Client {
                 Create_Client();
             }
         }
+        return "";
     }
 
 
@@ -118,53 +118,22 @@ public class Client {
     //PASS: passend es Zuges
     private boolean analyze(String msg){
         String[] words = msg.split("\\s+");
-        words[0] = words[0].toUpperCase();
+        words[0] = words[0].toLowerCase();
         switch(words[0]) {
             case "size":
-                Konsolenanwendung.a = new Grid2D(Integer.parseInt(words[1]));
-                Konsolenanwendung.a.generateRandom();
-                Konsolenanwendung.b = new Grid2D(Integer.parseInt(words[1]));
-                System.out.printf("Grid A:\n%s\n", Konsolenanwendung.a);
-                System.out.printf("Grid B:\n%s\n", Konsolenanwendung.b);
-                return true;
             case "shoot":
-                ShotResult result = Konsolenanwendung.a.shoot(Integer.parseInt(words[1]),Integer.parseInt(words[2]));
-                if(result == ShotResult.HIT) {
-                    sendmsg("answer 1");
-                    return false;
-                }
-                else if(result == ShotResult.SUNK) {
-                    sendmsg("answer 2");
-                    return false;
-                }
-                else if(result == ShotResult.NONE) {
-                    sendmsg("answer 0");
-                    return true;
-                }
-                return false;
-            case "confirm":
+            case "confirmed":
+            case "save":
+            case "load" :
+            case "pass":
                 return true;
             case "answer":
                 switch (words[1].toUpperCase()) {
                     case "0":
-                        sendmsg("pass");
-                        return false;
                     case "1":
-                        //Konsolenanwendung.b.shoot()
-                        return true;
                     case "2":
-                        //Konsolenanwendung.b.shoot()
                         return true;
                 }
-            case "pass":
-                return true;
-            case "save":
-                new Save(words[1]);
-                Close();
-                return true;
-            case "load" :
-                Load.load(words[1], false);
-                return true;
         }
         return false;
     }
