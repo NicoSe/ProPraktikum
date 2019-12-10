@@ -1,7 +1,7 @@
 package Logic;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Function;
 
 public class Grid2D {
     private int bound;
@@ -17,6 +17,25 @@ public class Grid2D {
         this.characters = new Character[bound][bound];
         this.harbor = new ShipHarbor();
         this.harbor.load();
+    }
+
+    @FunctionalInterface
+    public interface CharFunc<T1, T2, T3, R1> {
+        public R1 apply(T1 t1, T2 t2, T3 t3);
+    }
+
+    public void forEachCharacter(CharFunc<Integer, Integer, Character, Void> f) {
+        HashSet<Character> already = new HashSet<Character>();
+        for(int x = 0; x < bound; ++x) {
+            for(int y = 0; y < bound; ++y) {
+                Character c = characters[x][y];
+                if(c == null || already.contains(c)) {
+                    continue;
+                }
+                f.apply(x, y, c);
+                already.add(c);
+            }
+        }
     }
 
     public void generateRandom() {
@@ -134,12 +153,12 @@ public class Grid2D {
         y = inst.getPosition()[1];
 
         int size = inst.getSize();
-        int width = inst.isVertical() ? size : 1;
-        int height = inst.isVertical() ? 1 : size;
+        int width = inst.isVertical() ? 1 : size;
+        int height = inst.isVertical() ? size : 1;
 
         for(int local_x = 0; local_x < width; ++local_x) {
             for(int local_y = 0; local_y < height; ++local_y) {
-                characters[x+local_x][y+local_y] = inst;
+                characters[x+local_x][y+local_y] = null;
             }
         }
 
@@ -161,6 +180,27 @@ public class Grid2D {
         return c.shoot(y - basePos[1]);
     }
 
+    public boolean move(int old_x, int old_y, int x, int y, Rotation rot) {
+        Character c = characters[old_x][old_y];
+        if(c == null) {
+            return false;
+        }
+
+        int[] basePos = c.getPosition();
+        Rotation oldRot = c.getRotation();
+
+        remove(basePos[0], basePos[1]);
+        c.setRotation(rot);
+
+        if(put(x, y, c) == null) {
+            System.out.println("couldnt move ship.");
+            c.setRotation(oldRot);
+            put(basePos[0], basePos[1], c);
+            return false;
+        }
+        return true;
+    }
+
     public boolean rotate(int x, int y) {
         Character c = characters[x][y];
         if(c == null) {
@@ -168,8 +208,9 @@ public class Grid2D {
         }
 
         int[] basePos = c.getPosition();
-        remove(basePos[0], basePos[1]);
         Rotation oldRot = c.getRotation();
+
+        remove(basePos[0], basePos[1]);
         c.setRotation(c.getNextRotation());
 
         if(put(basePos[0], basePos[1], c) == null) {
