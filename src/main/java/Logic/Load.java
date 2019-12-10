@@ -10,7 +10,56 @@ public class Load {
     public Load(){
     }
 
-    public static boolean load(String adress, boolean testmodus){
+    public static Grid2D[] load(String adress){
+        BufferedReader in = null;
+        File file = new File("src/main/java/logic/SaveGames/" + adress + ".txt");
+        if (!file.exists() || !file.canRead()) {
+            return null;
+        }
+
+        try {
+            in = new BufferedReader(new FileReader(file));
+            in.readLine();
+            int bound = Integer.parseInt(in.readLine());
+
+            String[] owngrid = new String[bound];
+            String[] foegrid = new String[bound];
+            in.readLine();
+
+            String help = null;
+            int i = 0;
+            while ((i < 5) && ((help = in.readLine()) != null)){
+                owngrid[i] = help;
+                i++;
+            }
+            in.readLine();
+
+            help = null;
+            i = 0;
+            while ((i < 5) && ((help = in.readLine()) != null)){
+                foegrid[i] = help;
+                i++;
+            }
+
+            Grid2D[] grids = new Grid2D[1];
+            grids[0] = create_owngrid(owngrid, bound);
+            grids[1] =  create_foegrid(foegrid, bound);
+            return grids;
+
+        } catch (IOException e) {
+            return null;
+        } finally {
+            if (in != null)
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    return null;
+                }
+        }
+    }
+
+
+    public boolean test_load(String adress){
         BufferedReader in = null;
         File file = new File("src/main/java/logic/SaveGames/" + adress + ".txt");
         if (!file.exists() || !file.canRead()) {
@@ -41,15 +90,9 @@ public class Load {
                 i++;
             }
 
-            if(testmodus == false) {
-                if (create_owngrid(owngrid, bound) && create_foegrid(foegrid, bound)) {
-                    return true;
-                }
+            if(create_owngrid_test(owngrid, bound) && create_foegrid_test(foegrid, bound)) {
+                return true;
             }
-            else if(testmodus == true){
-                return create_owngrid_test(owngrid, bound) && create_foegrid_test(foegrid, bound);
-            }
-
         } catch (IOException e) {
             return false;
         } finally {
@@ -60,18 +103,18 @@ public class Load {
                     return false;
                 }
         }
-
         return false;
     }
 
 
-    public static boolean create_owngrid(String[] owngrid, int bound){
+    public static Grid2D create_owngrid(String[] owngrid, int bound){
+        Grid2D own_grid = new Grid2D(bound);
         try {
             new Thread(new Runnable() {
                 public void run() {
                     boolean[] ids = new boolean[64];
 
-                    Grid2D own_grid = new Grid2D(bound);
+                    //Grid2D own_grid = new Grid2D(bound);
                     Ship.id = 0;
 
                     int i = 0;
@@ -113,16 +156,17 @@ public class Load {
                 }
             }).start();
         }catch(Exception e){
-            return false;
+            return null;
         }
-        return true;
+        return own_grid;
     }
 
-    public static boolean create_foegrid(String[] foegrid, int bound){
+    public static Grid2D create_foegrid(String[] foegrid, int bound){
+        Grid2D foe_grid = new Grid2D(bound);
         try {
             new Thread(new Runnable() {
                 public void run() {
-                    Grid2D foe_grid = new Grid2D(bound);
+                    //Grid2D foe_grid = new Grid2D(bound);
 
                     int i = 0;
                     while (i < foegrid.length) {                                   //Schleife über jede Zeile der Datei
@@ -147,9 +191,9 @@ public class Load {
                 }
             }).start();
         }catch(Exception e){
-            return false;
+            return null;
         }
-        return true;
+        return foe_grid;
     }
 
 

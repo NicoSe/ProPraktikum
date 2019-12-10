@@ -90,18 +90,17 @@ public class Server{
     //Nachicht zu deuten. Die Funktion kann ueber die Variable
     //Closed_Socket=true abgebrochen werden, dies geschiet auch beim Beenden(Close())
     //des Servers.
-    public void listenToNetwork(){
+    public String listenToNetwork(){
         while(true){
             if (Close_Socket == true){
                 Close_Socket = false;
                 break;
             }
-
             try {
                 DataInputStream stream_in = new DataInputStream(Client_Socket.getInputStream());
                 String stream = stream_in.readUTF();
                 System.out.println("<S><<< " + stream);
-                if (analyze(stream)) break;
+                if (analyze(stream)) return stream;
             }catch(SocketException e){
                 System.out.println("<S>Can´t find client!");
                 e.printStackTrace();
@@ -114,6 +113,7 @@ public class Server{
                 Create_Server();
             }
         }
+        return "";
     }
 
 
@@ -130,43 +130,18 @@ public class Server{
         words[0] = words[0].toLowerCase();
         switch(words[0]) {
             case "shoot":
-                ShotResult result = Konsolenanwendung.a.shoot(Integer.parseInt(words[1]),Integer.parseInt(words[2]));
-                if(result == ShotResult.HIT) {
-                    sendmsg("answer 1");
-                    return false;
-                }
-                else if(result == ShotResult.SUNK) {
-                    sendmsg("answer 2");
-                    return false;
-                }
-                else if(result == ShotResult.NONE) {
-                    sendmsg("answer 0");
-                    return true;
-                }
-                return false;
-            case "confirm":
+            case "confirmed":
+            case "save":
+            case "load" :
+            case "pass":
                 return true;
             case "answer":
                 switch (words[1].toUpperCase()) {
                     case "0":
-                        sendmsg("pass");
-                        return false;
                     case "1":
-                        //Konsolenanwendung.b.shoot()
-                        return true;
                     case "2":
-                        //Konsolenanwendung.b.shoot()
                         return true;
                 }
-            case "pass":
-                return true;
-            case "save":
-                new Save(words[1]);
-                Close();
-                return true;
-            case "load" :
-                Load.load(words[1], false);
-                return true;
         }
         return false;
     }
