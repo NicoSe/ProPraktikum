@@ -15,7 +15,8 @@ public class Ship extends Character {
         for(int i = 0; i < size; ++i) {
             hitbox[i] = true;
         }
-        this.id = i++;
+        this.id = i;
+        i++;
     }
 
     @Override
