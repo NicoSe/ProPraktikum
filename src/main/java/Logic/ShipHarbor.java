@@ -79,47 +79,10 @@ public class ShipHarbor {
 
                 harborVolume.put(gridBounds, rowVolume);
                 harbor.put(gridBounds, currentBoundShipData);
-                //System.out.println(line);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public List<Integer> getSize(int bound)
-    {//the value at index 0 is dependent of the grid
-        List<Integer> sizes = new ArrayList<>();
-
-        for(int i = 0; i < getBorder(bound); i++)
-        {
-//if the border > 9, the size at index 0 will be 5, if border < 9, the size at index 0 will be 4...
-            sizes.add(i, getCopyOfHarborData(bound).get(i).size);
-        }
-        return sizes;
-    }
-    public List<Integer> getAmounts(int bound)
-    {
-        List<Integer> amounts = new ArrayList<>();
-
-        for(int i = 0; i < getBorder(bound); i++)
-        {
-            amounts.add(i, getCopyOfHarborData(bound).get(i).amount);
-        }
-        return amounts;
-    }
-    public int getBorder(int bound)
-    {//the size of getCopyOfHarborData is dependent of the grid
-        int border = 0;
-        if(bound == 5)
-        {
-            border = 2;
-        }else if(bound < 9)
-        {
-            border = 3;
-        }else
-        {
-            border = 4;
-        }
-        return border;
     }
 }

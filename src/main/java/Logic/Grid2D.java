@@ -124,7 +124,7 @@ public class Grid2D {
             return null;
         }
 
-        // make sure there is no colision between ships
+        // make sure there is no collision between ships
         if(!isValidAt(x, y, width, height)) {
             return null;
         }
