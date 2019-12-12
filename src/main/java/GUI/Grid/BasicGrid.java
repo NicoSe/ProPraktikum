@@ -1,17 +1,20 @@
 package GUI.Grid;
 
 import Control.GUIMain;
+import GUI.ImageHelper;
 import Logic.Grid2D;
 //import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.*;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
 public class BasicGrid extends JPanel {
-    private static final int TILE_BASE_SIZE = 50;
+    private static final int TILE_BASE_SIZE = 64;
 
     //docs: John Zukowski: The Definitive Guide to Java Swing (page 345)
     static class CustomLayoutManager implements LayoutManager2 {
@@ -99,8 +102,9 @@ public class BasicGrid extends JPanel {
 
                 Point p = BasicGrid.getAbsolutePoint(rect.getLocation());
                 Dimension d = BasicGrid.getAbsoluteDimension(rect.getSize());
+                //d.width *= 2;
                 comp.setBounds(new Rectangle(p, d));
-                System.out.println(comp.getBounds());
+                System.out.printf("on layout container comp bounds: %s\n", comp.getBounds());
             }
         }
     }
@@ -120,9 +124,24 @@ public class BasicGrid extends JPanel {
         bgImg = new BufferedImage(defaultSize, defaultSize, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = bgImg.createGraphics();
 
+        /*
         g2d.setColor(Color.BLUE);
         g2d.fill(new Rectangle(0, 0, defaultSize, defaultSize));
-        g2d.setColor(Color.GRAY);
+         */
+        try {
+            Image ocean = ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png"));
+            for(int i = 0; i < bound; ++i) {
+                for(int j = 0; j < bound; ++j) {
+                    g2d.drawImage(ocean, i * TILE_BASE_SIZE, j * TILE_BASE_SIZE, null);
+                }
+            }
+        } catch(IOException e) {
+
+        }
+
+        g2d.setColor(Color.gray);
+        AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+        g2d.setComposite(alphaComposite);
         for(int i = 0; i < bound; ++i) {
             for(int j = 0; j < bound; ++j) {
                 g2d.draw(new Rectangle(i * TILE_BASE_SIZE, j * TILE_BASE_SIZE, TILE_BASE_SIZE, TILE_BASE_SIZE));
@@ -133,11 +152,25 @@ public class BasicGrid extends JPanel {
     public void addPiece(int x, int y, int size, boolean isVertical) {
         JLabel piece = new JLabel();
         try {
-            piece = new JLabel("This is a ship.") {
+            piece = new JLabel() {
                 public void paint(Graphics g) {
                     super.paint(g);
-                    g.setColor(Color.red);
-                    g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+                    try {
+                        BufferedImage ship = ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+                        if(!isVertical) {
+                            ship = ImageHelper.rotate(ship, Math.toRadians(-90));
+                        }
+
+                        ship = ImageHelper.scale(ship, this.getWidth(), this.getHeight());
+
+                        g.drawImage(ship, 0, 0, this);
+                    } catch(IOException e) {
+
+                    }
+
+                    //g.setColor(Color.red);
+                    //g.fillRect(0, 0, this.getWidth(), this.getHeight());
                 }
             };
             piece.setSize(100, 100);
@@ -154,11 +187,13 @@ public class BasicGrid extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        System.out.printf("%s on resize.\n", this.getSize());
+
         Graphics2D g2d = (Graphics2D)g.create();
 
         Image img = bgImg;
         if(getParent() != null) {
-            img = bgImg.getScaledInstance(getParent().getWidth(), getParent().getHeight(), Image.SCALE_SMOOTH);
+            img = bgImg.getScaledInstance(Math.min(getWidth(), getHeight()), -1, Image.SCALE_SMOOTH);
         }
 
         g2d.drawImage(img, 0, 0, this);
@@ -168,12 +203,6 @@ public class BasicGrid extends JPanel {
             Rectangle rect = new Rectangle(getAbsolutePoint(highlightedCell.getLocation()), getAbsoluteDimension(highlightedCell.getSize()));
             g2d.draw(rect);
         }
-
-        /*
-        if(getParent() != null) {
-            System.out.println(getParent().getSize());
-        }
-        */
 
         g2d.dispose();
     }
