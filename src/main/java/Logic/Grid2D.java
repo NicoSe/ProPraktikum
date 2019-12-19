@@ -19,6 +19,7 @@ public class Grid2D {
         this.harbor.load();
     }
 
+
     @FunctionalInterface
     public interface CharFunc<T1, T2, T3, R1> {
         public R1 apply(T1 t1, T2 t2, T3 t3);
@@ -63,10 +64,34 @@ public class Grid2D {
             }
             placeCount--;
         }
+        setWater();     //auffüllen mit Wasser
     }
+
+    public void setWater(){
+        for (int i=0; i<bound; i++){
+            for (int j=0;j<bound; j++) {
+                if(isEmptyAt(i,j,1,1)){
+                    characters[i][j] = new Water(false);
+                }
+            }
+        }
+    }
+
+
+    public void setFoeGridObjects() {
+        for (int i=0; i<bound; i++){
+            for (int j=0;j<bound; j++) {
+                if(isEmptyAt(i,j,1,1)){
+                    characters[i][j] = new FoeGridShootObject(0);
+                }
+            }
+        }
+    }
+
 
     private boolean isEmptyAt(int x, int y, int width, int height) {
         //check if pos is valid or not.
+        Water dummy = new Water(false);
         if(x+width < 0 || x+width > this.bound) {
             return false;
         }
@@ -78,7 +103,7 @@ public class Grid2D {
         //check if position is empty or not.
         for(int local_x = 0; local_x < width; ++local_x) {
             for(int local_y = 0; local_y < height; ++local_y) {
-                if(characters[x+local_x][y+local_y] != null) {
+                if(!(characters[x+local_x][y+local_y] == null || characters[x+local_x][y+local_y].equals(dummy))) {
                     return false;
                 }
             }
@@ -152,8 +177,10 @@ public class Grid2D {
         }
 
         // make sure there is no colision between ships
-        if(!isValidAt(x, y, width, height)) {
-            return null;
+        if (!(inst instanceof Water || inst instanceof FoeGridShootObject)) {
+            if (!isValidAt(x, y, width, height)) {
+                return null;
+            }
         }
 
         for(int local_x = 0; local_x < width; ++local_x) {
@@ -193,6 +220,7 @@ public class Grid2D {
         return inst;
     }
 
+    //shoot-Funktion für ein Schiff
     public ShotResult shoot(int x, int y) {
         Character c = characters[x][y];
         if(c == null) {

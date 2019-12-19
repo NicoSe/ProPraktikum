@@ -3,10 +3,10 @@ package Logic;
 import java.util.Arrays;
 
 public class Ship extends Character {
-    public static int id;
+    public int id;                  //SchiffID zum Laden wichtig
     private boolean[] hitbox;
     private int health;
-    private static int i = 0;
+    public static int id_counter = 0;       //hilft bei der Erstellung von ID
 
     public Ship(int size) {
         super(size);
@@ -15,11 +15,20 @@ public class Ship extends Character {
         for(int i = 0; i < size; ++i) {
             hitbox[i] = true;
         }
-        this.id = i;
-        i++;
+        this.id = id_counter;
+        id_counter++;
+    }
+
+    public Ship(int size, boolean[] hitbox){
+        super(size);
+        health = size;
+        this.hitbox = hitbox;
+        this.id = id_counter;
+        id_counter++;
     }
 
     @Override
+    //beschießt das Schiff an einer bestimmten Stelle(hitpos)
     public ShotResult shoot(int hitpos) {
         if(health <= 0) {
             return ShotResult.ALREADY;
@@ -53,7 +62,7 @@ public class Ship extends Character {
     }
 
     public String toString(){
-        String output = getId() + "," + getSize() + "," + getRotation(); //Status über Schiffsteil fehlt
+        String output = getId() + "," + getSize() + "," + getRotation();
         for(int i=0; i<hitbox.length; i++){
             if(hitbox[i] == true){output = output + ",1";}
             else{output = output + ",0";}
