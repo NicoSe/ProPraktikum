@@ -3,6 +3,7 @@ package GUI.Grid;
 import Control.GUIMain;
 import GUI.ImageHelper;
 import Logic.Grid2D;
+import Misc.GridState;
 //import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.imageio.ImageIO;
@@ -102,7 +103,7 @@ public class BasicGrid extends JPanel {
 
                 Point p = BasicGrid.getAbsolutePoint(rect.getLocation());
                 Dimension d = BasicGrid.getAbsoluteDimension(rect.getSize());
-                //d.width *= 2;
+                //d.width *= 5;
                 comp.setBounds(new Rectangle(p, d));
                 System.out.printf("on layout container comp bounds: %s\n", comp.getBounds());
             }
@@ -112,11 +113,13 @@ public class BasicGrid extends JPanel {
     private BufferedImage bgImg;
     private Rectangle gridRect;
     private Rectangle highlightedCell;
-
-    public BasicGrid(int bound) {
+    private GridState interactionState;
+    public BasicGrid(int bound, GridState interactionState) {
         setLayout(new CustomLayoutManager(bound));
 
         int defaultSize = TILE_BASE_SIZE * bound;
+
+        this.interactionState = interactionState;
 
         // TODO: maybe calculate offset?, resize this on window size change?
         gridRect = new Rectangle(getX(), getY(), defaultSize, defaultSize);
@@ -149,7 +152,15 @@ public class BasicGrid extends JPanel {
         }
     }
 
-    public void addPiece(int x, int y, int size, boolean isVertical) {
+    public void setGridInteractionState(GridState state) {
+        this.interactionState = state;
+    }
+
+    public GridState getGridInteractionState() {
+        return this.interactionState;
+    }
+
+    public void addPiece(BufferedImage texture, int x, int y, int size, boolean isVertical) {
         JLabel piece = new JLabel();
         try {
             piece = new JLabel() {
@@ -157,7 +168,7 @@ public class BasicGrid extends JPanel {
                     super.paint(g);
 
                     try {
-                        BufferedImage ship = ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+                        BufferedImage ship = texture;
                         if(!isVertical) {
                             ship = ImageHelper.rotate(ship, Math.toRadians(-90));
                         }
@@ -165,8 +176,8 @@ public class BasicGrid extends JPanel {
                         ship = ImageHelper.scale(ship, this.getWidth(), this.getHeight());
 
                         g.drawImage(ship, 0, 0, this);
-                    } catch(IOException e) {
-
+                    } catch(NullPointerException e) {
+                        System.out.printf("ERR: PIECE TEXTURE IS NULL!\nerr: %s\n", e.getMessage());
                     }
 
                     //g.setColor(Color.red);
@@ -187,7 +198,7 @@ public class BasicGrid extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        System.out.printf("%s on resize.\n", this.getSize());
+        //System.out.printf("%s on resize.\n", this.getSize());
 
         Graphics2D g2d = (Graphics2D)g.create();
 

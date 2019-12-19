@@ -1,5 +1,7 @@
 package Logic;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
 
 enum Rotation {
@@ -55,4 +57,5 @@ public abstract class Character {
 
     public abstract boolean isAlive();
     public abstract ShotResult shoot(int hitpos);
+    public abstract BufferedImage getImage() throws IOException;
 }
