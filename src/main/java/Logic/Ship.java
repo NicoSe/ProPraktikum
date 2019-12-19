@@ -1,5 +1,8 @@
 package Logic;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Ship extends Character {
@@ -30,6 +33,8 @@ public class Ship extends Character {
     @Override
     //beschießt das Schiff an einer bestimmten Stelle(hitpos)
     public ShotResult shoot(int hitpos) {
+        System.out.printf("shot %s at pos: %d (hitbox: %s)\n", this, hitpos, Arrays.toString(hitbox));
+
         if(health <= 0) {
             return ShotResult.ALREADY;
         }
@@ -48,6 +53,24 @@ public class Ship extends Character {
         System.out.println("i go kaboom.");
         return ShotResult.HIT;
     }
+
+    @Override
+    public BufferedImage getImage() throws IOException {
+        switch (getSize()) {
+            case 2:
+                return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+            case 3:
+                return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+            case 4:
+                return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+            case 5:
+                return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+
+        }
+        //TODO: return some kind of dummy image.
+        return null;
+    }
+
     @Override
     public boolean isAlive() {
         return health > 0;

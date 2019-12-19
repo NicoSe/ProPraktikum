@@ -143,7 +143,6 @@ public class Grid2D {
         //...
         //if we arent in bounds at every pos then we cant colide with anything and thus we have a valid pos!
 
-
         //top-left
         if(x-1 >= 0 && y-1 >= 0 && !isEmptyAt(x-1, y-1, 1, 1)) {
             return false;
@@ -158,6 +157,7 @@ public class Grid2D {
         if(x+width < bound && y-1 >= 0 && !isEmptyAt(x+width, y-1, 1, 1)) {
             return false;
         }
+
 
         if(x+width < bound && y+height < bound && !isEmptyAt(x+width, y+height, 1, 1)) {
             return false;

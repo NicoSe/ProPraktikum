@@ -1,13 +1,12 @@
 package GUI.Grid;
 
 import Logic.GridController;
-//import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MouseEventHandler extends MouseAdapter {
+public class PlacementMEventHandler extends MouseAdapter {
     /*
     private Grid grid;
     public MouseEventHandler(Grid g) {
@@ -21,7 +20,7 @@ public class MouseEventHandler extends MouseAdapter {
     private Point oldLocation;
     private Point offset;
 
-    public MouseEventHandler(GridController c, BasicGrid grid) {
+    public PlacementMEventHandler(GridController c, BasicGrid grid) {
         this.grid = grid;
         this.controller = c;
     }
