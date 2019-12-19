@@ -92,12 +92,12 @@ public class Grid2D {
         // make sure to keep edge cases like placing it at field bounds
 
         //left
-        if(x-1 > 0 && !isEmptyAt(x-1, y, 1, height)) {
+        if(x-1 >= 0 && !isEmptyAt(x-1, y, 1, height)) {
             return false;
         }
 
         //top
-        if(y-1 > 0 && !isEmptyAt(x, y-1, width, 1)) {
+        if(y-1 >= 0 && !isEmptyAt(x, y-1, width, 1)) {
             return false;
         }
 
@@ -108,6 +108,33 @@ public class Grid2D {
 
         //bot
         if(y+height < bound && !isEmptyAt(x, y+height, width, 1)) {
+            return false;
+        }
+
+        //things to do for corner hinting...
+        //check if we are in bounds...
+        //true: if we are, check if the position is empty.
+        //otherwise: continue with the next corner
+        //...
+        //if we arent in bounds at every pos then we cant colide with anything and thus we have a valid pos!
+
+
+        //top-left
+        if(x-1 >= 0 && y-1 >= 0 && !isEmptyAt(x-1, y-1, 1, 1)) {
+            return false;
+        }
+
+        //bottom-left
+        if(x-1 >= 0 && y+height < bound && !isEmptyAt(x-1, y+height, 1, 1)) {
+            return false;
+        }
+
+        //top-right
+        if(x+width < bound && y-1 >= 0 && !isEmptyAt(x+width, y-1, 1, 1)) {
+            return false;
+        }
+
+        if(x+width < bound && y+height < bound && !isEmptyAt(x+width, y+height, 1, 1)) {
             return false;
         }
 
