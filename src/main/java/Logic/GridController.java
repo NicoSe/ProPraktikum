@@ -3,6 +3,7 @@ package Logic;
 import GUI.Grid.BasicGrid;
 import GUI.Grid.PlacementMEventHandler;
 import GUI.Grid.ShootMEventHandler;
+import GUI.ScaleHelper;
 import Misc.GridState;
 
 import java.awt.*;
@@ -54,7 +55,8 @@ public class GridController {
     }
 
     public void shoot(Point comp) {
-        Point pos = view.getRelativePoint(comp.getLocation());
+        Point pos = view.getRelativePoint(comp.getLocation(), ScaleHelper.CalculateScalingFactor(view));
+        System.out.printf("shoot at x: %d y: %d with sf: %f\n", pos.x, pos.y, ScaleHelper.CalculateScalingFactor(view));
         ShotResult res = model.shoot(pos.x, pos.y);
     }
 

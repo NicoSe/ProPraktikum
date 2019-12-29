@@ -1,18 +1,16 @@
 package GUI.Grid;
 
-import Control.GUIMain;
 import GUI.ImageHelper;
-import Logic.Grid2D;
+import GUI.ScaleHelper;
 import Misc.GridState;
-//import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BasicGrid extends JPanel {
     private static final int TILE_BASE_SIZE = 64;
@@ -101,9 +99,14 @@ public class BasicGrid extends JPanel {
                     continue;
                 }
 
+                double sf = ScaleHelper.CalculateScalingFactor(parent) - 1.0;
+                System.out.printf("scaling factor for layout: %f\n", sf);
                 Point p = BasicGrid.getAbsolutePoint(rect.getLocation());
+                p.x += p.x * sf;
+                p.y += p.y * sf;
                 Dimension d = BasicGrid.getAbsoluteDimension(rect.getSize());
-                //d.width *= 5;
+                d.width += d.width * sf;
+                d.height += d.height * sf;
                 comp.setBounds(new Rectangle(p, d));
                 System.out.printf("on layout container comp bounds: %s\n", comp.getBounds());
             }
@@ -200,6 +203,8 @@ public class BasicGrid extends JPanel {
 
         //System.out.printf("%s on resize.\n", this.getSize());
 
+        //System.out.printf("scaling factor: %f\n", (double)(getWidth()) / getPreferredSize().width);
+
         Graphics2D g2d = (Graphics2D)g.create();
 
         Image img = bgImg;
@@ -226,8 +231,23 @@ public class BasicGrid extends JPanel {
         repaint();
     }
 
+    public Point getRelativePoint(Point p, double sf) {
+        if (!getScaledGridRect().contains(p)) {
+            return null;
+        }
+
+        Point grid = new Point(p);
+        grid.x = (int) (grid.x / sf);
+        grid.y = (int) (grid.y / sf);
+
+        grid.x /= TILE_BASE_SIZE;
+        grid.y /= TILE_BASE_SIZE;
+
+        return grid;
+    }
+
     public Point getRelativePoint(Point p) {
-        if (!gridRect.contains(p)) {
+        if (!getScaledGridRect().contains(p)) {
             return null;
         }
 
@@ -267,6 +287,11 @@ public class BasicGrid extends JPanel {
 
     public boolean isValidRect(Rectangle rect) {
         return this.gridRect.contains(rect);
+    }
+
+    private Rectangle getScaledGridRect() {
+        double sf = ScaleHelper.CalculateScalingFactor(this);
+        return new Rectangle((int) (gridRect.x * sf),(int) (gridRect.y * sf), (int) (gridRect.width * sf), (int) (gridRect.height * sf));
     }
 
     public void highlightCell(Rectangle hc) {
