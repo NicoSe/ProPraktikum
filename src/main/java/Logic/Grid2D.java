@@ -208,6 +208,13 @@ public class Grid2D {
     }
 
     public boolean move(int old_x, int old_y, int x, int y, Rotation rot) {
+        if(old_x < 0 || old_y < 0 || old_x > bound || old_y > bound) {
+            return false;
+        }
+        if(x < 0 || y < 0 || x > bound || y > bound) {
+            return false;
+        }
+
         Character c = characters[old_x][old_y];
         if(c == null) {
             return false;

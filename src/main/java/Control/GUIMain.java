@@ -40,10 +40,10 @@ public class GUIMain {
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
 
-                BasicGrid guiGrid = new BasicGrid(5, GridState.SHOOT);
+                BasicGrid guiGrid = new BasicGrid(5, GridState.PLACE);
 
                 GridController controller = new GridController(g2d, guiGrid);
-                controller.init(GridState.SHOOT);
+                controller.init(GridState.PLACE);
 
                 frame.add(guiGrid);
 

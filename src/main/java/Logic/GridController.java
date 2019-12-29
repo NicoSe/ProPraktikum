@@ -46,7 +46,8 @@ public class GridController {
     }
 
     public void changePiecePos(Component comp, Point oldPos, Point newPos) {
-        Dimension objDim = BasicGrid.getRelativeSize(comp.getSize());
+        double sf = ScaleHelper.CalculateScalingFactor(view);
+        Dimension objDim = BasicGrid.getRelativeSize(comp.getSize(), sf);
         if(model.move(oldPos.x, oldPos.y, newPos.x, newPos.y, objDim.width > objDim.height ? Rotation.HORIZONTAL : Rotation.VERTICAL)) {
             view.setPiecePos(comp, newPos);
         } else {
