@@ -194,6 +194,10 @@ public class Grid2D {
     }
 
     public ShotResult shoot(int x, int y) {
+        if(x < 0 || y < 0 || x > bound || y > bound) {
+            return null;
+        }
+
         Character c = characters[x][y];
         if(c == null) {
             return ShotResult.NONE;

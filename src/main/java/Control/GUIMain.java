@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GUIMain {
-    public static final int size = 30;
+    public static final int size = 10;
 
     public static void main(String[] args) {
         new GUIMain();

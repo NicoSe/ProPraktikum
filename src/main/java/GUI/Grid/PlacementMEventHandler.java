@@ -18,7 +18,6 @@ public class PlacementMEventHandler extends MouseAdapter {
     private Component currentComponent;
     private GridController controller;
     private BasicGrid grid;
-    private Point oldLocation;
     private Point offset;
 
     public PlacementMEventHandler(GridController c, BasicGrid grid) {
@@ -40,7 +39,6 @@ public class PlacementMEventHandler extends MouseAdapter {
 
         System.out.printf("%s at %s\n", c, p);
         currentComponent = c;
-        oldLocation = grid.getRelativePoint(c.getLocation(), ScaleHelper.CalculateScalingFactor(c.getParent()));
     }
 
     @Override
@@ -53,12 +51,17 @@ public class PlacementMEventHandler extends MouseAdapter {
 
         // TODO: check what we like better..
         Point alteredLocation = currentComponent.getLocation();
-        alteredLocation.x += BasicGrid.TILE_BASE_SIZE / 2;
-        alteredLocation.y += BasicGrid.TILE_BASE_SIZE / 2;
+        alteredLocation.x += grid.getScaledTileSize() / 2;
+        alteredLocation.y += grid.getScaledTileSize() / 2;
 
-        Point gridPos = grid.getRelativePoint(alteredLocation, ScaleHelper.CalculateScalingFactor(currentComponent.getParent()));
-        //Point gridPos = grid.getRelativePoint(currentComponent.getLocation());
-        Dimension objDim = BasicGrid.getRelativeSize(currentComponent.getSize(), ScaleHelper.CalculateScalingFactor(currentComponent.getParent()));
+        Point gridPos = new Point(alteredLocation);
+        gridPos.x /= grid.getScaledTileSize();
+        gridPos.y /= grid.getScaledTileSize();
+
+        Dimension objDim = new Dimension(currentComponent.getSize());
+        objDim.width /= grid.getScaledTileSize();
+        objDim.height /= grid.getScaledTileSize();
+
         if(gridPos == null || !grid.getScaledGridRect().contains(currentComponent.getBounds())) {
             grid.highlightCell(null);
             return;
@@ -74,15 +77,10 @@ public class PlacementMEventHandler extends MouseAdapter {
         }
 
         Point alteredLocation = currentComponent.getLocation();
-        alteredLocation.x += BasicGrid.TILE_BASE_SIZE / 2;
-        alteredLocation.y += BasicGrid.TILE_BASE_SIZE / 2;
-        Point relativePoint = grid.getRelativePoint(alteredLocation, ScaleHelper.CalculateScalingFactor(currentComponent.getParent()));
-        if(relativePoint == null || !grid.getScaledGridRect().contains(currentComponent.getBounds())) {
-            relativePoint = oldLocation;
-        }
+        alteredLocation.x += grid.getScaledTileSize() / 2;
+        alteredLocation.y += grid.getScaledTileSize() / 2;
 
-        //grid.setPiecePos(currentComponent, relativePoint);
-        controller.changePiecePos(currentComponent, oldLocation, relativePoint);
+        controller.changePiecePos(currentComponent, alteredLocation);
         currentComponent = null;
         grid.highlightCell(null);
     }
