@@ -1,13 +1,13 @@
 package GUI.Grid;
 
+import GUI.ScaleHelper;
 import Logic.GridController;
-//import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MouseEventHandler extends MouseAdapter {
+public class PlacementMEventHandler extends MouseAdapter {
     /*
     private Grid grid;
     public MouseEventHandler(Grid g) {
@@ -21,7 +21,7 @@ public class MouseEventHandler extends MouseAdapter {
     private Point oldLocation;
     private Point offset;
 
-    public MouseEventHandler(GridController c, BasicGrid grid) {
+    public PlacementMEventHandler(GridController c, BasicGrid grid) {
         this.grid = grid;
         this.controller = c;
     }
@@ -40,7 +40,7 @@ public class MouseEventHandler extends MouseAdapter {
 
         System.out.printf("%s at %s\n", c, p);
         currentComponent = c;
-        oldLocation = grid.getRelativePoint(c.getLocation());
+        oldLocation = grid.getRelativePoint(c.getLocation(), ScaleHelper.CalculateScalingFactor(c.getParent()));
     }
 
     @Override
@@ -52,10 +52,14 @@ public class MouseEventHandler extends MouseAdapter {
         currentComponent.setLocation(e.getX() - offset.x, e.getY() - offset.y);
 
         // TODO: check what we like better..
-        Point gridPos = grid.getRelativePoint(e.getPoint());
+        Point alteredLocation = currentComponent.getLocation();
+        alteredLocation.x += BasicGrid.TILE_BASE_SIZE / 2;
+        alteredLocation.y += BasicGrid.TILE_BASE_SIZE / 2;
+
+        Point gridPos = grid.getRelativePoint(alteredLocation, ScaleHelper.CalculateScalingFactor(currentComponent.getParent()));
         //Point gridPos = grid.getRelativePoint(currentComponent.getLocation());
-        Dimension objDim = BasicGrid.getRelativeSize(currentComponent.getSize());
-        if(gridPos == null || objDim == null || !grid.isValidRect(new Rectangle(BasicGrid.getAbsolutePoint(gridPos), BasicGrid.getAbsoluteDimension(objDim)))) {
+        Dimension objDim = BasicGrid.getRelativeSize(currentComponent.getSize(), ScaleHelper.CalculateScalingFactor(currentComponent.getParent()));
+        if(gridPos == null || !grid.getScaledGridRect().contains(currentComponent.getBounds())) {
             grid.highlightCell(null);
             return;
         }
@@ -69,9 +73,11 @@ public class MouseEventHandler extends MouseAdapter {
             return;
         }
 
-        Point relativePoint = grid.getRelativePoint(e.getPoint());
-        Dimension objDim = BasicGrid.getRelativeSize(currentComponent.getSize());
-        if(relativePoint == null || !grid.isValidRect(new Rectangle(BasicGrid.getAbsolutePoint(relativePoint), BasicGrid.getAbsoluteDimension(objDim)))) {
+        Point alteredLocation = currentComponent.getLocation();
+        alteredLocation.x += BasicGrid.TILE_BASE_SIZE / 2;
+        alteredLocation.y += BasicGrid.TILE_BASE_SIZE / 2;
+        Point relativePoint = grid.getRelativePoint(alteredLocation, ScaleHelper.CalculateScalingFactor(currentComponent.getParent()));
+        if(relativePoint == null || !grid.getScaledGridRect().contains(currentComponent.getBounds())) {
             relativePoint = oldLocation;
         }
 

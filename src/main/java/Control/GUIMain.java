@@ -5,6 +5,7 @@ import GUI.Grid.BasicGrid;
 import Logic.Character;
 import Logic.Grid2D;
 import Logic.GridController;
+import Misc.GridState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -39,10 +40,10 @@ public class GUIMain {
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
 
-                BasicGrid guiGrid = new BasicGrid(5);
+                BasicGrid guiGrid = new BasicGrid(5, GridState.PLACE);
 
                 GridController controller = new GridController(g2d, guiGrid);
-                controller.init();
+                controller.init(GridState.PLACE);
 
                 frame.add(guiGrid);
 

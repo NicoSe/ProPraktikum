@@ -1,20 +1,20 @@
 package GUI.Grid;
 
-import Control.GUIMain;
 import GUI.ImageHelper;
-import Logic.Grid2D;
-//import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import GUI.ScaleHelper;
+import Misc.GridState;
+import sun.tools.jstat.Scale;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BasicGrid extends JPanel {
-    private static final int TILE_BASE_SIZE = 64;
+    public static final int TILE_BASE_SIZE = 64;
 
     //docs: John Zukowski: The Definitive Guide to Java Swing (page 345)
     static class CustomLayoutManager implements LayoutManager2 {
@@ -100,9 +100,14 @@ public class BasicGrid extends JPanel {
                     continue;
                 }
 
+                double sf = ScaleHelper.CalculateScalingFactor(parent) - 1.0;
+                System.out.printf("scaling factor for layout: %f\n", sf);
                 Point p = BasicGrid.getAbsolutePoint(rect.getLocation());
+                p.x += p.x * sf;
+                p.y += p.y * sf;
                 Dimension d = BasicGrid.getAbsoluteDimension(rect.getSize());
-                //d.width *= 2;
+                d.width += d.width * sf;
+                d.height += d.height * sf;
                 comp.setBounds(new Rectangle(p, d));
                 System.out.printf("on layout container comp bounds: %s\n", comp.getBounds());
             }
@@ -112,11 +117,13 @@ public class BasicGrid extends JPanel {
     private BufferedImage bgImg;
     private Rectangle gridRect;
     private Rectangle highlightedCell;
-
-    public BasicGrid(int bound) {
+    private GridState interactionState;
+    public BasicGrid(int bound, GridState interactionState) {
         setLayout(new CustomLayoutManager(bound));
 
         int defaultSize = TILE_BASE_SIZE * bound;
+
+        this.interactionState = interactionState;
 
         // TODO: maybe calculate offset?, resize this on window size change?
         gridRect = new Rectangle(getX(), getY(), defaultSize, defaultSize);
@@ -149,7 +156,15 @@ public class BasicGrid extends JPanel {
         }
     }
 
-    public void addPiece(int x, int y, int size, boolean isVertical) {
+    public void setGridInteractionState(GridState state) {
+        this.interactionState = state;
+    }
+
+    public GridState getGridInteractionState() {
+        return this.interactionState;
+    }
+
+    public void addPiece(BufferedImage texture, int x, int y, int size, boolean isVertical) {
         JLabel piece = new JLabel();
         try {
             piece = new JLabel() {
@@ -157,7 +172,7 @@ public class BasicGrid extends JPanel {
                     super.paint(g);
 
                     try {
-                        BufferedImage ship = ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+                        BufferedImage ship = texture;
                         if(!isVertical) {
                             ship = ImageHelper.rotate(ship, Math.toRadians(-90));
                         }
@@ -165,8 +180,8 @@ public class BasicGrid extends JPanel {
                         ship = ImageHelper.scale(ship, this.getWidth(), this.getHeight());
 
                         g.drawImage(ship, 0, 0, this);
-                    } catch(IOException e) {
-
+                    } catch(NullPointerException e) {
+                        System.out.printf("ERR: PIECE TEXTURE IS NULL!\nerr: %s\n", e.getMessage());
                     }
 
                     //g.setColor(Color.red);
@@ -187,7 +202,9 @@ public class BasicGrid extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        System.out.printf("%s on resize.\n", this.getSize());
+        //System.out.printf("%s on resize.\n", this.getSize());
+
+        //System.out.printf("scaling factor: %f\n", (double)(getWidth()) / getPreferredSize().width);
 
         Graphics2D g2d = (Graphics2D)g.create();
 
@@ -200,7 +217,8 @@ public class BasicGrid extends JPanel {
 
         if(highlightedCell != null) {
             g2d.setColor(Color.RED);
-            Rectangle rect = new Rectangle(getAbsolutePoint(highlightedCell.getLocation()), getAbsoluteDimension(highlightedCell.getSize()));
+            double sf = ScaleHelper.CalculateScalingFactor(this);
+            Rectangle rect = new Rectangle(getAbsolutePoint(highlightedCell.getLocation(), sf), getAbsoluteDimension(highlightedCell.getSize(), sf));
             g2d.draw(rect);
         }
 
@@ -215,8 +233,33 @@ public class BasicGrid extends JPanel {
         repaint();
     }
 
+    public Point getRelativePoint(Point p, double sf) {
+        if (!getScaledGridRect().contains(p)) {
+            return null;
+        }
+
+        Point grid = new Point(p);
+
+        System.out.printf("Calculation of relative point scaled in 2 ways (sf: %f):\n" +
+                "way1 (error with sf < 1):\n" +
+                "\t grid.x = (int) (grid.x / sf) :: %d \n" +
+                "\t grid.x = (int) (grid.x / sf) :: %d \n" +
+                "way2 (new attempt...):\n" +
+                "\t grid.x = (int) (grid.x / sf) :: %d \n" +
+                "\t grid.x = (int) (grid.x / sf) :: %d \n" +
+                "", sf, (int) Math.ceil(grid.x / sf), (int) Math.ceil(grid.y / sf), (int) (grid.x + grid.x * (sf-1.0)), (int) (grid.y + grid.y * (sf-1.0)));
+
+        grid.x = (int) Math.ceil(grid.x / sf);
+        grid.y = (int) Math.ceil(grid.y / sf);
+
+        grid.x /= TILE_BASE_SIZE;
+        grid.y /= TILE_BASE_SIZE;
+
+        return grid;
+    }
+
     public Point getRelativePoint(Point p) {
-        if (!gridRect.contains(p)) {
+        if (!getScaledGridRect().contains(p)) {
             return null;
         }
 
@@ -229,6 +272,19 @@ public class BasicGrid extends JPanel {
 
     public static Dimension getRelativeSize(Dimension d) {
         Dimension dim = new Dimension(d);
+
+        dim.width /= TILE_BASE_SIZE;
+        dim.height /= TILE_BASE_SIZE;
+
+        return dim;
+    }
+
+    public static Dimension getRelativeSize(Dimension d, double sf) {
+        Dimension dim = new Dimension(d);
+
+        dim.width = (int) Math.ceil(dim.width / sf);
+        dim.height = (int) Math.ceil(dim.height / sf);
+
         dim.width /= TILE_BASE_SIZE;
         dim.height /= TILE_BASE_SIZE;
 
@@ -245,6 +301,19 @@ public class BasicGrid extends JPanel {
         return grid;
     }
 
+    public static Point getAbsolutePoint(Point p, double sf) {
+
+        Point grid = new Point(p);
+
+        grid.x *= TILE_BASE_SIZE;
+        grid.y *= TILE_BASE_SIZE;
+
+        grid.x = (int) (grid.x * sf);
+        grid.y = (int) (grid.y * sf);
+
+        return grid;
+    }
+
     // TODO: calculate in offset & scaling...
     public static Dimension getAbsoluteDimension(Dimension d) {
         Dimension dim = new Dimension(d);
@@ -254,8 +323,25 @@ public class BasicGrid extends JPanel {
         return dim;
     }
 
+    public static Dimension getAbsoluteDimension(Dimension d, double sf) {
+        Dimension dim = new Dimension(d);
+
+        dim.width *= TILE_BASE_SIZE;
+        dim.height *= TILE_BASE_SIZE;
+
+        dim.width = (int) (dim.width * sf);
+        dim.height = (int) (dim.height * sf);
+
+        return dim;
+    }
+
     public boolean isValidRect(Rectangle rect) {
         return this.gridRect.contains(rect);
+    }
+
+    public Rectangle getScaledGridRect() {
+        double sf = ScaleHelper.CalculateScalingFactor(this);
+        return new Rectangle((int) (gridRect.x * sf),(int) (gridRect.y * sf), (int) (gridRect.width * sf), (int) (gridRect.height * sf));
     }
 
     public void highlightCell(Rectangle hc) {

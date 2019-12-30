@@ -118,7 +118,6 @@ public class Grid2D {
         //...
         //if we arent in bounds at every pos then we cant colide with anything and thus we have a valid pos!
 
-
         //top-left
         if(x-1 >= 0 && y-1 >= 0 && !isEmptyAt(x-1, y-1, 1, 1)) {
             return false;
@@ -133,6 +132,7 @@ public class Grid2D {
         if(x+width < bound && y-1 >= 0 && !isEmptyAt(x+width, y-1, 1, 1)) {
             return false;
         }
+
 
         if(x+width < bound && y+height < bound && !isEmptyAt(x+width, y+height, 1, 1)) {
             return false;
@@ -208,6 +208,13 @@ public class Grid2D {
     }
 
     public boolean move(int old_x, int old_y, int x, int y, Rotation rot) {
+        if(old_x < 0 || old_y < 0 || old_x > bound || old_y > bound) {
+            return false;
+        }
+        if(x < 0 || y < 0 || x > bound || y > bound) {
+            return false;
+        }
+
         Character c = characters[old_x][old_y];
         if(c == null) {
             return false;
