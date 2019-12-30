@@ -20,13 +20,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GUIMain {
+    public static final int size = 30;
 
     public static void main(String[] args) {
         new GUIMain();
     }
 
     public GUIMain() {
-        Grid2D g2d = new Grid2D(5);
+        Grid2D g2d = new Grid2D(size);
         g2d.generateRandom();
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -40,7 +41,7 @@ public class GUIMain {
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
 
-                BasicGrid guiGrid = new BasicGrid(5, GridState.PLACE);
+                BasicGrid guiGrid = new BasicGrid(size, GridState.PLACE);
 
                 GridController controller = new GridController(g2d, guiGrid);
                 controller.init(GridState.PLACE);

@@ -101,7 +101,6 @@ public class BasicGrid extends JPanel {
                 }
 
                 double sf = ScaleHelper.CalculateScalingFactor(parent) - 1.0;
-                System.out.printf("scaling factor for layout: %f\n", sf);
                 Point p = BasicGrid.getAbsolutePoint(rect.getLocation());
                 p.x += p.x * sf;
                 p.y += p.y * sf;
@@ -109,12 +108,14 @@ public class BasicGrid extends JPanel {
                 d.width += d.width * sf;
                 d.height += d.height * sf;
                 comp.setBounds(new Rectangle(p, d));
-                System.out.printf("on layout container comp bounds: %s\n", comp.getBounds());
+                //System.out.printf("on layout container comp bounds: %s\n", comp.getBounds());
             }
         }
     }
 
     private BufferedImage bgImg;
+    private BufferedImage baseImg;
+    private int scaledSize;
     private Rectangle gridRect;
     private Rectangle highlightedCell;
     private GridState interactionState;
@@ -122,14 +123,15 @@ public class BasicGrid extends JPanel {
         setLayout(new CustomLayoutManager(bound));
 
         int defaultSize = TILE_BASE_SIZE * bound;
+        scaledSize = defaultSize;
 
         this.interactionState = interactionState;
 
         // TODO: maybe calculate offset?, resize this on window size change?
         gridRect = new Rectangle(getX(), getY(), defaultSize, defaultSize);
 
-        bgImg = new BufferedImage(defaultSize, defaultSize, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = bgImg.createGraphics();
+        baseImg = new BufferedImage(defaultSize, defaultSize, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = baseImg.createGraphics();
 
         /*
         g2d.setColor(Color.BLUE);
@@ -168,11 +170,11 @@ public class BasicGrid extends JPanel {
         JLabel piece = new JLabel();
         try {
             piece = new JLabel() {
-                public void paint(Graphics g) {
-                    super.paint(g);
-
+                public void paintComponent(Graphics g) {
+                    super.paintComponent(g);
                     try {
                         BufferedImage ship = texture;
+
                         if(!isVertical) {
                             ship = ImageHelper.rotate(ship, Math.toRadians(-90));
                         }
@@ -183,7 +185,6 @@ public class BasicGrid extends JPanel {
                     } catch(NullPointerException e) {
                         System.out.printf("ERR: PIECE TEXTURE IS NULL!\nerr: %s\n", e.getMessage());
                     }
-
                     //g.setColor(Color.red);
                     //g.fillRect(0, 0, this.getWidth(), this.getHeight());
                 }
@@ -208,12 +209,14 @@ public class BasicGrid extends JPanel {
 
         Graphics2D g2d = (Graphics2D)g.create();
 
-        Image img = bgImg;
-        if(getParent() != null) {
-            img = bgImg.getScaledInstance(Math.min(getWidth(), getHeight()), -1, Image.SCALE_SMOOTH);
+        int currentSize = Math.min(getWidth(), getHeight());
+        if(currentSize != scaledSize) {
+            if (getParent() != null) {
+                bgImg = ImageHelper.scale(baseImg, currentSize, currentSize);
+            }
         }
 
-        g2d.drawImage(img, 0, 0, this);
+        g2d.drawImage(bgImg, 0, 0, this);
 
         if(highlightedCell != null) {
             g2d.setColor(Color.RED);
@@ -221,14 +224,13 @@ public class BasicGrid extends JPanel {
             Rectangle rect = new Rectangle(getAbsolutePoint(highlightedCell.getLocation(), sf), getAbsoluteDimension(highlightedCell.getSize(), sf));
             g2d.draw(rect);
         }
-
         g2d.dispose();
     }
 
     public void setPiecePos(Component comp, Point pos) {
         CustomLayoutManager lmgr = (CustomLayoutManager)getLayout();
         lmgr.changePiecePos(comp, pos);
-        invalidate();
+        //invalidate();
         revalidate();
         repaint();
     }
@@ -240,7 +242,7 @@ public class BasicGrid extends JPanel {
 
         Point grid = new Point(p);
 
-        System.out.printf("Calculation of relative point scaled in 2 ways (sf: %f):\n" +
+        /*System.out.printf("Calculation of relative point scaled in 2 ways (sf: %f):\n" +
                 "way1 (error with sf < 1):\n" +
                 "\t grid.x = (int) (grid.x / sf) :: %d \n" +
                 "\t grid.x = (int) (grid.x / sf) :: %d \n" +
@@ -248,7 +250,7 @@ public class BasicGrid extends JPanel {
                 "\t grid.x = (int) (grid.x / sf) :: %d \n" +
                 "\t grid.x = (int) (grid.x / sf) :: %d \n" +
                 "", sf, (int) Math.ceil(grid.x / sf), (int) Math.ceil(grid.y / sf), (int) (grid.x + grid.x * (sf-1.0)), (int) (grid.y + grid.y * (sf-1.0)));
-
+         */
         grid.x = (int) Math.ceil(grid.x / sf);
         grid.y = (int) Math.ceil(grid.y / sf);
 
