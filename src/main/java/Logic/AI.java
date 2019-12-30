@@ -1,8 +1,11 @@
 package Logic;
 
+import Network.Server;
+
 public class AI
 {
     private Grid2D grid;
+    private Network.Server server;
     private int[][] chessPattern;
     private int[][] randomPattern;
     private static int counter = 0;

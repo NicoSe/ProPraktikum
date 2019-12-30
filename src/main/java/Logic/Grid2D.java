@@ -256,6 +256,79 @@ public class Grid2D {
         return true;
     }
 
+    public void markSurrounding(int x, int y)//first point of the ship
+    {
+        Character c = characters[x][y];
+        int newX = x - 1;               //upper left corner
+        int newY = y - 1;
+        int width = 1;
+        int height = c.getSize();
+
+        if(!(c.isVertical()))           //switch x, y and width with height if the ship is horizontal
+        {
+            int dummy = newX;
+            newX = newY;
+            newY = dummy;
+            width = height;
+            height = 1;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if(i % 2 == 0)              //Vertical i=0: 3 fields above the ship
+            {                           //Horizontal i=0: 3 fields on the left side of the ship
+                if (i == 2)             //Vertical i=2: 3 fields under the ship
+                {                       //Horizontal i=2: 3 fields on the right side of the ship
+                    newY = y + c.getSize() + 1;
+                }
+                try
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if (isValidAt(newX + j, newY, width, height))
+                        {
+                            if (c.isVertical())
+                            {
+                                shoot(newX + j, newY);
+                            }else
+                            {
+                                shoot(newY, newX + j);
+                            }
+                        }
+                    }
+                }
+                catch (ArrayIndexOutOfBoundsException e)//TODO:if the ship is right at edge of the grid,
+                {                                       //the method won't mark the other two possible fields
+                }                                       //quick fix possible, but wait till isValid is finished
+            } else
+            {                                           //Vertical i=1: ship.size-fields on the left side
+                if (i == 3)                             //Horizontal i=1: ship.size-fields above the ship
+                {                                       //Vertical i=3: ship.size-fields on the right side
+                    newX += 2;                          //Horizontal i=3: ship.size-fields under the ship
+                }
+                try
+                {
+                    for (int j = 1; j <= c.getSize(); j++)
+                    {
+                        if (isValidAt(newX, newY + j, width, height))
+                        {
+                            if (c.isVertical())
+                            {
+                                shoot(newX, newY + j);
+                            }else
+                            {
+                                shoot(newY + j, newX);
+                            }
+                        }
+                    }
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+                }
+            }
+        }
+    }
+
     public void clear() {
         this.characters = new Character[bound][bound];
     }
