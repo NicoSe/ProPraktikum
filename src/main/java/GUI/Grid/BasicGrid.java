@@ -4,7 +4,7 @@ import GUI.ImageHelper;
 import GUI.ScaleHelper;
 import Misc.GridState;
 import org.w3c.dom.css.Rect;
-import sun.tools.jstat.Scale;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

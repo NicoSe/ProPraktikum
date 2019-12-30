@@ -33,7 +33,6 @@ public class Main {
         Load lo = new Load();
         //Server s = new Server();
 
-
         //GUI
         // Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
