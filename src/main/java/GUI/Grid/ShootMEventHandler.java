@@ -22,6 +22,6 @@ public class ShootMEventHandler extends MouseAdapter {
         if(c == null || !((BasicGrid.CustomLayoutManager)grid.getLayout()).isPlacedPiece(c)) {
             return;
         }
-        controller.shoot(p);
+        controller.shoot(c, p);
     }
 }

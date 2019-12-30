@@ -34,6 +34,14 @@ public abstract class Character {
         return Arrays.copyOf(this.pos, this.pos.length);
     }
 
+    int getX() {
+        return this.pos[0];
+    }
+
+    int getY() {
+        return this.pos[1];
+    }
+
     Rotation getNextRotation() {
         return Rotation.values()[rot.ordinal()+1 % Rotation.MAX_NUM.ordinal()];
     }
