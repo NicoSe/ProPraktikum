@@ -57,7 +57,7 @@ public class Server{
 
 //______________________________________________________________________________________________________________________
     //Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
-    //Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
+    //Es muss ausschlieslich eine Nachricht in die Funktion uebergeben werden.
     public void sendmsg(String msg){
         try{
             DataOutputStream stream_out = new DataOutputStream((Client_Socket.getOutputStream()));

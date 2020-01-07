@@ -92,6 +92,11 @@ public class BackgroundPanel extends JPanel
         repaint();
     }
 
+    public void removeAll(){
+        super.removeAll();
+        repaint();
+    }
+
     /*
      *  Specify the horizontal alignment of the image when using ACTUAL style
      */

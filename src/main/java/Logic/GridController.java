@@ -3,13 +3,18 @@ package Logic;
 import GUI.Grid.BasicGrid;
 import GUI.Grid.PlacementMEventHandler;
 import GUI.Grid.ShootMEventHandler;
+import GUI.ScaleHelper;
 import Misc.GridState;
+import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class GridController {
+    HashMap<Component, Character> c2c = new HashMap<>();
     private boolean isInitialized = false;
     private Grid2D model;
     private BasicGrid view;
@@ -28,7 +33,7 @@ public class GridController {
 
         model.forEachCharacter((Integer x, Integer y, Character c) -> {
             try {
-                view.addPiece(c.getImage(), x, y, c.getSize(), c.isVertical());
+                c2c.put(view.addPiece(c.getImage(), x, y, c.getSize(), c.isVertical()), c);
             } catch(IOException e) {
                 System.out.printf("couldn't load character image. %s\n", e.getMessage());
             }
@@ -44,18 +49,47 @@ public class GridController {
         // TODO: write method that gets the component from grid
     }
 
-    public void changePiecePos(Component comp, Point oldPos, Point newPos) {
-        Dimension objDim = BasicGrid.getRelativeSize(comp.getSize());
-        if(model.move(oldPos.x, oldPos.y, newPos.x, newPos.y, objDim.width > objDim.height ? Rotation.HORIZONTAL : Rotation.VERTICAL)) {
-            view.setPiecePos(comp, newPos);
+    public void changePiecePos(Component comp, Point newPos) {
+        Character c = c2c.get(comp);
+        if(c == null) {
+            return;
+        }
+
+        int currentTileSize = view.getScaledTileSize();
+
+        int oldPosX = c.getX();
+        int oldPosY = c.getY();
+
+        int newPosX = newPos.x / currentTileSize;
+        int newPosY = newPos.y / currentTileSize;
+
+        if(model.move(oldPosX, oldPosY, newPosX, newPosY, c.isVertical() ? Rotation.VERTICAL : Rotation.HORIZONTAL)) {
+            view.setPiecePos(comp, new Point(newPosX, newPosY));
         } else {
-            view.setPiecePos(comp, oldPos);
+            view.setPiecePos(comp, new Point(oldPosX, oldPosY));
         }
     }
 
-    public void shoot(Point comp) {
-        Point pos = view.getRelativePoint(comp.getLocation());
-        ShotResult res = model.shoot(pos.x, pos.y);
+    public void shoot(Component comp, Point pos) {
+        Character c = c2c.get(comp);
+        if(c == null) {
+            return;
+        }
+
+        int currentTileSize = view.getScaledTileSize();
+
+        //check for invalid pos
+        Rectangle validRect = new Rectangle(c.getX()*currentTileSize, c.getY()*currentTileSize, c.getSize()*currentTileSize, c.getSize()*currentTileSize);
+        if(!validRect.contains(pos)) {
+            return;
+        }
+
+        int shipPosOffsetX = (pos.x - c.getX() * currentTileSize) / currentTileSize;
+        int shipPosOffsetY = (pos.y - c.getY() * currentTileSize) / currentTileSize;
+
+        ShotResult res = model.shoot(c.getX() + shipPosOffsetX, c.getY() + shipPosOffsetY);
+
+        // TODO: modify view/ship panel according to shot result.
     }
 
     public void setInteractionState(GridState state) {
@@ -72,5 +106,4 @@ public class GridController {
         view.addMouseListener(mouseAdapter);
         view.addMouseMotionListener(mouseAdapter);
     }
-
 }

@@ -6,7 +6,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import GUI.Grid.*;
 import GUI.Helpers;
+import Logic.Grid2D;
+import Logic.GridController;
+import Misc.GridState;
 //import com.sun.xml.internal.messaging.saaj.soap.JpegDataContentHandler;
 
 public class MainFrame {
@@ -15,6 +19,8 @@ public class MainFrame {
     private JFrame jf;
     private BackgroundPanel backgroundPanel;
     private JPanel pnlButton;
+    private BasicGrid pnlGrid1;
+    private BasicGrid pnlGrid2;
 
     private JLabel lblYeet;
     private JLabel lblYeet2;
@@ -52,6 +58,19 @@ public class MainFrame {
         backgroundPanel.setMinimumSize(new Dimension(1024, 768));
         backgroundPanel.setMaximumSize(new Dimension(1920, 1080));
         jf.setContentPane(backgroundPanel);
+
+
+        //grid Panel
+        pnlGrid1 = new BasicGrid(5, GridState.PLACE);
+        Grid2D g2d = new Grid2D(5);
+        pnlGrid1.setSize(new Dimension(50,50));
+        g2d.generateRandom();
+        GridController controller = new GridController(g2d, pnlGrid1);
+        controller.init(GridState.PLACE);
+
+
+        //grid Panel enemy
+        pnlGrid2 = new BasicGrid(2,GridState.FORBID);
 
 
         //panel
@@ -572,7 +591,15 @@ public class MainFrame {
     //SinglePlayer
     private void lblSingleMouseClicked(MouseEvent e) throws IOException {
         Helpers.playSFX("/SFX/SA2_142.wav");
+        backgroundPanel.removeAll();
+        backgroundPanel.add(pnlGrid1);
+        jf.setSize(new Dimension(1025,769));
+        jf.setSize(new Dimension(1024,768
+        ));
+        //backgroundPanel.add(pnlGrid2);
+
     }
+
     private void lblSingleMouseReleased(MouseEvent e) throws IOException {
         lblSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleWB.png"))));
     }

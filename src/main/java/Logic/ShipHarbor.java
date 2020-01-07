@@ -3,6 +3,7 @@ package Logic;
 import java.io.*;
 import java.lang.ClassLoader;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -78,8 +79,8 @@ public class ShipHarbor {
 
                 harborVolume.put(gridBounds, rowVolume);
                 harbor.put(gridBounds, currentBoundShipData);
-                //System.out.println(line);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
