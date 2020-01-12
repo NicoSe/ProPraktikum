@@ -842,4 +842,7 @@ public class MainFrame {
     private void lblFullscreenMouseReleased(MouseEvent e) throws IOException {
         lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsWB.png"))));
     }
+
+
+
 }
