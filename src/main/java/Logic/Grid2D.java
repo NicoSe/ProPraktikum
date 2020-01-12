@@ -19,6 +19,7 @@ public class Grid2D {
         this.harbor.load();
     }
 
+
     @FunctionalInterface
     public interface CharFunc<T1, T2, T3, R1> {
         public R1 apply(T1 t1, T2 t2, T3 t3);
@@ -63,10 +64,34 @@ public class Grid2D {
             }
             placeCount--;
         }
+        setWater();     //auffüllen mit Wasser
     }
+
+    public void setWater(){
+        for (int i=0; i<bound; i++){
+            for (int j=0;j<bound; j++) {
+                if(isEmptyAt(i,j,1,1)){
+                    characters[i][j] = new Water(false);
+                }
+            }
+        }
+    }
+
+
+    public void setFoeGridObjects() {
+        for (int i=0; i<bound; i++){
+            for (int j=0;j<bound; j++) {
+                if(isEmptyAt(i,j,1,1)){
+                    characters[i][j] = new FoeGridShootObject(0);
+                }
+            }
+        }
+    }
+
 
     private boolean isEmptyAt(int x, int y, int width, int height) {
         //check if pos is valid or not.
+        Water dummy = new Water(false);
         if(x+width < 0 || x+width > this.bound) {
             return false;
         }
@@ -78,7 +103,7 @@ public class Grid2D {
         //check if position is empty or not.
         for(int local_x = 0; local_x < width; ++local_x) {
             for(int local_y = 0; local_y < height; ++local_y) {
-                if(characters[x+local_x][y+local_y] != null) {
+                if(!(characters[x+local_x][y+local_y] == null || characters[x+local_x][y+local_y].equals(dummy))) {
                     return false;
                 }
             }
@@ -151,9 +176,11 @@ public class Grid2D {
             return null;
         }
 
-        // make sure there is no collision between ships
-        if(!isValidAt(x, y, width, height)) {
-            return null;
+        // make sure there is no colision between ships
+        if (!(inst instanceof Water || inst instanceof FoeGridShootObject)) {
+            if (!isValidAt(x, y, width, height)) {
+                return null;
+            }
         }
 
         for(int local_x = 0; local_x < width; ++local_x) {
@@ -193,11 +220,8 @@ public class Grid2D {
         return inst;
     }
 
+    //shoot-Funktion für ein Schiff
     public ShotResult shoot(int x, int y) {
-        if(x < 0 || y < 0 || x > bound || y > bound) {
-            return null;
-        }
-
         Character c = characters[x][y];
         if(c == null) {
             return ShotResult.NONE;
@@ -212,13 +236,6 @@ public class Grid2D {
     }
 
     public boolean move(int old_x, int old_y, int x, int y, Rotation rot) {
-        if(old_x < 0 || old_y < 0 || old_x > bound || old_y > bound) {
-            return false;
-        }
-        if(x < 0 || y < 0 || x > bound || y > bound) {
-            return false;
-        }
-
         Character c = characters[old_x][old_y];
         if(c == null) {
             return false;
@@ -258,79 +275,6 @@ public class Grid2D {
             return false;
         }
         return true;
-    }
-
-    public void markSurrounding(int x, int y)//first point of the ship
-    {
-        Character c = characters[x][y];
-        int newX = x - 1;               //upper left corner
-        int newY = y - 1;
-        int width = 1;
-        int height = c.getSize();
-
-        if(!(c.isVertical()))           //switch x, y and width with height if the ship is horizontal
-        {
-            int dummy = newX;
-            newX = newY;
-            newY = dummy;
-            width = height;
-            height = 1;
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            if(i % 2 == 0)              //Vertical i=0: 3 fields above the ship
-            {                           //Horizontal i=0: 3 fields on the left side of the ship
-                if (i == 2)             //Vertical i=2: 3 fields under the ship
-                {                       //Horizontal i=2: 3 fields on the right side of the ship
-                    newY = y + c.getSize() + 1;
-                }
-                try
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        if (isValidAt(newX + j, newY, width, height))
-                        {
-                            if (c.isVertical())
-                            {
-                                shoot(newX + j, newY);
-                            }else
-                            {
-                                shoot(newY, newX + j);
-                            }
-                        }
-                    }
-                }
-                catch (ArrayIndexOutOfBoundsException e)//TODO:if the ship is right at edge of the grid,
-                {                                       //the method won't mark the other two possible fields
-                }                                       //quick fix possible, but wait till isValid is finished
-            } else
-            {                                           //Vertical i=1: ship.size-fields on the left side
-                if (i == 3)                             //Horizontal i=1: ship.size-fields above the ship
-                {                                       //Vertical i=3: ship.size-fields on the right side
-                    newX += 2;                          //Horizontal i=3: ship.size-fields under the ship
-                }
-                try
-                {
-                    for (int j = 1; j <= c.getSize(); j++)
-                    {
-                        if (isValidAt(newX, newY + j, width, height))
-                        {
-                            if (c.isVertical())
-                            {
-                                shoot(newX, newY + j);
-                            }else
-                            {
-                                shoot(newY + j, newX);
-                            }
-                        }
-                    }
-                }
-                catch (ArrayIndexOutOfBoundsException e)
-                {
-                }
-            }
-        }
     }
 
     public void clear() {

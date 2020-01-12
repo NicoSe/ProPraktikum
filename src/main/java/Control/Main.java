@@ -5,6 +5,7 @@ import Network.*;
 import Logic.*;
 import Logic.Character;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class Main {
@@ -14,24 +15,15 @@ public class Main {
     public static Grid2D foe_grid;
 
     public static void main(String[] args) throws IOException {
-        own_grid = new Grid2D(5);
-        Character c = new Ship(2);
-        own_grid.put(0, 0, c);
-        Character c2 = new Ship(4);
-        own_grid.put(2, 0, c2);
-        // System.out.println(grid);
-        //grid.rotate(0);
-        Character c3 = new Ship(4);
-        own_grid.put(4, 0, c3);
-        //System.out.println(own_grid);
-
-        foe_grid = new Grid2D(5);
-        foe_grid.put(1, 0,c3);
-        //System.out.println(foe_grid);
-
         //new Save();
         Load lo = new Load();
-        //Server s = new Server();
+        Grid2D[] Gird_array = Load.load("1576750512796");
+        own_grid = Gird_array[0];
+        foe_grid = Gird_array[1];
+        own_grid.toString();
+        foe_grid.toString();
+
+        OptionsHandler oh = new OptionsHandler();
 
         //GUI
         // Create and display the form
