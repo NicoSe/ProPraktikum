@@ -22,7 +22,6 @@ public class Main {
         foe_grid = Gird_array[1];
         own_grid.toString();
         foe_grid.toString();
-        //Server s = new Server();
 
         OptionsHandler oh = new OptionsHandler();
 

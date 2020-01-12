@@ -3,9 +3,9 @@ package Logic;
 import java.io.*;
 
 public class OptionsHandler {
-    private int musicVolume;
-    private int SFXVolume;
-    private boolean fullscreenMode;
+    private static int musicVolume;
+    private static int SFXVolume;
+    private static boolean fullscreenMode;
 
     public OptionsHandler(){
         BufferedReader in = null;
@@ -18,20 +18,20 @@ public class OptionsHandler {
 
             in.readLine();
             int loadedValue = Integer.parseInt(in.readLine());
-            if(loadedValue >= 0 && loadedValue <=10){
+            if(loadedValue >= 0 && loadedValue <=100){
                 musicVolume = loadedValue;
             }
             else{
-                musicVolume = 10;
+                musicVolume = 100;
             }
 
             in.readLine();
             loadedValue = Integer.parseInt(in.readLine());
-            if(loadedValue >= 0 && loadedValue <=10){
+            if(loadedValue >= 0 && loadedValue <=100){
                 SFXVolume = loadedValue;
             }
             else {
-                SFXVolume = 10;
+                SFXVolume = 100;
             }
 
             in.readLine();
@@ -55,29 +55,29 @@ public class OptionsHandler {
         saveSettings();
     }
 
-    public int getMusicVolume(){
+    public static int getMusicVolume(){
         return musicVolume;
     }
 
-    public void changeSFXVolume(int newvalue){
+    public static void changeSFXVolume(int newvalue){
         SFXVolume = newvalue;
         saveSettings();
     }
 
-    public int getSFXVolume(){
-        return musicVolume;
+    public static int getSFXVolume(){
+        return SFXVolume;
     }
 
-    public void changeFullscreenMode(boolean newvalue){
+    public static void changeFullscreenMode(boolean newvalue){
         fullscreenMode = newvalue;
         saveSettings();
     }
 
-    public boolean getFullscreenMode(){
+    public static boolean getFullscreenMode(){
         return fullscreenMode;
     }
 
-    private void saveSettings() {
+    private static void saveSettings() {
         PrintWriter pWriter = null;
 
         try {
