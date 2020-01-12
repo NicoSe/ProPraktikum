@@ -35,7 +35,7 @@ public class Client {
 
 
 //______________________________________________________________________________________________________________________
-    public void Create_Client(){
+    private void Create_Client(){
         try {
             Close_Socket = false;
             address = new InetSocketAddress(host, port);
@@ -71,6 +71,14 @@ public class Client {
             Create_Client();
             sendmsg(msg);
         }
+    }
+
+
+
+//______________________________________________________________________________________________________________________
+    //Gibt zurück ob Client verbunden
+    public boolean isconnected(){
+        return client.isConnected();
     }
 
 

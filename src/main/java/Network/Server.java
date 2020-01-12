@@ -32,7 +32,7 @@ public class Server{
 
 
 //______________________________________________________________________________________________________________________
-    public void Create_Server(){
+    private void Create_Server(){
         try{
             Close_Socket = false;
             System.out.println("<S>Starting Server...");
@@ -53,6 +53,15 @@ public class Server{
             e.printStackTrace();
         }
     }
+
+
+
+//______________________________________________________________________________________________________________________
+    //Gibt zurück ob Server verbunden
+    public boolean isconnected(){
+        return Client_Socket.isConnected();
+    }
+
 
 
 //______________________________________________________________________________________________________________________

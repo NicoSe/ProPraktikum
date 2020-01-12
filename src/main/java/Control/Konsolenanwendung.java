@@ -29,7 +29,7 @@ public class Konsolenanwendung {
     }
 
     private static void Konsolenanwendung_Client() {
-        Client C_socket = new Client();
+        Client C_socket = new Client("localhost");
 
         Scanner s = new Scanner(System.in);
 

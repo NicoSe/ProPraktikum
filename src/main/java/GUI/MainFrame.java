@@ -2,19 +2,20 @@ package GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import GUI.Grid.*;
-import GUI.Helpers;
 import Logic.Grid2D;
 import Logic.GridController;
 import Logic.OptionsHandler;
 import Misc.GridState;
+import Network.Client;
 //import sun.misc.JavaLangAccess;
 //import com.sun.xml.internal.messaging.saaj.soap.JpegDataContentHandler;
 
@@ -47,11 +48,14 @@ public class MainFrame {
     private JLabel lblJoin;
     private JLabel lblFullscreen;
     private JLabel lblMusic;
-    private JSlider lbsMusicSlider;
+    private JSlider sldMusicSlider;
     private JLabel lblSFX;
-    private JSlider lbsSFXSlider;
+    private JSlider sldSFXSlider;
     private JLabel lblFullscreenPicture;
     OptionsHandler optionsHandler = new OptionsHandler();
+    private JLabel lblIPAdress;
+    private JTextField txfIPAdress;
+    private JLabel lblConnect;
 
 
     public MainFrame() throws IOException {
@@ -585,81 +589,127 @@ public class MainFrame {
         lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png"))));
         lblFullscreenPicture.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //Music Button
+        //Music Label
         lblMusic = new JLabel();
         lblMusic.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PLayBW.png"))));
         lblMusic.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblMusic.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-            }
-            public void mouseEntered(MouseEvent e) {
-            }
-            public void mouseExited(MouseEvent e){
-            }
-            public void mousePressed(MouseEvent e){
-            }
-            public void mouseReleased(MouseEvent e){
-            }
-        });
 
-        //SFX Button
+        //SFX Label
         lblSFX = new JLabel();
         lblSFX.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PLayBW.png"))));
         lblSFX.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblSFX.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-            }
-            public void mouseEntered(MouseEvent e) {
-            }
-            public void mouseExited(MouseEvent e){
-            }
-            public void mousePressed(MouseEvent e){
-            }
-            public void mouseReleased(MouseEvent e){
-            }
-        });
 
         //Music Slider
-        lbsMusicSlider = new JSlider(0,100);
-        lbsMusicSlider.setPreferredSize(new Dimension(200,50));
-        lbsMusicSlider.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-        lbsMusicSlider.setOpaque(false);
-        lbsMusicSlider.setMaximumSize(new Dimension(512, 50));
-        lbsMusicSlider.setValue(OptionsHandler.getMusicVolume());
-        lbsMusicSlider.setMinorTickSpacing(0);
-        lbsMusicSlider.setMajorTickSpacing(20);
-        lbsMusicSlider.setPaintLabels(true);
-        lbsMusicSlider.setPaintTicks(true);
-        lbsMusicSlider.setPaintTrack(true);
-        lbsMusicSlider.addChangeListener(new ChangeListener() {
+        sldMusicSlider = new JSlider(0,100);
+        sldMusicSlider.setPreferredSize(new Dimension(200,50));
+        sldMusicSlider.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        sldMusicSlider.setOpaque(false);
+        sldMusicSlider.setMaximumSize(new Dimension(512, 50));
+        sldMusicSlider.setValue(OptionsHandler.getMusicVolume());
+        sldMusicSlider.setMinorTickSpacing(0);
+        sldMusicSlider.setMajorTickSpacing(20);
+        sldMusicSlider.setPaintLabels(true);
+        sldMusicSlider.setPaintTicks(true);
+        sldMusicSlider.setPaintTrack(true);
+        sldMusicSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                optionsHandler.changeMusicVolume(lbsMusicSlider.getValue());
+                optionsHandler.changeMusicVolume(sldMusicSlider.getValue());
             }
         });
 
         //SFX Slider
-        lbsSFXSlider = new JSlider(0,100);
-        lbsSFXSlider.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-        lbsSFXSlider.setOpaque(false);
-        lbsSFXSlider.setMaximumSize(new Dimension(512, 50));
-        lbsSFXSlider.setValue(OptionsHandler.getSFXVolume());
-        lbsSFXSlider.setMinorTickSpacing(0);
-        lbsSFXSlider.setMajorTickSpacing(20);
-        lbsSFXSlider.setPaintLabels(true);
-        lbsSFXSlider.setPaintTicks(true);
-        lbsSFXSlider.setPaintTrack(true);
-        lbsSFXSlider.addChangeListener(new ChangeListener() {
+        sldSFXSlider = new JSlider(0,100);
+        sldSFXSlider.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        sldSFXSlider.setOpaque(false);
+        sldSFXSlider.setMaximumSize(new Dimension(512, 50));
+        sldSFXSlider.setValue(OptionsHandler.getSFXVolume());
+        sldSFXSlider.setMinorTickSpacing(0);
+        sldSFXSlider.setMajorTickSpacing(20);
+        sldSFXSlider.setPaintLabels(true);
+        sldSFXSlider.setPaintTicks(true);
+        sldSFXSlider.setPaintTrack(true);
+        sldSFXSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                OptionsHandler.changeSFXVolume(lbsSFXSlider.getValue());
+                OptionsHandler.changeSFXVolume(sldSFXSlider.getValue());
             }
         });
 
+        //IPAdress Label and Text Field
+        lblIPAdress = new JLabel();
+        lblIPAdress.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleBW.png"))));
+        lblIPAdress.setAlignmentX(Component.CENTER_ALIGNMENT);
+        txfIPAdress = new JTextField();
+        txfIPAdress.setAlignmentX(Component.CENTER_ALIGNMENT);
+        txfIPAdress.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        txfIPAdress.setMaximumSize(new Dimension(512,50));
+        txfIPAdress.setEditable(true);
+        txfIPAdress.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(txfIPAdress.getText().length() > 20){
+                    if (!(e.getKeyCode() == 8 || e.getKeyCode() == 127)){
+                        e.consume();
+                    }
+                }
+            }
 
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(txfIPAdress.getText().length() > 20){
+                    if (!(e.getKeyCode() == 8 || e.getKeyCode() == 127)){
+                        e.consume();
+                    }
+                }
+            }
 
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+
+        //Connect Button
+        lblConnect = new JLabel();
+        lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+        lblConnect.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblConnect.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                try {
+                    lblConnectMouseClicked(e);
+                } catch(IOException el){
+                    el.printStackTrace();
+                }
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblConnectMouseEntered(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblConnectMouseExited(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblConnectMousePressed(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblConnectMouseReleased(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
 
@@ -707,9 +757,9 @@ public class MainFrame {
         pnlButton.add(lblFullscreen);
         pnlButton.add(lblFullscreenPicture);
         pnlButton.add(lblMusic);
-        pnlButton.add(lbsMusicSlider);
+        pnlButton.add(sldMusicSlider);
         pnlButton.add(lblSFX);
-        pnlButton.add(lbsSFXSlider);
+        pnlButton.add(sldSFXSlider);
         pnlButton.add(lblReturn);
         pnlButton.setVisible(true);
     }
@@ -825,7 +875,7 @@ public class MainFrame {
 
     //SinglePlayer
     private void lblSingleMouseClicked(MouseEvent e) throws IOException {
-          Helpers.playSFX("/SFX/SA2_142.wav", 1);
+        Helpers.playSFX("/SFX/SA2_142.wav", 1);
 
         pnlButton.setVisible(false);
         pnlButton.removeAll();
@@ -881,6 +931,14 @@ public class MainFrame {
     //Join
     private void lblJoinMouseClicked(MouseEvent e) throws IOException {
         Helpers.playSFX("/SFX/SA2_142.wav", 1);
+        pnlButton.setVisible(false);
+        pnlButton.removeAll();
+        pnlButton.add(lblTitle);
+        pnlButton.add(lblIPAdress);
+        pnlButton.add(txfIPAdress);
+        pnlButton.add(lblConnect);
+        pnlButton.add(lblReturn);
+        pnlButton.setVisible(true);
     }
 
     private void lblJoinMouseReleased(MouseEvent e) throws IOException {
@@ -947,7 +1005,7 @@ public class MainFrame {
         Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
     }
 
-    //Fullscreen
+    //Fullscreen Button
     private void lblFullscreenMouseClicked(MouseEvent e) throws IOException {
         Helpers.playSFX("/SFX/SA2_142.wav", 1);
         int prev_window_x = 0;
@@ -978,15 +1036,43 @@ public class MainFrame {
     }
 
     private void lblFullscreenMouseExited(MouseEvent e) throws IOException {
-        lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsOnPress.png"))));
+        lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsBW.png"))));
     }
 
     private void lblFullscreenMousePressed(MouseEvent e) throws IOException {
-        lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsWB.png"))));
+        lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsOnPress.png"))));
     }
 
     private void lblFullscreenMouseReleased(MouseEvent e) throws IOException {
         lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsWB.png"))));
     }
 
+    //Connect Button
+    private void lblConnectMouseClicked(MouseEvent e) throws IOException {
+        Helpers.playSFX("/SFX/SA2_142.wav", 1);
+        pnlButton.setVisible(false);
+        pnlButton.removeAll();
+        Client c = new Client(txfIPAdress.getText());
+        if (c.isconnected()){
+            System.out.println("Starte Spiel");
+            //play game
+        }
+        pnlButton.setVisible(true);
+    }
+
+    private void lblConnectMouseExited(MouseEvent e) throws IOException {
+        lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
+    }
+
+    private void lblConnectMousePressed(MouseEvent e) throws IOException {
+        lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayOnPress.png"))));
+    }
+
+    private void lblConnectMouseReleased(MouseEvent e) throws IOException {
+        lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayWB.png"))));
+    }
+
+    private void lblConnectMouseEntered(MouseEvent e) throws IOException {
+        lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayWB.png"))));
+    }
 }
