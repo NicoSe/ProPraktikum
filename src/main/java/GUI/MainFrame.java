@@ -581,6 +581,7 @@ public class MainFrame {
         pnlButton.setVisible(true);
     }
 
+
     private void lblCreditsMouseReleased(MouseEvent e) throws IOException {
         lblCredits.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/CreditsWB.png"))));
     }
