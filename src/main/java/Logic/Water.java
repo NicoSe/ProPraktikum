@@ -1,5 +1,8 @@
 package Logic;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 //Wasserobject für eigenes Grid, wird erst *nach* den Schiffen platziert!
 public class Water extends Character {
 
@@ -22,6 +25,11 @@ public class Water extends Character {
     public ShotResult shoot(int hitpos) {
         isHit = true;
         return ShotResult.NONE;
+    }
+
+    @Override
+    public BufferedImage getImage() throws IOException {
+        return null;
     }
 
     @Override

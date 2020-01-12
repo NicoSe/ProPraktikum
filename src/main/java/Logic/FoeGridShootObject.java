@@ -1,5 +1,8 @@
 package Logic;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 //GridObject welches den Status des zugedeckten gegnerischen Feldes zeigt
 public class FoeGridShootObject extends Character {
     private int hitStatus = 0;          //noch nicht beschossen, 1 wasser, 2 Schiff
@@ -24,6 +27,11 @@ public class FoeGridShootObject extends Character {
             return null;
         }
         hitStatus = status;
+        return null;
+    }
+
+    @Override
+    public BufferedImage getImage() throws IOException {
         return null;
     }
 

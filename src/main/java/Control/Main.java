@@ -5,6 +5,7 @@ import Network.*;
 import Logic.*;
 import Logic.Character;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class Main {
@@ -14,8 +15,6 @@ public class Main {
     public static Grid2D foe_grid;
 
     public static void main(String[] args) throws IOException {
-
-
         //new Save();
         Load lo = new Load();
         Grid2D[] Gird_array = Load.load("1576750512796");
@@ -25,7 +24,8 @@ public class Main {
         foe_grid.toString();
         //Server s = new Server();
 
-        /*
+        OptionsHandler oh = new OptionsHandler();
+
         //GUI
         // Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -37,7 +37,7 @@ public class Main {
                 }
 
             }
-        });*/
+        });
     }
 }
 
