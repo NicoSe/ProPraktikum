@@ -28,8 +28,8 @@ public class Client {
     // und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
     // auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
     //wird abgebrochen.
-    public Client() {
-        this.host = "localhost";
+    public Client(String host) {
+        this.host = host;
         Create_Client();
     }
 
