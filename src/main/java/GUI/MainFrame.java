@@ -533,6 +533,50 @@ public class MainFrame {
             }
         });
 
+        //Fullscreen Button
+        lblFullscreen = new JLabel();
+        lblFullscreen.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+        lblFullscreen.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblFullscreen.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                try {
+                    lblFullscreenMouseClicked(e);
+                } catch(IOException el){
+                    el.printStackTrace();
+                }
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblFullscreenMouseEntered(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblFullscreenMouseExited(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblFullscreenMousePressed(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblFullscreenMouseReleased(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        //Fullscreen Checkbox Picture
         lblFullscreenPicture = new JLabel();
         if (OptionsHandler.getFullscreenMode()){
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png"))));
@@ -922,6 +966,46 @@ public class MainFrame {
         Helpers.playSFX("/SFX/Menu_Tick.wav");
     }
 
+    //Fullscreen
+    private void lblFullscreenMouseClicked(MouseEvent e) throws IOException {
+        Helpers.playSFX("/SFX/SA2_142.wav");
+        int prev_window_x = 0;
+        int prev_window_y = 0;
+        if (OptionsHandler.getFullscreenMode()){
+            OptionsHandler.changeFullscreenMode(false);
+            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png"))));
+            if(prev_window_x != 0){
+                jf.setSize(prev_window_x,prev_window_y);
+            }
+            else{
+                jf.setSize(1024, 850);
+            }
+            //jf.setUndecorated(false);
+        }
+        else{
+            OptionsHandler.changeFullscreenMode(true);
+            prev_window_x = jf.getWidth();
+            prev_window_y = jf.getHeight();
+            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png"))));
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            //jf.setUndecorated(true);
+        }
+    }
 
+    private void lblFullscreenMouseEntered(MouseEvent e) throws IOException {
+        lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsWB.png"))));
+    }
+
+    private void lblFullscreenMouseExited(MouseEvent e) throws IOException {
+        lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsOnPress.png"))));
+    }
+
+    private void lblFullscreenMousePressed(MouseEvent e) throws IOException {
+        lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsWB.png"))));
+    }
+
+    private void lblFullscreenMouseReleased(MouseEvent e) throws IOException {
+        lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsWB.png"))));
+    }
 
 }
