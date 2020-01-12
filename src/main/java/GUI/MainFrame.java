@@ -55,7 +55,7 @@ public class MainFrame {
     private void Components() throws IOException {
         //Frame
         jf = new JFrame();
-        jf.setMinimumSize(new Dimension(1024, 768));
+        jf.setMinimumSize(new Dimension(1024, 850));
         jf.setMaximumSize(new Dimension(1920, 1080));
         jf.setTitle("Battleships");
         jf.setLocationRelativeTo(null);
@@ -542,8 +542,7 @@ public class MainFrame {
         //Music Slider
         lbsMusicSlider = new JSlider(){
             @Override
-            protected void paintComponent(Graphics g)
-            {
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setColor(getBackground());
                 g2d.setComposite(AlphaComposite.SrcOver.derive(0f));
@@ -557,7 +556,6 @@ public class MainFrame {
         lbsMusicSlider.setOpaque(false);
         lbsMusicSlider.setMinimum(0);
         lbsMusicSlider.setMaximum(100);
-        System.out.println(OptionsHandler.getMusicVolume());
         lbsMusicSlider.setValue(OptionsHandler.getMusicVolume());
         lbsMusicSlider.setMinorTickSpacing(0);
         lbsMusicSlider.setMajorTickSpacing(20);
@@ -574,8 +572,7 @@ public class MainFrame {
         //SFX Slider
         lbsSFXSlider = new JSlider(){
             @Override
-            protected void paintComponent(Graphics g)
-            {
+            protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setColor(getBackground());
                 g2d.setComposite(AlphaComposite.SrcOver.derive(0f));
@@ -643,6 +640,7 @@ public class MainFrame {
         pnlButton.removeAll();
         pnlButton.add(lblTitle);
         pnlButton.add(lblFullscreen);
+        pnlButton.add(lblFullscreenPicture);
         pnlButton.add(lblMusic);
         pnlButton.add(lbsMusicSlider);
         pnlButton.add(lblSFX);
@@ -836,13 +834,26 @@ public class MainFrame {
     //Fullscreen
     private void lblFullscreenMouseClicked(MouseEvent e) throws IOException {
         Helpers.playSFX("/SFX/SA2_142.wav");
+        int prev_window_x = 0;
+        int prev_window_y = 0;
         if (OptionsHandler.getFullscreenMode()){
             OptionsHandler.changeFullscreenMode(false);
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png"))));
+            if(prev_window_x != 0){
+                jf.setSize(prev_window_x,prev_window_y);
+            }
+            else{
+                jf.setSize(1024, 850);
+            }
+            //jf.setUndecorated(false);
         }
         else{
             OptionsHandler.changeFullscreenMode(true);
+            prev_window_x = jf.getWidth();
+            prev_window_y = jf.getHeight();
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png"))));
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            //jf.setUndecorated(true);
         }
     }
 
