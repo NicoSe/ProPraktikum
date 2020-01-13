@@ -11,12 +11,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import GUI.Grid.*;
 import Logic.Grid2D;
 import Logic.GridController;
+import Logic.Load;
 import Logic.OptionsHandler;
 import Misc.GridState;
 import Network.Client;
@@ -44,6 +50,8 @@ public class MainFrame {
             private JLabel lblStartSingle;
     private JLabel lblHost;
         private JList lstLoad;
+            private JScrollPane scrollpane;
+            File[] data;
         private JLabel lblStartHost;
         private JLabel lblShowIP;
     private JLabel lblJoin;
@@ -497,6 +505,13 @@ public class MainFrame {
         sldSize.setPaintTicks(true);
         sldSize.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         sldSize.setForeground(Color.BLACK);
+        sldSize.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                lstLoad.clearSelection();
+                lstLoad.setSelectedIndex(-1);
+            }
+        });
 
         //Difficulty
         lblDifficulty = new JLabel();
@@ -726,9 +741,9 @@ public class MainFrame {
         
         //Host Start Button
         lblStartHost = new JLabel();
-        lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
-        lblConnect.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblConnect.addMouseListener(new MouseAdapter(){
+        lblStartHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+        lblStartHost.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblStartHost.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
                 try {
@@ -778,12 +793,35 @@ public class MainFrame {
         //Load List
         lstLoad = new JList();
         lstLoad.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-        lstLoad.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-        lstLoad.setAlignmentY(JComponent.CENTER_ALIGNMENT);
-        lstLoad.setMaximumSize(new Dimension(80, 200));
         lstLoad.setOpaque(false);
         lstLoad.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.gray, Color.BLACK, Color.WHITE));
+        lstLoad.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        File dir = new File("src/main/java/Logic/SaveGames");
+        data = dir.listFiles();
+        String[] filenames = new String[data.length];
+        BufferedReader in = null;
+        File file;
+
+        for(int i=0;i<data.length;i++){
+            if(data[i].isFile() && data[i].canRead()){
+                file = data[i];
+                in = new BufferedReader(new FileReader(file));
+                filenames[i] = in.readLine();
+            }
+        }
+        lstLoad.setListData(filenames);
+
+        lstLoad.setVisibleRowCount(filenames.length);
+        scrollpane = new JScrollPane();
+        scrollpane.setViewportView(lstLoad);
+        scrollpane.setOpaque(false);
+        scrollpane.setAlignmentX(FlowLayout.LEFT);
+        scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollpane.setMaximumSize(new Dimension(200,200));
+        scrollpane.getViewport().setOpaque(false);
+        scrollpane.setLocation(jf.getWidth()-200, lblSize.getY());
+        lstLoad.setSelectedIndex(-1);
     }
 
 
@@ -991,7 +1029,13 @@ public class MainFrame {
         pnlButton.add(lblTitle);
         pnlButton.add(lblSize);
         pnlButton.add(sldSize);
+        pnlButton.add(scrollpane);
+        scrollpane.setLocation(jf.getWidth()-220,lblSize.getY());
+
         pnlButton.add(lblStartHost);
+        pnlButton.add(lblReturn);
+        pnlButton.add(lblShowIP);
+        pnlButton.setVisible(true);
     }
 
     private void lblHostMouseReleased(MouseEvent e) throws IOException {
@@ -1172,7 +1216,16 @@ public class MainFrame {
             pnlButton.setVisible(false);
             pnlButton.removeAll();
             System.out.println("Play Game");
-            //play Game
+            if(lstLoad.getSelectedIndex() == -1){
+                //play Game with selected Size
+            }
+            else{
+                String filename = data[lstLoad.getSelectedIndex()].toString();
+                s.sendmsg("load " + filename);
+                Load l = new Load();
+                Grid2D[] grids = l.load(filename);
+                //play Game with loaded grids
+            }
             pnlButton.setVisible(true);
         }
     }
