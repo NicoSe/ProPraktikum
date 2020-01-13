@@ -7,7 +7,10 @@ import java.io.IOException;
 
 public class Load {
 
-    public static Grid2D[] load(String adress) {
+    public Load(){
+    }
+
+    public static Grid2D[] load(String adress){
         BufferedReader in = null;
         File file = new File("src/main/java/logic/SaveGames/" + adress + ".txt");
         if (!file.exists() || !file.canRead()) {
@@ -25,7 +28,7 @@ public class Load {
 
             String help = null;
             int i = 0;
-            while ((i < 5) && ((help = in.readLine()) != null)) {
+            while ((i < 5) && ((help = in.readLine()) != null)){
                 owngrid[i] = help;
                 i++;
             }
@@ -33,14 +36,14 @@ public class Load {
 
             help = null;
             i = 0;
-            while ((i < 5) && ((help = in.readLine()) != null)) {
+            while ((i < 5) && ((help = in.readLine()) != null)){
                 foegrid[i] = help;
                 i++;
             }
 
-            Grid2D[] grids = new Grid2D[2];
+            Grid2D[] grids = new Grid2D[1];
             grids[0] = create_owngrid(owngrid, bound);
-            grids[1] = create_foegrid(foegrid, bound);
+            grids[1] =  create_foegrid(foegrid, bound);
             return grids;
 
         } catch (IOException e) {
@@ -55,19 +58,56 @@ public class Load {
         }
     }
 
-    // Testet ob der Dateipfad zu finden und zu öffnen ist
-    public boolean test_load(String adress) {
+
+    public boolean test_load(String adress){
         BufferedReader in = null;
         File file = new File("src/main/java/logic/SaveGames/" + adress + ".txt");
         if (!file.exists() || !file.canRead()) {
             return false;
         }
-        return true;
+
+        try {
+            in = new BufferedReader(new FileReader(file));
+            in.readLine();
+            int bound = Integer.parseInt(in.readLine());
+
+            String[] owngrid = new String[bound];
+            String[] foegrid = new String[bound];
+            in.readLine();
+
+            String help = null;
+            int i = 0;
+            while ((i < 5) && ((help = in.readLine()) != null)){
+                owngrid[i] = help;
+                i++;
+            }
+            in.readLine();
+
+            help = null;
+            i = 0;
+            while ((i < 5) && ((help = in.readLine()) != null)){
+                foegrid[i] = help;
+                i++;
+            }
+
+            if(create_owngrid_test(owngrid, bound) && create_foegrid_test(foegrid, bound)) {
+                return true;
+            }
+        } catch (IOException e) {
+            return false;
+        } finally {
+            if (in != null)
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    return false;
+                }
+        }
+        return false;
     }
 
 
-    // erstellt das Grid für den Spieler
-    public static Grid2D create_owngrid(String[] owngrid, int bound) {
+    public static Grid2D create_owngrid(String[] owngrid, int bound){
         Grid2D own_grid = new Grid2D(bound);
         try {
             new Thread(new Runnable() {
@@ -75,39 +115,24 @@ public class Load {
                     boolean[] ids = new boolean[64];
 
                     //Grid2D own_grid = new Grid2D(bound);
-                    Ship.id_counter = 0;
+                    Ship.id = 0;
 
-                    //erst Schiffe platzieren
                     int i = 0;
                     while (i < owngrid.length) {                                   //Schleife über jede Zeile der Datei
-                        String[] col = owngrid[i].split("\\|");             // col alle von | getrennten Inhalte
-                        int j = 1;
-                        while (j < col.length) {                                   //Schleife über jedes Element einer Zeile
-                            String[] temp = col[j].split(",");              //temp beinhaltet jedes Element in |...|
+                        String[] col = owngrid[i].split("\\|");
 
-                            //Wasser einlesen
-                            if (temp[0].equals("w")) {
+                        int j = 0;
+                        while (j < col.length) {                                   //Schleife über jedes Element einer Zeile
+                            String[] temp = col[j].split(",");
+                            if (col[j].equals("null") || col[j].equals("")) {
                                 j++;
                                 continue;
-
-                                //Schiffe erstellen
-                            } else if (ids[Integer.parseInt(temp[1])] == false) {
+                            } else if (col[j].equals("-1")) {                             //Wassertreffer realisieren
+                                own_grid.shoot(i, (j % bound) - 1);
+                            } else if (ids[Integer.parseInt(temp[0])] == false) {    //Schiffe erstellen
                                 ids[Integer.parseInt(temp[0])] = true;
-
-                                //call ship status
-                                boolean[] hitbox = new boolean[Integer.parseInt(temp[1])];
-                                for (int hit = 0; hit < hitbox.length; hit++) {
-                                    hitbox[hit] = true;
-                                }
-                                for (int hit = 3; hit < temp.length; hit++) {
-                                    if (temp[hit] == "0") {
-                                        hitbox[hit - 3] = false;
-                                    }
-                                }
-
                                 //create ship
-                                Character c = new Ship(Integer.parseInt(temp[1]), hitbox);
-
+                                Character c = new Ship(Integer.parseInt(temp[1]));
                                 //set rotation
                                 switch (temp[2]) {
                                     case "VERTICAL":
@@ -118,32 +143,11 @@ public class Load {
                                         break;
                                 }
                                 //place ship in grid
-                                own_grid.put(j-1, i, c);
-                            }
-                            j++;
-                        }
-                        i++;
-                    }
-
-                    // jetzt Wasser platzieren
-                    i = 0;
-                    while (i < owngrid.length) {                                   //Schleife über jede Zeile der Datei
-                        String[] col = owngrid[i].split("\\|");             // col alle von | getrennten Inhalte
-                        int j = 1;
-                        while (j < col.length) {                                   //Schleife über jedes Element einer Zeile
-                            String[] temp = col[j].split(",");              //temp beinhaltet jedes Element in |...|
-
-                            //Wasser einlesen
-                            if (temp[0].equals("w")) {
-                                if (Integer.parseInt(temp[1]) == 1) own_grid.put(j-1, i, new Water(true));
-                                else if (Integer.parseInt(temp[1]) == 0) own_grid.put(j-1, i, new Water(false));
-                                j++;
-                                continue;
-
-                                //Schiffe erstellen
-                            } else if (ids[Integer.parseInt(temp[1])] == false) {
-                                j++;
-                                continue;
+                                own_grid.put(i,(j % bound) - 1, c);
+                                //call ship status
+                                for (int hit = 3; hit < temp.length; hit++) {
+                                    if (temp[hit].equals("0")) c.shoot(hit - 3);
+                                }
                             }
                             j++;
                         }
@@ -151,15 +155,13 @@ public class Load {
                     }
                 }
             }).start();
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch(Exception e){
             return null;
         }
         return own_grid;
     }
 
-    //erstellt das Grid für den Gegner
-    public static Grid2D create_foegrid(String[] foegrid, int bound) {
+    public static Grid2D create_foegrid(String[] foegrid, int bound){
         Grid2D foe_grid = new Grid2D(bound);
         try {
             new Thread(new Runnable() {
@@ -170,14 +172,17 @@ public class Load {
                     while (i < foegrid.length) {                                   //Schleife über jede Zeile der Datei
                         String[] col = foegrid[i].split("\\|");
 
-                        int j = 1;
+                        int j = 0;
                         while (j < col.length) {
-                            if (col[j].equals("0")) {
-                                foe_grid.put(j-1,i,new FoeGridShootObject(0));
-                            } else if (col[j].equals("1")) {
-                                foe_grid.put(j-1,i,new FoeGridShootObject(1));
-                            } else if (col[j].equals("2")) {
-                                foe_grid.put(j-1,i,new FoeGridShootObject(2));
+                            if (col[j].equals("-1")) {
+                                foe_grid.shoot(i, (j % bound) - 1);
+                            }
+                            else if (col[j].equals(1)) {
+                                //foe_grid.shoot((i*5)+(j%bound)-1, true);          //*************Anzeigen ob gegnerisches virtuelles Schiff getroffen
+                            }
+                            else if(col[j].equals("null") || col[j].equals("")){
+                                j++;
+                                continue;
                             }
                             j++;
                         }
@@ -185,10 +190,67 @@ public class Load {
                     }
                 }
             }).start();
-        } catch (Exception e) {
+        }catch(Exception e){
             return null;
         }
-        System.out.println(foe_grid);
         return foe_grid;
+    }
+
+
+    private static boolean create_owngrid_test(String[] owngrid, int bound) {
+        boolean[] ids = new boolean[64];
+
+        int i = 0;
+        while(i < owngrid.length){                                   //Schleife über jede Zeile der Datei
+            String[] col = owngrid[i].split("\\|");
+            int j = 0;
+            while(j < col.length){                                   //Schleife über jedes Element einer Zeile
+                String[] temp = col[j].split(",");
+                if(col[j].equals("null") || col[j].equals("")) {
+                    j++;
+                    continue;
+                }
+                else if(col[j].equals("-1")){                             //Wassertreffer realisieren
+                }
+                else if(ids[Integer.parseInt(temp[0])] == false){    //Schiffe erstellen
+
+                    switch(temp[2]){
+                        case "VERTICAL":
+                        case "HORIZONTAL":
+                            break;
+                    }
+                    for(int hit=3;hit<temp.length;hit++){
+                        if (!(temp[hit].equals("1") || temp[hit].equals("0"))){
+                            return false;
+                        }
+                    }
+                }
+                else{return false;}
+                j++;
+            }
+            i++;
+        }
+        return true;
+    }
+
+    private static boolean create_foegrid_test(String[] foegrid, int bound) {
+        int i = 0;
+        while(i < foegrid.length){                                   //Schleife über jede Zeile der Datei
+            String[] col = foegrid[i].split("\\|");
+
+            int j = 0;
+            while(j<col.length) {
+                if (col[j].equals("-1")) {}
+                else if(col[j].equals("1")){}
+                else if(col[j].equals("null") || col[j].equals("")){
+                    j++;
+                    continue;
+                }
+                else{return false;}
+                j++;
+            }
+            i++;
+        }
+        return true;
     }
 }

@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class Ship extends Character {
-    public int id;                  //SchiffID zum Laden wichtig
+    public static int id;
     private boolean[] hitbox;
     private int health;
-    public static int id_counter = 0;       //hilft bei der Erstellung von ID
+    private static int i = 0;
 
     public Ship(int size) {
         super(size);
@@ -18,20 +18,11 @@ public class Ship extends Character {
         for(int i = 0; i < size; ++i) {
             hitbox[i] = true;
         }
-        this.id = id_counter;
-        id_counter++;
-    }
-
-    public Ship(int size, boolean[] hitbox){
-        super(size);
-        health = size;
-        this.hitbox = hitbox;
-        this.id = id_counter;
-        id_counter++;
+        this.id = i;
+        i++;
     }
 
     @Override
-    //beschießt das Schiff an einer bestimmten Stelle(hitpos)
     public ShotResult shoot(int hitpos) {
         System.out.printf("shot %s at pos: %d (hitbox: %s)\n", this, hitpos, Arrays.toString(hitbox));
 
@@ -85,7 +76,7 @@ public class Ship extends Character {
     }
 
     public String toString(){
-        String output = getId() + "," + getSize() + "," + getRotation();
+        String output = getId() + "," + getSize() + "," + getRotation(); //Status über Schiffsteil fehlt
         for(int i=0; i<hitbox.length; i++){
             if(hitbox[i] == true){output = output + ",1";}
             else{output = output + ",0";}

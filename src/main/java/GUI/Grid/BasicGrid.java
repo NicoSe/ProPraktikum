@@ -3,7 +3,7 @@ package GUI.Grid;
 import GUI.ImageHelper;
 import GUI.ScaleHelper;
 import Misc.GridState;
-//import org.w3c.dom.css.Rect;
+import org.w3c.dom.css.Rect;
 
 
 import javax.imageio.ImageIO;

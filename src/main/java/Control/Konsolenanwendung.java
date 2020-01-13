@@ -100,7 +100,7 @@ public class Konsolenanwendung {
                     a.generateRandom();
                     b = new Grid2D(Integer.parseInt(split[1]));
                     FoeGridShootObject temp = new FoeGridShootObject(0);
-                    b.setFoeGridObjects();
+                    //b.setFoeGridObjects();
                     System.out.printf("Grid A:\n%s\n", a);
                     System.out.printf("Grid B:\n%s\n", b);
                     S_socket.sendmsg(split[0] + " " + split[1]);
@@ -192,7 +192,7 @@ public class Konsolenanwendung {
                 a = new Grid2D(Integer.parseInt(words[1]));
                 a.generateRandom();
                 b = new Grid2D(Integer.parseInt(words[1]));
-                b.setFoeGridObjects();
+                //b.setFoeGridObjects();
                 System.out.printf("Grid A:\n%s\n", a);
                 System.out.printf("Grid B:\n%s\n", b);
                 break;

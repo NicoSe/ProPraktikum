@@ -5,7 +5,7 @@ import GUI.Grid.PlacementMEventHandler;
 import GUI.Grid.ShootMEventHandler;
 import GUI.ScaleHelper;
 import Misc.GridState;
-//import org.w3c.dom.css.Rect;
+import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
