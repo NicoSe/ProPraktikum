@@ -29,9 +29,12 @@ public class Main {
         foe_grid.put(1, 0,c3);
         //System.out.println(foe_grid);
 
-        //new Save();
+        new Save("918419248192",own_grid,foe_grid);
         Load lo = new Load();
-        //Server s = new Server();
+        Grid2D[] g = lo.load("1");
+        System.out.println(g[0]);
+        System.out.println(g[1]);
+
 
         //GUI
         // Create and display the form

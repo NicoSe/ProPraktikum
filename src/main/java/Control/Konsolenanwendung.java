@@ -231,7 +231,7 @@ public class Konsolenanwendung {
                 C_socket.Close();
                 break;
             case "load":
-                Load.load(words[1]);
+                //Load.load(words[1]);
                 break;
         }
     }

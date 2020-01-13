@@ -79,6 +79,7 @@ public class Grid2D {
         for(int local_x = 0; local_x < width; ++local_x) {
             for(int local_y = 0; local_y < height; ++local_y) {
                 if(characters[x+local_x][y+local_y] != null) {
+                    if(characters[x+local_x][y+local_y] instanceof Water || characters[x+local_x][y+local_y] instanceof FoeGridShootObject) continue;
                     return false;
                 }
             }
@@ -116,7 +117,7 @@ public class Grid2D {
         //true: if we are, check if the position is empty.
         //otherwise: continue with the next corner
         //...
-        //if we arent in bounds at every pos then we cant colide with anything and thus we have a valid pos!
+        //if we arent in bounds at every pos then we cant collide with anything and thus we have a valid pos!
 
         //top-left
         if(x-1 >= 0 && y-1 >= 0 && !isEmptyAt(x-1, y-1, 1, 1)) {
@@ -152,10 +153,11 @@ public class Grid2D {
         }
 
         // make sure there is no collision between ships
-        if(!isValidAt(x, y, width, height)) {
-            return null;
+        if(!(inst instanceof Water)) {
+            if (!isValidAt(x, y, width, height)) {
+                return null;
+            }
         }
-
         for(int local_x = 0; local_x < width; ++local_x) {
             for(int local_y = 0; local_y < height; ++local_y) {
                 characters[x+local_x][y+local_y] = inst;

@@ -2,20 +2,25 @@ package GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicBorders;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.InetAddress;
+
 import GUI.Grid.*;
 import Logic.Grid2D;
 import Logic.GridController;
 import Logic.OptionsHandler;
 import Misc.GridState;
 import Network.Client;
+import Network.Server;
 //import sun.misc.JavaLangAccess;
 //import com.sun.xml.internal.messaging.saaj.soap.JpegDataContentHandler;
 
@@ -29,33 +34,39 @@ public class MainFrame {
     private BasicGrid pnlGrid2;
     private JPanel pnlPlay;
 
-    private JLabel lblYeet;
-    private JLabel lblYeet2;
-    private JLabel lblYeet3;
+    
     private JLabel lblTitle;
     private JLabel lblPlay;
         private JLabel lblSingle;
             private JLabel lblSize;
                 private JSlider sldSize;
             private JLabel lblDifficulty;
-            private JLabel lblStartGame;
+            private JLabel lblStartSingle;
+    private JLabel lblHost;
+        private JList lstLoad;
+        private JLabel lblStartHost;
+        private JLabel lblShowIP;
+    private JLabel lblJoin;
+        private JLabel lblIPAdress;
+        private JTextField txfIPAdress;
+        private JLabel lblConnect;    
     private JPanel pnlReady;
     private JLabel lblOptions;
+        private JLabel lblFullscreen;
+            private JLabel lblFullscreenPicture;
+        private JLabel lblMusic;
+            private JSlider sldMusicSlider;
+        private JLabel lblSFX;
+            private JSlider sldSFXSlider;
+        OptionsHandler optionsHandler = new OptionsHandler();
     private JLabel lblCredits;
+        private JLabel lblYeet;
+        private JLabel lblYeet2;
+        private JLabel lblYeet3;
     private JLabel lblExit;
     private JLabel lblReturn;
-    private JLabel lblHost;
-    private JLabel lblJoin;
-    private JLabel lblFullscreen;
-    private JLabel lblMusic;
-    private JSlider sldMusicSlider;
-    private JLabel lblSFX;
-    private JSlider sldSFXSlider;
-    private JLabel lblFullscreenPicture;
-    OptionsHandler optionsHandler = new OptionsHandler();
-    private JLabel lblIPAdress;
-    private JTextField txfIPAdress;
-    private JLabel lblConnect;
+    
+    
 
 
     public MainFrame() throws IOException {
@@ -493,10 +504,10 @@ public class MainFrame {
         lblDifficulty.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //Start Game Button
-        lblStartGame = new JLabel();
-        lblStartGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
-        lblStartGame.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblStartGame.addMouseListener(new MouseAdapter(){
+        lblStartSingle = new JLabel();
+        lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+        lblStartSingle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblStartSingle.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
                 try {
@@ -712,10 +723,74 @@ public class MainFrame {
                 }
             }
         });
+        
+        //Host Start Button
+        lblStartHost = new JLabel();
+        lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+        lblConnect.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblConnect.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                try {
+                    lblStartHostMouseClicked(e);
+                } catch(IOException el){
+                    el.printStackTrace();
+                }
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblStartHostMouseEntered(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblStartHostMouseExited(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblStartHostPressed(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblStartHostReleased(e);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        //Show own IP adress
+        lblShowIP = new JLabel();
+        InetAddress inetAddress = InetAddress.getLocalHost();
+        lblShowIP.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        lblShowIP.setText("IP ADDRESS: "+ inetAddress);
+        lblShowIP.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+        lblShowIP.setAlignmentY((JComponent.BOTTOM_ALIGNMENT));
+
+        //Load List
+        lstLoad = new JList();
+        lstLoad.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        lstLoad.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+        lstLoad.setAlignmentY(JComponent.CENTER_ALIGNMENT);
+        lstLoad.setMaximumSize(new Dimension(80, 200));
+        lstLoad.setOpaque(false);
+        lstLoad.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.gray, Color.BLACK, Color.WHITE));
+
     }
 
 
+
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
     //Action Events
     //Play
@@ -885,7 +960,7 @@ public class MainFrame {
         pnlButton.add(lblSize);
         pnlButton.add(sldSize);
         pnlButton.add(lblDifficulty);
-        pnlButton.add(lblStartGame);
+        pnlButton.add(lblStartSingle);
         pnlButton.add(lblReturn);
         pnlButton.setVisible(true);
 
@@ -911,6 +986,12 @@ public class MainFrame {
     //Host
     private void lblHostMouseClicked(MouseEvent e) throws IOException {
         Helpers.playSFX("/SFX/SA2_142.wav", 1);
+        pnlButton.setVisible(false);
+        pnlButton.removeAll();
+        pnlButton.add(lblTitle);
+        pnlButton.add(lblSize);
+        pnlButton.add(sldSize);
+        pnlButton.add(lblStartHost);
     }
 
     private void lblHostMouseReleased(MouseEvent e) throws IOException {
@@ -992,19 +1073,19 @@ public class MainFrame {
     }
 
     private void lblStartGameMouseReleased(MouseEvent e) throws IOException {
-        lblStartGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
+        lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
     }
 
     private void lblStartGameMousePressed(MouseEvent e) throws IOException {
-        lblStartGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameOnPress.png"))));
+        lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameOnPress.png"))));
     }
 
     private void lblStartGameMouseExited(MouseEvent e) throws IOException {
-        lblStartGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+        lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
     }
 
     private void lblStartGameMouseEntered(MouseEvent e) throws IOException {
-        lblStartGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
+        lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
         Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
     }
 
@@ -1054,14 +1135,16 @@ public class MainFrame {
     //Connect Button
     private void lblConnectMouseClicked(MouseEvent e) throws IOException {
         Helpers.playSFX("/SFX/SA2_142.wav", 1);
-        pnlButton.setVisible(false);
-        pnlButton.removeAll();
+
         Client c = new Client(txfIPAdress.getText());
         if (c.isconnected()){
+            pnlButton.setVisible(false);
+            pnlButton.removeAll();
             System.out.println("Starte Spiel");
             //play game
+            pnlButton.setVisible(true);
         }
-        pnlButton.setVisible(true);
+
     }
 
     private void lblConnectMouseExited(MouseEvent e) throws IOException {
@@ -1078,5 +1161,36 @@ public class MainFrame {
 
     private void lblConnectMouseEntered(MouseEvent e) throws IOException {
         lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayWB.png"))));
+    }
+
+    //Host Start Game Button
+    private void lblStartHostMouseClicked(MouseEvent e) throws IOException{
+        Helpers.playSFX("/SFX/SA2_142.wav", 1);
+
+        Server s = new Server();
+        if (s.isconnected()){
+            pnlButton.setVisible(false);
+            pnlButton.removeAll();
+            System.out.println("Play Game");
+            //play Game
+            pnlButton.setVisible(true);
+        }
+    }
+
+    private void lblStartHostMouseEntered(MouseEvent e) throws IOException {
+        lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
+    }
+
+    private void lblStartHostMouseExited(MouseEvent e) throws IOException {
+        lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+    }
+
+    private void lblStartHostPressed(MouseEvent e) throws IOException {
+        lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameOnPress.png"))));
+    }
+
+    private void lblStartHostReleased(MouseEvent e) throws IOException {
+        lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
+        Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
     }
 }
