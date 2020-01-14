@@ -28,14 +28,14 @@ public class Client {
     // und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
     // auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
     //wird abgebrochen.
-    public Client() {
-        this.host = "localhost";
+    public Client(String host) {
+        this.host = host;
         Create_Client();
     }
 
 
 //______________________________________________________________________________________________________________________
-    public void Create_Client(){
+    private void Create_Client(){
         try {
             Close_Socket = false;
             address = new InetSocketAddress(host, port);
@@ -71,6 +71,14 @@ public class Client {
             Create_Client();
             sendmsg(msg);
         }
+    }
+
+
+
+//______________________________________________________________________________________________________________________
+    //Gibt zurück ob Client verbunden
+    public boolean isconnected(){
+        return client.isConnected();
     }
 
 

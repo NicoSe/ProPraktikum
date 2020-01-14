@@ -1,8 +1,8 @@
 package Logic;
 
 import java.io.*;
-
-import Control.Konsolenanwendung;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Save {
 
@@ -13,6 +13,9 @@ public class Save {
 
         try {
             pWriter = new PrintWriter((new BufferedWriter((new FileWriter("src/main/java/logic/SaveGames/" + filename + ".txt")))));
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            pWriter.write(dtf.format(now) + "\n");
             pWriter.write("SIZE\n" + a.getBound() + "\n");
             pWriter.write("OWNGRID\n" + a.toString());
             pWriter.write("OTHERGRID\n" + b.toString());

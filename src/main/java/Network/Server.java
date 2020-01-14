@@ -32,7 +32,7 @@ public class Server{
 
 
 //______________________________________________________________________________________________________________________
-    public void Create_Server(){
+    private void Create_Server(){
         try{
             Close_Socket = false;
             System.out.println("<S>Starting Server...");
@@ -55,9 +55,18 @@ public class Server{
     }
 
 
+
+//______________________________________________________________________________________________________________________
+    //Gibt zurück ob Server verbunden
+    public boolean isconnected(){
+        return Client_Socket.isConnected();
+    }
+
+
+
 //______________________________________________________________________________________________________________________
     //Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
-    //Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
+    //Es muss ausschlieslich eine Nachricht in die Funktion uebergeben werden.
     public void sendmsg(String msg){
         try{
             DataOutputStream stream_out = new DataOutputStream((Client_Socket.getOutputStream()));
