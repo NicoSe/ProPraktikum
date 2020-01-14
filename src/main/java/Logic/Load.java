@@ -79,8 +79,8 @@ public class Load {
                         break;
 
                     } else if (temp[0].equals("w")) {                             //Wassertreffer realisieren
-                        if (temp[1].equals("1")) own_grid.put(j-1,i, new Water(true));
-                        else own_grid.put(j-1,i, new Water(false));
+                        if (temp[1].equals("1")) own_grid.put(j-1,i, new Water(false));
+                        else own_grid.put(j-1,i, new Water(true));
 
                     } else if (ids[Integer.parseInt(temp[0])] == false) {    //Schiffe erstellen
                         ids[Integer.parseInt(temp[0])] = true;

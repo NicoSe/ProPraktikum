@@ -5,6 +5,7 @@ import GUI.Grid.PlacementMEventHandler;
 import GUI.Grid.ShootMEventHandler;
 import GUI.ScaleHelper;
 import Misc.GridState;
+import org.w3c.dom.css.Rect;
 //import org.w3c.dom.css.Rect;
 
 import java.awt.*;
@@ -40,13 +41,37 @@ public class GridController {
             return null;
         });
 
+        if(state == GridState.FORBID) {
+            return;
+        }
+
+        if(state == GridState.SHOOT) {
+            onFinailizePlace();
+        }
+
         mouseAdapter = state == GridState.SHOOT ? new ShootMEventHandler(this, view) : new PlacementMEventHandler(this, view);
         view.addMouseListener(mouseAdapter);
         view.addMouseMotionListener(mouseAdapter);
     }
 
-    public void changePiecePos(Point od, Point nw, Dimension dim) {
-        // TODO: write method that gets the component from grid
+    public void rotatePiece(Component comp) {
+        Character c = c2c.get(comp);
+        if(c == null) {
+            return;
+        }
+
+        if(model.rotate(c.getX(), c.getY())) {
+            view.remove(comp);
+            c2c.remove(comp);
+
+            try {
+                c2c.put(view.addPiece(c.getImage(), c.getX(), c.getY(), c.getSize(), c.isVertical()), c);
+                view.revalidate();
+                view.repaint();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void changePiecePos(Component comp, Point newPos) {
@@ -92,6 +117,24 @@ public class GridController {
         // TODO: modify view/ship panel according to shot result.
     }
 
+    public void highlightCell(Component c) {
+        Character ch = c2c.get(c);
+        if(ch == null || !ch.isAlive()) {
+            view.highlightCell(null);
+            return;
+        }
+
+        Point gridPos = new Point(c.getLocation());
+        gridPos.x /= view.getScaledTileSize();
+        gridPos.y /= view.getScaledTileSize();
+
+        Dimension objDim = new Dimension(c.getSize());
+        objDim.width /= view.getScaledTileSize();
+        objDim.height /= view.getScaledTileSize();
+
+        view.highlightCell(new Rectangle(gridPos, objDim));
+    }
+
     public void setInteractionState(GridState state) {
         view.setGridInteractionState(state);
 
@@ -102,8 +145,27 @@ public class GridController {
             return;
         }
 
+        if(state == GridState.SHOOT) {
+            onFinailizePlace();
+        }
+
         mouseAdapter = state == GridState.SHOOT ? new ShootMEventHandler(this, view) : new PlacementMEventHandler(this, view);
         view.addMouseListener(mouseAdapter);
         view.addMouseMotionListener(mouseAdapter);
+    }
+
+    private void onFinailizePlace() {
+        for(int i = 0; i < model.getBound(); ++i) {
+            for(int j = 0; j < model.getBound(); ++j) {
+                Character c = model.put(i, j, new Water(false));
+                if(c != null) {
+                    try {
+                        c2c.put(view.addPiece(c.getImage(), c.getX(), c.getY(), c.getSize(), c.isVertical()), c);
+                    } catch(IOException e) {
+
+                    }
+                }
+            }
+        }
     }
 }

@@ -16,6 +16,18 @@ public class ShootMEventHandler extends MouseAdapter {
     }
 
     @Override
+    public void mouseMoved(MouseEvent e) {
+        Point p = e.getPoint();
+        Component c = grid.getComponentAt(p);
+        if(c == null || !((BasicGrid.CustomLayoutManager)grid.getLayout()).isPlacedPiece(c)) {
+            controller.highlightCell(null);
+            return;
+        }
+
+        controller.highlightCell(c);
+    }
+
+    @Override
     public void mouseReleased(MouseEvent e) {
         Point p = e.getPoint();
         Component c = grid.getComponentAt(p);

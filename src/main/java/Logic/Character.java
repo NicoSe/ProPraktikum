@@ -43,7 +43,7 @@ public abstract class Character {
     }
 
     Rotation getNextRotation() {
-        return Rotation.values()[rot.ordinal()+1 % Rotation.MAX_NUM.ordinal()];
+        return this.rot == Rotation.HORIZONTAL ? Rotation.VERTICAL : Rotation.HORIZONTAL;
     }
 
     public Rotation getRotation() {

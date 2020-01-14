@@ -1,5 +1,6 @@
 package Logic;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -17,19 +18,23 @@ public class Water extends Character {
     @Override
     //returne den Status des Waterobjects, zb für die Abfrage ob man noch mal hin schiesen darf
     public boolean isAlive() {
-        return isHit;
+        return !isHit;
     }
 
     @Override
-    //Methode wird nicht gebraucht
     public ShotResult shoot(int hitpos) {
+        if(isHit) {
+            System.out.println("water that was hit already.");
+            return ShotResult.ALREADY;
+        }
         isHit = true;
+        System.out.println("Water hit!");
         return ShotResult.NONE;
     }
 
     @Override
     public BufferedImage getImage() throws IOException {
-        return null;
+        return ImageIO.read(getClass().getResource("/Sprites/transparent.png"));
     }
 
     @Override
