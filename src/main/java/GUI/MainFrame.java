@@ -39,42 +39,44 @@ public class MainFrame {
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
     private JPanel pnlPlay;
+    private JPanel pnlDummyThicc;
+        private JPanel pnlDummy;
 
-    
+
     private JLabel lblTitle;
     private JLabel lblPlay;
-        private JLabel lblSingle;
-            private JLabel lblSize;
-                private JSlider sldSize;
-            private JLabel lblDifficulty;
-            private JLabel lblStartSingle;
+    private JLabel lblSingle;
+    private JLabel lblSize;
+    private JSlider sldSize;
+    private JLabel lblDifficulty;
+    private JLabel lblStartSingle;
     private JLabel lblHost;
-        private JList lstLoad;
-            private JScrollPane scrollpane;
-            File[] data;
-        private JLabel lblStartHost;
-        private JLabel lblShowIP;
+    private JList lstLoad;
+    private JScrollPane scrollpane;
+    File[] data;
+    private JLabel lblStartHost;
+    private JLabel lblShowIP;
     private JLabel lblJoin;
-        private JLabel lblIPAdress;
-        private JTextField txfIPAdress;
-        private JLabel lblConnect;    
+    private JLabel lblIPAdress;
+    private JTextField txfIPAdress;
+    private JLabel lblConnect;
     private JPanel pnlReady;
     private JLabel lblOptions;
-        private JLabel lblFullscreen;
-            private JLabel lblFullscreenPicture;
-        private JLabel lblMusic;
-            private JSlider sldMusicSlider;
-        private JLabel lblSFX;
-            private JSlider sldSFXSlider;
-        OptionsHandler optionsHandler = new OptionsHandler();
+    private JLabel lblFullscreen;
+    private JLabel lblFullscreenPicture;
+    private JLabel lblMusic;
+    private JSlider sldMusicSlider;
+    private JLabel lblSFX;
+    private JSlider sldSFXSlider;
+    OptionsHandler optionsHandler = new OptionsHandler();
     private JLabel lblCredits;
-        private JLabel lblYeet;
-        private JLabel lblYeet2;
-        private JLabel lblYeet3;
+    private JLabel lblYeet;
+    private JLabel lblYeet2;
+    private JLabel lblYeet3;
     private JLabel lblExit;
     private JLabel lblReturn;
-    
-    
+
+
 
 
     public MainFrame() throws IOException {
@@ -91,6 +93,7 @@ public class MainFrame {
         jf.setLocationRelativeTo(null);
         jf.setVisible(true);
         jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
 
         //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/Sprites/ee7d4460451792a.gif"));
         //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/Sprites/Waltertile2_1024.png"));
@@ -133,6 +136,21 @@ public class MainFrame {
         JLabel lblRandomise = new JLabel("Randomise");
         pnlReady.add(lblReady);
         pnlReady.add(lblRandomise);
+
+        //panel DUmmythicc
+        pnlDummyThicc =  new JPanel(new BorderLayout());
+        pnlDummyThicc.setBackground(Color.RED);
+        pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/10,jf.getWidth()/10,jf.getHeight()/10,jf.getWidth()/10));
+
+        pnlDummy =  new JPanel();
+        pnlDummy.setBackground(Color.GREEN);
+        pnlDummy.setPreferredSize(new Dimension(20,25));
+
+
+
+
+
+
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //Buttons for Button panel and Object Disign
@@ -738,7 +756,7 @@ public class MainFrame {
                 }
             }
         });
-        
+
         //Host Start Button
         lblStartHost = new JLabel();
         lblStartHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
@@ -787,8 +805,8 @@ public class MainFrame {
         InetAddress inetAddress = InetAddress.getLocalHost();
         lblShowIP.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         lblShowIP.setText("IP ADDRESS: "+ inetAddress);
-        lblShowIP.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
-        lblShowIP.setAlignmentY((JComponent.BOTTOM_ALIGNMENT));
+        lblShowIP.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         //Load List
         lstLoad = new JList();
@@ -933,6 +951,7 @@ public class MainFrame {
     //Exit
     private void lblExitMouseClicked(MouseEvent e) throws IOException {
         Helpers.playSFX("/SFX/firered_0011.wav", 1);
+        OptionsHandler.changeFullscreenMode(false);
         System.exit(0);
     }
 
@@ -1036,6 +1055,7 @@ public class MainFrame {
         pnlButton.add(lblReturn);
         pnlButton.add(lblShowIP);
         pnlButton.setVisible(true);
+        lblHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/HostBW.png"))));
     }
 
     private void lblHostMouseReleased(MouseEvent e) throws IOException {
@@ -1091,7 +1111,7 @@ public class MainFrame {
         Helpers.playSFX("/SFX/SA2_142.wav", 1);
         backgroundPanel.removeAll();
 
-        pnlPlay.add(pnlReady);
+        //pnlPlay.add(pnlReady);
 
         //backgroundPanel.add(pnlPlay);
         pnlGrid1 = new BasicGrid(sldSize.getValue(), GridState.PLACE);
@@ -1100,19 +1120,23 @@ public class MainFrame {
         GridController controller = new GridController(g2d, pnlGrid1);
         controller.init(GridState.PLACE);
         pnlGrid1.setOpaque(false);
-        pnlPlay.add(pnlGrid1);
+        //pnlPlay.add(pnlGrid1);
 
-        pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
-        GridController controller2 = new GridController(g2d,pnlGrid2);
-        pnlGrid2.setOpaque(false);
-        pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        controller2.init(GridState.SHOOT);
+        //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
+        //GridController controller2 = new GridController(g2d,pnlGrid2);
+        //pnlGrid2.setOpaque(false);
+        //pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //controller2.init(GridState.SHOOT);
 
 
-        backgroundPanel.add(pnlPlay);
+        //backgroundPanel.add(pnlPlay);
 
-        jf.setSize(new Dimension(1025,769));
-        jf.setSize(new Dimension(1024,768));
+        backgroundPanel.add(pnlDummyThicc);
+        pnlDummyThicc.setOpaque(true);
+        pnlDummyThicc.add(pnlDummy,BorderLayout.CENTER);
+        pnlDummy.add(pnlGrid1);
+        jf.setSize(new Dimension(1025,851));
+        jf.setSize(new Dimension(1024,850));
 
     }
 
@@ -1141,14 +1165,18 @@ public class MainFrame {
         if (OptionsHandler.getFullscreenMode()){
             OptionsHandler.changeFullscreenMode(false);
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+
             if(prev_window_x != 0){
                 jf.setSize(prev_window_x,prev_window_y);
+
             }
             else{
                 jf.setSize(1024, 850);
                 jf.setLocationRelativeTo(null);
             }
-            //jf.setUndecorated(false);
+            jf.dispose();
+            jf.setUndecorated(false);
+            jf.setVisible(true);
         }
         else{
             OptionsHandler.changeFullscreenMode(true);
@@ -1156,7 +1184,9 @@ public class MainFrame {
             prev_window_y = jf.getHeight();
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
             jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            //jf.setUndecorated(true);
+            jf.dispose();
+            jf.setUndecorated(true);
+            jf.setVisible(true);
         }
     }
 
