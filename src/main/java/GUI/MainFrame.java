@@ -40,41 +40,41 @@ public class MainFrame {
     private BasicGrid pnlGrid2;
     private JPanel pnlPlay;
 
-    
+
     private JLabel lblTitle;
     private JLabel lblPlay;
-        private JLabel lblSingle;
-            private JLabel lblSize;
-                private JSlider sldSize;
-            private JLabel lblDifficulty;
-            private JLabel lblStartSingle;
+    private JLabel lblSingle;
+    private JLabel lblSize;
+    private JSlider sldSize;
+    private JLabel lblDifficulty;
+    private JLabel lblStartSingle;
     private JLabel lblHost;
-        private JList lstLoad;
-            private JScrollPane scrollpane;
-            File[] data;
-        private JLabel lblStartHost;
-        private JLabel lblShowIP;
+    private JList lstLoad;
+    private JScrollPane scrollpane;
+    File[] data;
+    private JLabel lblStartHost;
+    private JLabel lblShowIP;
     private JLabel lblJoin;
-        private JLabel lblIPAdress;
-        private JTextField txfIPAdress;
-        private JLabel lblConnect;    
+    private JLabel lblIPAdress;
+    private JTextField txfIPAdress;
+    private JLabel lblConnect;
     private JPanel pnlReady;
     private JLabel lblOptions;
-        private JLabel lblFullscreen;
-            private JLabel lblFullscreenPicture;
-        private JLabel lblMusic;
-            private JSlider sldMusicSlider;
-        private JLabel lblSFX;
-            private JSlider sldSFXSlider;
-        OptionsHandler optionsHandler = new OptionsHandler();
+    private JLabel lblFullscreen;
+    private JLabel lblFullscreenPicture;
+    private JLabel lblMusic;
+    private JSlider sldMusicSlider;
+    private JLabel lblSFX;
+    private JSlider sldSFXSlider;
+    OptionsHandler optionsHandler = new OptionsHandler();
     private JLabel lblCredits;
-        private JLabel lblYeet;
-        private JLabel lblYeet2;
-        private JLabel lblYeet3;
+    private JLabel lblYeet;
+    private JLabel lblYeet2;
+    private JLabel lblYeet3;
     private JLabel lblExit;
     private JLabel lblReturn;
-    
-    
+
+
 
 
     public MainFrame() throws IOException {
@@ -91,6 +91,7 @@ public class MainFrame {
         jf.setLocationRelativeTo(null);
         jf.setVisible(true);
         jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
 
         //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/Sprites/ee7d4460451792a.gif"));
         //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/Sprites/Waltertile2_1024.png"));
@@ -738,7 +739,7 @@ public class MainFrame {
                 }
             }
         });
-        
+
         //Host Start Button
         lblStartHost = new JLabel();
         lblStartHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
@@ -933,6 +934,7 @@ public class MainFrame {
     //Exit
     private void lblExitMouseClicked(MouseEvent e) throws IOException {
         Helpers.playSFX("/SFX/firered_0011.wav", 1);
+        OptionsHandler.changeFullscreenMode(false);
         System.exit(0);
     }
 
@@ -1141,14 +1143,18 @@ public class MainFrame {
         if (OptionsHandler.getFullscreenMode()){
             OptionsHandler.changeFullscreenMode(false);
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+
             if(prev_window_x != 0){
                 jf.setSize(prev_window_x,prev_window_y);
+
             }
             else{
                 jf.setSize(1024, 850);
                 jf.setLocationRelativeTo(null);
             }
-            //jf.setUndecorated(false);
+            jf.dispose();
+            jf.setUndecorated(false);
+            jf.setVisible(true);
         }
         else{
             OptionsHandler.changeFullscreenMode(true);
@@ -1156,7 +1162,9 @@ public class MainFrame {
             prev_window_y = jf.getHeight();
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
             jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            //jf.setUndecorated(true);
+            jf.dispose();
+            jf.setUndecorated(true);
+            jf.setVisible(true);
         }
     }
 
