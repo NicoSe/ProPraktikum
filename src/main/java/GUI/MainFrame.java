@@ -39,6 +39,8 @@ public class MainFrame {
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
     private JPanel pnlPlay;
+    private JPanel pnlDummyThicc;
+        private JPanel pnlDummy;
 
 
     private JLabel lblTitle;
@@ -134,6 +136,21 @@ public class MainFrame {
         JLabel lblRandomise = new JLabel("Randomise");
         pnlReady.add(lblReady);
         pnlReady.add(lblRandomise);
+
+        //panel DUmmythicc
+        pnlDummyThicc =  new JPanel(new BorderLayout());
+        pnlDummyThicc.setBackground(Color.RED);
+        pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/10,jf.getWidth()/10,jf.getHeight()/10,jf.getWidth()/10));
+
+        pnlDummy =  new JPanel();
+        pnlDummy.setBackground(Color.GREEN);
+        pnlDummy.setPreferredSize(new Dimension(20,25));
+
+
+
+
+
+
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //Buttons for Button panel and Object Disign
@@ -788,8 +805,8 @@ public class MainFrame {
         InetAddress inetAddress = InetAddress.getLocalHost();
         lblShowIP.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         lblShowIP.setText("IP ADDRESS: "+ inetAddress);
-        lblShowIP.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
-        lblShowIP.setAlignmentY((JComponent.BOTTOM_ALIGNMENT));
+        lblShowIP.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         //Load List
         lstLoad = new JList();
@@ -1038,6 +1055,7 @@ public class MainFrame {
         pnlButton.add(lblReturn);
         pnlButton.add(lblShowIP);
         pnlButton.setVisible(true);
+        lblHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/HostBW.png"))));
     }
 
     private void lblHostMouseReleased(MouseEvent e) throws IOException {
@@ -1093,7 +1111,7 @@ public class MainFrame {
         Helpers.playSFX("/SFX/SA2_142.wav", 1);
         backgroundPanel.removeAll();
 
-        pnlPlay.add(pnlReady);
+        //pnlPlay.add(pnlReady);
 
         //backgroundPanel.add(pnlPlay);
         pnlGrid1 = new BasicGrid(sldSize.getValue(), GridState.PLACE);
@@ -1102,19 +1120,23 @@ public class MainFrame {
         GridController controller = new GridController(g2d, pnlGrid1);
         controller.init(GridState.PLACE);
         pnlGrid1.setOpaque(false);
-        pnlPlay.add(pnlGrid1);
+        //pnlPlay.add(pnlGrid1);
 
-        pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
-        GridController controller2 = new GridController(g2d,pnlGrid2);
-        pnlGrid2.setOpaque(false);
-        pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        controller2.init(GridState.SHOOT);
+        //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
+        //GridController controller2 = new GridController(g2d,pnlGrid2);
+        //pnlGrid2.setOpaque(false);
+        //pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //controller2.init(GridState.SHOOT);
 
 
-        backgroundPanel.add(pnlPlay);
+        //backgroundPanel.add(pnlPlay);
 
-        jf.setSize(new Dimension(1025,769));
-        jf.setSize(new Dimension(1024,768));
+        backgroundPanel.add(pnlDummyThicc);
+        pnlDummyThicc.setOpaque(true);
+        pnlDummyThicc.add(pnlDummy,BorderLayout.CENTER);
+        pnlDummy.add(pnlGrid1);
+        jf.setSize(new Dimension(1025,851));
+        jf.setSize(new Dimension(1024,850));
 
     }
 
