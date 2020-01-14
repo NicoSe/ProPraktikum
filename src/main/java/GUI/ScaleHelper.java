@@ -6,7 +6,7 @@ public class ScaleHelper {
     public static double CalculateScalingFactor(Component c) {
         double size = Math.min(c.getWidth(), c.getHeight());
         // TODO: differenciate between width and height.
-        double prefSize = Math.min(c.getPreferredSize().width, c.getPreferredSize().height);
+        double prefSize = size == c.getWidth() ? c.getPreferredSize().width : c.getPreferredSize().height;
 
         return size/prefSize;
     }

@@ -103,6 +103,7 @@ public class MainFrame {
         backgroundPanel.setMaximumSize(new Dimension(1920, 1080));
         jf.setContentPane(backgroundPanel);
 
+        /* unused...
         //grid Panel
         pnlGrid1 = new BasicGrid(5, GridState.PLACE);
         Grid2D g2d = new Grid2D(5);
@@ -113,6 +114,7 @@ public class MainFrame {
 
         //grid Panel enemy
         pnlGrid2 = new BasicGrid(2,GridState.FORBID);
+        */
 
         //panel
         pnlButton = new JPanel();
@@ -142,14 +144,9 @@ public class MainFrame {
         pnlDummyThicc.setBackground(Color.RED);
         pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/10,jf.getWidth()/10,jf.getHeight()/10,jf.getWidth()/10));
 
-        pnlDummy =  new JPanel();
+        pnlDummy =  new JPanel(new BorderLayout());
         pnlDummy.setBackground(Color.GREEN);
-        pnlDummy.setPreferredSize(new Dimension(20,25));
-
-
-
-
-
+        //pnlDummy.setPreferredSize(new Dimension(425,425));
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1133,8 +1130,8 @@ public class MainFrame {
 
         backgroundPanel.add(pnlDummyThicc);
         pnlDummyThicc.setOpaque(true);
-        pnlDummyThicc.add(pnlDummy,BorderLayout.CENTER);
-        pnlDummy.add(pnlGrid1);
+        pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
+        pnlDummy.add(pnlGrid1, BorderLayout.NORTH);
         jf.setSize(new Dimension(1025,851));
         jf.setSize(new Dimension(1024,850));
 

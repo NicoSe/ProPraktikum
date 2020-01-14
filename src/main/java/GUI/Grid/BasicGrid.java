@@ -103,7 +103,7 @@ public class BasicGrid extends JPanel {
                 Point p = rect.getLocation();
                 Dimension d = rect.getSize();
 
-                int scaledTile = GetScaledTileSize(parent);
+                int scaledTile = GetScaledTileSize(parent.getParent() != null ? parent.getParent() : parent, gridBounds);
                 comp.setBounds(new Rectangle(p.x * scaledTile, p.y * scaledTile, d.width * scaledTile, d.height * scaledTile));
                 //System.out.printf("on layout container comp bounds: %s\n", comp.getBounds());
             }
@@ -212,6 +212,7 @@ public class BasicGrid extends JPanel {
             if (getParent() != null) {
                 bgImg = ImageHelper.scale(baseImg, currentSize, currentSize);
             }
+            this.setPreferredSize(new Dimension(currentSize, currentSize));
             scaledSize = currentSize;
         }
 
@@ -237,12 +238,17 @@ public class BasicGrid extends JPanel {
         return this.gridRect.contains(rect);
     }
 
-    public static int GetScaledTileSize(Component c) {
-        return (int) (Math.floor(TILE_BASE_SIZE * ScaleHelper.CalculateScalingFactor(c)));
+    public static int GetScaledTileSize(Component c, int bound) {
+        double defaultSize = TILE_BASE_SIZE * bound;
+        double size = Math.min(c.getWidth(), c.getHeight());
+        // TODO: differenciate between width and height.
+        double prefSize = size == c.getWidth() ? c.getPreferredSize().width : c.getPreferredSize().height;
+        double sf = size / defaultSize;
+        return (int) (Math.floor(TILE_BASE_SIZE * sf));
     }
 
     public int getScaledTileSize() {
-        return GetScaledTileSize(getParent() != null ? getParent() : this);
+        return GetScaledTileSize(getParent() != null ? getParent() : this, bound);
     }
 
     public Rectangle getScaledGridRect() {
