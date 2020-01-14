@@ -242,7 +242,7 @@ public class BasicGrid extends JPanel {
     }
 
     public int getScaledTileSize() {
-        return (int) (Math.floor(TILE_BASE_SIZE * ScaleHelper.CalculateScalingFactor(this)));
+        return GetScaledTileSize(getParent() != null ? getParent() : this);
     }
 
     public Rectangle getScaledGridRect() {
