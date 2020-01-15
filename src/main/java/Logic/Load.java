@@ -12,7 +12,7 @@ public class Load {
 
     public static Grid2D[] load(String adress) {
         BufferedReader in = null;
-        File file = new File("src/main/java/logic/SaveGames/" + adress + ".txt");
+        File file = new File("./SaveGames/" + adress + ".txt");
         if (!file.exists() || !file.canRead()) {
             return null;
         }

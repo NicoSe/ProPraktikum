@@ -812,8 +812,13 @@ public class MainFrame {
         lstLoad.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.gray, Color.BLACK, Color.WHITE));
         lstLoad.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        File dir = new File("src/main/java/Logic/SaveGames");
+
+        File dir = new File("./SaveGames");
         data = dir.listFiles();
+        if(data == null) {
+            dir.mkdirs();
+            data = dir.listFiles();
+        }
         String[] filenames = new String[data.length];
         BufferedReader in = null;
         File file;

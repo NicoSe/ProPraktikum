@@ -9,8 +9,12 @@ public class OptionsHandler {
 
     public OptionsHandler(){
         BufferedReader in = null;
-        File file = new File("src/main/resources/settings/settings.txt");
+        File file = new File("./settings.txt");
         if (!file.exists() || !file.canRead()) {
+            musicVolume = 40;
+            SFXVolume = 40;
+            fullscreenMode = false;
+            saveSettings();
             return;
         }
         try{
@@ -81,7 +85,7 @@ public class OptionsHandler {
         PrintWriter pWriter = null;
 
         try {
-            pWriter = new PrintWriter((new BufferedWriter((new FileWriter("src/main/resources/settings/settings.txt")))));
+            pWriter = new PrintWriter((new BufferedWriter((new FileWriter("./settings.txt")))));
             pWriter.write("Music Value:\n" + musicVolume + "\n");
             pWriter.write("SFX Value:\n" + SFXVolume + "\n");
             pWriter.write("Fullscreen:\n" + fullscreenMode);

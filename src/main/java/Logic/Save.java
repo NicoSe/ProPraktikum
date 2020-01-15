@@ -12,7 +12,7 @@ public class Save {
         pWriter = null;
 
         try {
-            pWriter = new PrintWriter((new BufferedWriter((new FileWriter("src/main/java/logic/SaveGames/" + filename + ".txt")))));
+            pWriter = new PrintWriter((new BufferedWriter((new FileWriter("./SaveGames/" + filename + ".txt")))));
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             pWriter.write(dtf.format(now) + "\n");
