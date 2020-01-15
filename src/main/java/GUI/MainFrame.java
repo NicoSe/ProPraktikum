@@ -1111,11 +1111,11 @@ public class MainFrame {
         //pnlPlay.add(pnlReady);
 
         //backgroundPanel.add(pnlPlay);
-        pnlGrid1 = new BasicGrid(sldSize.getValue(), GridState.PLACE);
+        pnlGrid1 = new BasicGrid(sldSize.getValue(), GridState.SHOOT);
         Grid2D g2d = new Grid2D(sldSize.getValue());
         g2d.generateRandom();
         GridController controller = new GridController(g2d, pnlGrid1);
-        controller.init(GridState.PLACE);
+        controller.init(GridState.SHOOT);
         pnlGrid1.setOpaque(false);
         //pnlPlay.add(pnlGrid1);
 

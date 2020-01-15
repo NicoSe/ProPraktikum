@@ -8,6 +8,7 @@ import Misc.GridState;
 import org.w3c.dom.css.Rect;
 //import org.w3c.dom.css.Rect;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.geom.Rectangle2D;
@@ -24,6 +25,11 @@ public class GridController {
     public GridController(Grid2D model, BasicGrid view) {
         this.model = model;
         this.view = view;
+        view.setController(this);
+    }
+
+    public Character getCharacterOfComponent(Component c) {
+        return c2c.get(c);
     }
 
     public void init(GridState state) {

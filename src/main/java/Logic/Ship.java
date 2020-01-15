@@ -75,6 +75,10 @@ public class Ship extends Character {
         this.id = id;
     }
 
+    public boolean[] getHitbox() {
+        return hitbox;
+    }
+
     public String toString(){
         String output = getId() + "," + getSize() + "," + getRotation(); //Status über Schiffsteil fehlt
         for(int i=0; i<hitbox.length; i++){

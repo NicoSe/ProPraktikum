@@ -2,6 +2,10 @@ package GUI.Grid;
 
 import GUI.ImageHelper;
 import GUI.ScaleHelper;
+import Logic.Character;
+import Logic.GridController;
+import Logic.Ship;
+import Logic.Water;
 import Misc.GridState;
 //import org.w3c.dom.css.Rect;
 
@@ -94,7 +98,9 @@ public class BasicGrid extends JPanel {
 
         @Override
         public void layoutContainer(Container parent) {
-            for(Component comp : parent.getComponents()) {
+            Component[] comps = parent.getComponents();
+            for(int i = 0; i < comps.length; ++i) {
+                Component comp = comps[i];
                 Rectangle rect = compGrid.get(comp);
                 if(rect == null) {
                     //?
@@ -117,6 +123,7 @@ public class BasicGrid extends JPanel {
     private Rectangle gridRect;
     private Rectangle highlightedCell;
     private GridState interactionState;
+    private GridController controller = null;
     public BasicGrid(int bound, GridState interactionState) {
         setLayout(new CustomLayoutManager(bound));
         this.bound = bound;
@@ -156,6 +163,10 @@ public class BasicGrid extends JPanel {
         }
     }
 
+    public void setController(GridController controller) {
+        this.controller = controller;
+    }
+
     public void setGridInteractionState(GridState state) {
         this.interactionState = state;
     }
@@ -167,6 +178,8 @@ public class BasicGrid extends JPanel {
     public Component addPiece(BufferedImage texture, int x, int y, int size, boolean isVertical) {
         JLabel piece = new JLabel();
         try {
+            BufferedImage rocketNone = ImageIO.read(getClass().getResource("/Sprites/whitepin2.png"));
+            BufferedImage normalRocket = ImageIO.read(getClass().getResource("/Sprites/rackete2.png"));
             piece = new JLabel() {
                 public void paintComponent(Graphics g) {
                     super.paintComponent(g);
@@ -180,6 +193,31 @@ public class BasicGrid extends JPanel {
                         ship = ImageHelper.scale(ship, this.getWidth(), this.getHeight());
 
                         g.drawImage(ship, 0, 0, this);
+
+                        Character ch = controller.getCharacterOfComponent(this);
+                        if(ch != null) {
+                            BufferedImage rocket;
+                            int correctSize = Math.min(this.getWidth(), this.getHeight());
+                            if(ch instanceof Water) {
+                                rocket = ImageHelper.scale(rocketNone, correctSize, correctSize);
+                                if(!ch.isAlive()) {
+                                    g.drawImage(rocket, 0, 0, this);
+                                }
+
+                            } else if(ch instanceof Ship) {
+                                rocket = ImageHelper.scale(normalRocket, correctSize, correctSize);
+
+                                Ship s = (Ship)ch;
+                                boolean[] hitbox = s.getHitbox();
+                                for(int i = 0; i < hitbox.length; ++i) {
+                                    if(hitbox[i]) {
+                                        continue;
+                                    }
+                                    g.drawImage(rocket, !s.isVertical() ? i*getScaledTileSize() : 0, s.isVertical() ? i*getScaledTileSize() : 0, this);
+                                }
+                            }
+                        }
+
                     } catch(NullPointerException e) {
                         System.out.printf("ERR: PIECE TEXTURE IS NULL!\nerr: %s\n", e.getMessage());
                     }
