@@ -119,7 +119,9 @@ public class GridController {
         int shipPosOffsetY = (pos.y - c.getY() * currentTileSize) / currentTileSize;
 
         ShotResult res = model.shoot(c.getX() + shipPosOffsetX, c.getY() + shipPosOffsetY);
-
+        if(res == ShotResult.SUNK) {
+            model.markSurrounding(c.getX(), c.getY());
+        }
         // TODO: modify view/ship panel according to shot result.
     }
 
