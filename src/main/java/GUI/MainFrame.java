@@ -31,6 +31,8 @@ public class MainFrame {
     private JFrame jf;
     private BackgroundPanel backgroundPanel;
     private JPanel pnlButton;
+    private JPanel pnlHostX;
+    private JPanel pnlHostY;
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
     private JPanel pnlPlay;
@@ -70,6 +72,7 @@ public class MainFrame {
     private JLabel lblYeet3;
     private JLabel lblExit;
     private JLabel lblReturn;
+    private JLabel lblDummyObj;
 
 
 
@@ -125,6 +128,21 @@ public class MainFrame {
         pnlButton.setMinimumSize(new Dimension(1024,850));
         pnlButton.setMaximumSize(new Dimension(1920,1080));
         backgroundPanel.add(pnlButton);
+
+        pnlHostX = new JPanel();
+        pnlHostX.setOpaque(false);
+        pnlHostX.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pnlHostX.setLayout(new BoxLayout(pnlHostX, BoxLayout.X_AXIS));
+        pnlHostX.setMinimumSize(new Dimension(1024, 850));
+        pnlHostX.setMaximumSize((new Dimension(1980, 1080)));
+
+        pnlHostY = new JPanel();
+        pnlHostY.setOpaque(false);
+        pnlHostY.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pnlHostY.setAlignmentY(Component.CENTER_ALIGNMENT);
+        pnlHostY.setLayout(new BoxLayout(pnlHostY, BoxLayout.Y_AXIS));
+        pnlHostY.setMinimumSize(new Dimension(1024, 850));
+        pnlHostY.setMaximumSize((new Dimension(1980, 1080)));
 
         //panelPlay
         pnlPlay = new JPanel();
@@ -475,10 +493,13 @@ public class MainFrame {
                     pnlButton.setVisible(false);
                     pnlButton.removeAll();
                     pnlButton.add(lblTitle);
-                    pnlButton.add(lblSize);
-                    pnlButton.add(sldSize);
-                    pnlButton.add(scrollpane);
-                    scrollpane.setLocation(jf.getWidth()-220,lblSize.getY());
+                    pnlButton.add(pnlHostX);
+
+                    pnlHostY.add(lblSize);
+                    pnlHostY.add(sldSize);
+                    pnlHostX.add(pnlHostY);
+                    pnlHostX.add(scrollpane);
+                    pnlHostX.add(lblDummyObj);
 
                     pnlButton.add(lblStartHost);
                     pnlButton.add(lblReturn);
@@ -929,6 +950,7 @@ public class MainFrame {
         lstLoad.setOpaque(false);
         lstLoad.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.gray, Color.BLACK, Color.WHITE));
         lstLoad.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lstLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
         File dir = new File("./SaveGames");
@@ -954,12 +976,18 @@ public class MainFrame {
         scrollpane = new JScrollPane();
         scrollpane.setViewportView(lstLoad);
         scrollpane.setOpaque(false);
-        scrollpane.setAlignmentX(FlowLayout.LEFT);
+        scrollpane.setAlignmentX(Component.CENTER_ALIGNMENT);
         scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollpane.setMaximumSize(new Dimension(200,200));
+        scrollpane.setMaximumSize(new Dimension(300,200));
         scrollpane.getViewport().setOpaque(false);
-        scrollpane.setLocation(jf.getWidth()-200, lblSize.getY());
+        //scrollpane.setLocation(jf.getWidth()-200, lblSize.getY());
         lstLoad.setSelectedIndex(-1);
+
+
+        lblDummyObj = new JLabel();
+        lblDummyObj.setMaximumSize(new Dimension(400, 100));
     }
+
+
 
 }
