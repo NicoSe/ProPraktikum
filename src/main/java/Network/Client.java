@@ -9,7 +9,7 @@ import Logic.ShotResult;
 import java.io.*;
 import java.net.*;
 
-public class Client {
+public class Client implements Connector {
 
     private int port = 50000;
     Socket client;

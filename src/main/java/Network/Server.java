@@ -9,7 +9,7 @@ import java.io.*;
 import java.net.*;
 
 
-public class Server{
+public class Server implements Connector{
 
     private int port = 50000;
     private ServerSocket Server_Socket;
