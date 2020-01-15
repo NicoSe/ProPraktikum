@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicBorders;
+import javax.swing.text.html.Option;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -164,7 +165,7 @@ public class MainFrame {
         pnlDummyThicc.setBackground(Color.RED);
         pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/10,jf.getWidth()/10,jf.getHeight()/10,jf.getWidth()/10));
 
-        pnlDummy =  new JPanel(new BorderLayout());
+        pnlDummy =  new JPanel();
         pnlDummy.setBackground(Color.GREEN);
         //pnlDummy.setPreferredSize(new Dimension(425,425));
 
@@ -633,12 +634,13 @@ public class MainFrame {
                 //pnlPlay.add(pnlReady);
 
                 //backgroundPanel.add(pnlPlay);
-                pnlGrid1 = new BasicGrid(sldSize.getValue(), GridState.SHOOT);
+                pnlGrid1 = new BasicGrid(sldSize.getValue(), GridState.PLACE);
                 Grid2D g2d = new Grid2D(sldSize.getValue());
                 g2d.generateRandom();
                 GridController controller = new GridController(g2d, pnlGrid1);
-                controller.init(GridState.SHOOT);
+                controller.init(GridState.PLACE);
                 pnlGrid1.setOpaque(false);
+                pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
                 //pnlPlay.add(pnlGrid1);
 
                 //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
@@ -651,11 +653,23 @@ public class MainFrame {
                 //backgroundPanel.add(pnlPlay);
 
                 backgroundPanel.add(pnlDummyThicc);
-                pnlDummyThicc.setOpaque(true);
+
+                pnlDummy.setOpaque(false);
                 pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
-                pnlDummy.add(pnlGrid1, BorderLayout.NORTH);
-                jf.setSize(new Dimension(1025,851));
-                jf.setSize(new Dimension(1024,850));
+                pnlDummy.add(pnlGrid1);
+                try {
+                    backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                if(OptionsHandler.getFullscreenMode()){
+                    jf.setSize(new Dimension(1981,1080));
+                    jf.setSize(new Dimension(1980,1080));
+                }else{
+                    jf.setSize(new Dimension(1025,851));
+                    jf.setSize(new Dimension(1024,850));
+                }
+
 
             }
             public void mouseEntered(MouseEvent e) {
@@ -987,7 +1001,5 @@ public class MainFrame {
         lblDummyObj = new JLabel();
         lblDummyObj.setMaximumSize(new Dimension(400, 100));
     }
-
-
 
 }

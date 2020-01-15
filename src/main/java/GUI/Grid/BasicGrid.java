@@ -163,9 +163,10 @@ public class BasicGrid extends JPanel {
 
         }
 
-        g2d.setColor(Color.darkGray);
-        AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+        g2d.setColor(Color.BLACK);
+        AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
         g2d.setComposite(alphaComposite);
+        g2d.setStroke(new BasicStroke(3));
         for(int i = 0; i < bound; ++i) {
             for(int j = 0; j < bound; ++j) {
                 g2d.draw(new Rectangle(i * TILE_BASE_SIZE, j * TILE_BASE_SIZE, TILE_BASE_SIZE, TILE_BASE_SIZE));
