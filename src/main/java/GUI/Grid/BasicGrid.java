@@ -124,6 +124,11 @@ public class BasicGrid extends JPanel {
     private Rectangle highlightedCell;
     private GridState interactionState;
     private GridController controller = null;
+    BufferedImage rocketNone;
+    BufferedImage normalRocket;
+    BufferedImage rocketNoneScaled;
+    BufferedImage normalRocketScaled;
+
     public BasicGrid(int bound, GridState interactionState) {
         setLayout(new CustomLayoutManager(bound));
         this.bound = bound;
@@ -143,6 +148,11 @@ public class BasicGrid extends JPanel {
         g2d.fill(new Rectangle(0, 0, defaultSize, defaultSize));
          */
         try {
+            rocketNone = ImageIO.read(getClass().getResource("/Sprites/whitepin2.png"));
+            normalRocket = ImageIO.read(getClass().getResource("/Sprites/rackete2.png"));
+            rocketNoneScaled = rocketNone;
+            normalRocketScaled = normalRocket;
+
             Image ocean = ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png"));
             for(int i = 0; i < bound; ++i) {
                 for(int j = 0; j < bound; ++j) {
@@ -178,9 +188,8 @@ public class BasicGrid extends JPanel {
     public Component addPiece(BufferedImage texture, int x, int y, int size, boolean isVertical) {
         JLabel piece = new JLabel();
         try {
-            BufferedImage rocketNone = ImageIO.read(getClass().getResource("/Sprites/whitepin2.png"));
-            BufferedImage normalRocket = ImageIO.read(getClass().getResource("/Sprites/rackete2.png"));
             piece = new JLabel() {
+
                 public void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     try {
@@ -194,26 +203,22 @@ public class BasicGrid extends JPanel {
 
                         g.drawImage(ship, 0, 0, this);
 
+
                         Character ch = controller.getCharacterOfComponent(this);
                         if(ch != null) {
-                            BufferedImage rocket;
                             int correctSize = Math.min(this.getWidth(), this.getHeight());
                             if(ch instanceof Water) {
-                                rocket = ImageHelper.scale(rocketNone, correctSize, correctSize);
                                 if(!ch.isAlive()) {
-                                    g.drawImage(rocket, 0, 0, this);
+                                    g.drawImage(rocketNoneScaled, 0, 0, this);
                                 }
-
                             } else if(ch instanceof Ship) {
-                                rocket = ImageHelper.scale(normalRocket, correctSize, correctSize);
-
                                 Ship s = (Ship)ch;
                                 boolean[] hitbox = s.getHitbox();
                                 for(int i = 0; i < hitbox.length; ++i) {
                                     if(hitbox[i]) {
                                         continue;
                                     }
-                                    g.drawImage(rocket, !s.isVertical() ? i*getScaledTileSize() : 0, s.isVertical() ? i*getScaledTileSize() : 0, this);
+                                    g.drawImage(normalRocketScaled, !s.isVertical() ? i*getScaledTileSize() : 0, s.isVertical() ? i*getScaledTileSize() : 0, this);
                                 }
                             }
                         }
@@ -239,20 +244,22 @@ public class BasicGrid extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        //System.out.printf("%s on resize.\n", this.getSize());
-
-        //System.out.printf("scaling factor: %f\n", (double)(getWidth()) / getPreferredSize().width);
-
-        Graphics2D g2d = (Graphics2D)g.create();
-
-        int currentSize = getScaledTileSize()*bound;
+        boolean isValidPaintjob = true;
+        int tileSize = getScaledTileSize();
+        int currentSize = tileSize*bound;
         if(currentSize != scaledSize) {
             if (getParent() != null) {
                 bgImg = ImageHelper.scale(baseImg, currentSize, currentSize);
+                rocketNoneScaled = ImageHelper.scale(rocketNone, tileSize, tileSize);
+                normalRocketScaled = ImageHelper.scale(normalRocket, tileSize, tileSize);
             }
             this.setPreferredSize(new Dimension(currentSize, currentSize));
             scaledSize = currentSize;
+
+            isValidPaintjob = false;
         }
+
+        Graphics2D g2d = (Graphics2D)g.create();
 
         g2d.drawImage(bgImg, 0, 0, this);
 
@@ -262,6 +269,12 @@ public class BasicGrid extends JPanel {
                     highlightedCell.width*getScaledTileSize(), highlightedCell.height*getScaledTileSize());
         }
         g2d.dispose();
+
+        if(!isValidPaintjob) {
+            revalidate();
+            repaint();
+            return;
+        }
     }
 
     public void setPiecePos(Component comp, Point pos) {

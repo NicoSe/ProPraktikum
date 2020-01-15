@@ -122,6 +122,8 @@ public class GridController {
         if(res == ShotResult.SUNK) {
             model.markSurrounding(c.getX(), c.getY());
         }
+        view.revalidate();
+        view.repaint();
         // TODO: modify view/ship panel according to shot result.
     }
 
