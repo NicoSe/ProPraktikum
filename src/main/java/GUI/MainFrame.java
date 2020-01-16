@@ -34,6 +34,7 @@ public class MainFrame {
     private JPanel pnlButton;
     private JPanel pnlHostX;
     private JPanel pnlHostY;
+    private JPanel pnlHostY2;
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
     private JPanel pnlPlay;
@@ -74,6 +75,10 @@ public class MainFrame {
     private JLabel lblExit;
     private JLabel lblReturn;
     private JLabel lblDummyObj;
+    private JLabel lblDummyObj2;
+    private JLabel lblDummyObj3;
+    private JLabel lblDummyObj4;
+    private JLabel lblRect;
 
 
 
@@ -133,17 +138,28 @@ public class MainFrame {
         pnlHostX = new JPanel();
         pnlHostX.setOpaque(false);
         pnlHostX.setAlignmentX(Component.CENTER_ALIGNMENT);
-        pnlHostX.setLayout(new BoxLayout(pnlHostX, BoxLayout.X_AXIS));
-        pnlHostX.setMinimumSize(new Dimension(1024, 850));
-        pnlHostX.setMaximumSize((new Dimension(1980, 1080)));
+        pnlHostX.setMinimumSize(new Dimension(1024, 350));
+        pnlHostX.setMaximumSize((new Dimension(1980, 350)));
+        //pnlHostX.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        pnlHostX.setLayout(new GridBagLayout());
 
         pnlHostY = new JPanel();
         pnlHostY.setOpaque(false);
-        pnlHostY.setAlignmentX(Component.CENTER_ALIGNMENT);
-        pnlHostY.setAlignmentY(Component.CENTER_ALIGNMENT);
+        pnlHostY.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        pnlHostY.setAlignmentY(Component.RIGHT_ALIGNMENT);
         pnlHostY.setLayout(new BoxLayout(pnlHostY, BoxLayout.Y_AXIS));
-        pnlHostY.setMinimumSize(new Dimension(1024, 850));
-        pnlHostY.setMaximumSize((new Dimension(1980, 1080)));
+        pnlHostY.setMinimumSize(new Dimension(300, 350));
+        pnlHostY.setMaximumSize(new Dimension(300,350));
+        pnlHostY.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+
+        pnlHostY2 = new JPanel();
+        pnlHostY2.setOpaque(false);
+        pnlHostY2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pnlHostY2.setAlignmentY(Component.CENTER_ALIGNMENT);
+        pnlHostY2.setLayout(new BoxLayout(pnlHostY2, BoxLayout.Y_AXIS));
+        pnlHostY2.setMinimumSize(new Dimension(300, 350));
+        pnlHostY2.setMaximumSize((new Dimension(300, 350)));
+        pnlHostY2.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
         //panelPlay
         pnlPlay = new JPanel();
@@ -494,14 +510,29 @@ public class MainFrame {
                     pnlButton.setVisible(false);
                     pnlButton.removeAll();
                     pnlButton.add(lblTitle);
-                    pnlButton.add(pnlHostX);
 
+                    GridBagConstraints c = new GridBagConstraints();
+                    c.gridheight = 3;
+                    c.anchor = GridBagConstraints.LINE_START;
+                    c.fill = GridBagConstraints.VERTICAL;
+                    c.ipadx = 5;
+                    c.ipady = 5;
                     pnlHostY.add(lblSize);
                     pnlHostY.add(sldSize);
-                    pnlHostX.add(pnlHostY);
-                    pnlHostX.add(scrollpane);
-                    pnlHostX.add(lblDummyObj);
+                    pnlHostX.add(pnlHostY,c);
 
+                    c.anchor = GridBagConstraints.CENTER;
+                    c.fill = GridBagConstraints.VERTICAL;
+                    pnlHostX.add(lblRect,c);
+
+                    c.anchor = GridBagConstraints.LINE_END;
+                    c.fill = GridBagConstraints.VERTICAL;
+                    c.gridheight = 3;
+                    pnlHostY2.add(lblPlay);
+                    pnlHostY2.add(scrollpane);
+                    pnlHostX.add(pnlHostY2, c);
+
+                    pnlButton.add(pnlHostX);
                     pnlButton.add(lblStartHost);
                     pnlButton.add(lblReturn);
                     pnlButton.add(lblShowIP);
@@ -601,7 +632,8 @@ public class MainFrame {
         lblSize.setAlignmentX(Component.CENTER_ALIGNMENT);
         sldSize = new JSlider(5,30);
         sldSize.setOpaque(false);
-        sldSize.setMaximumSize(new Dimension(512,50));
+        sldSize.setMinimumSize(new Dimension(300,50));
+        sldSize.setMaximumSize(new Dimension(300,50));
         sldSize.setMajorTickSpacing(5);
         sldSize.setMinorTickSpacing(1);
         sldSize.setPaintLabels(true);
@@ -965,7 +997,8 @@ public class MainFrame {
         lstLoad.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.gray, Color.BLACK, Color.WHITE));
         lstLoad.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lstLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+        lstLoad.setMinimumSize(new Dimension(300,50));
+        lstLoad.setMaximumSize(new Dimension(300,150));
 
         File dir = new File("./SaveGames");
         data = dir.listFiles();
@@ -992,14 +1025,19 @@ public class MainFrame {
         scrollpane.setOpaque(false);
         scrollpane.setAlignmentX(Component.CENTER_ALIGNMENT);
         scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollpane.setMaximumSize(new Dimension(300,200));
+        scrollpane.setMinimumSize(new Dimension(300,50));
+        scrollpane.setMaximumSize(new Dimension(300,100));
         scrollpane.getViewport().setOpaque(false);
-        //scrollpane.setLocation(jf.getWidth()-200, lblSize.getY());
         lstLoad.setSelectedIndex(-1);
 
+        //Trennstrich für Host UI
+        lblRect = new JLabel();
+        lblRect.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblRect.setMinimumSize(new Dimension(40, 50));
+        lblRect.setMaximumSize(new Dimension(40, 50));
+        lblRect.setBackground(Color.BLACK);
+        lblRect.setOpaque(true);
 
-        lblDummyObj = new JLabel();
-        lblDummyObj.setMaximumSize(new Dimension(400, 100));
     }
 
 }
