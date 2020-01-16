@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class Ship extends Character {
-    public static int id;
+    public int id;
     private boolean[] hitbox;
     private int health;
-    private static int i = 0;
+    private static int counter = 0;
 
     public Ship(int size) {
         super(size);
@@ -18,8 +18,8 @@ public class Ship extends Character {
         for(int i = 0; i < size; ++i) {
             hitbox[i] = true;
         }
-        this.id = i;
-        i++;
+        this.id = counter;
+        counter++;
     }
 
     @Override
@@ -70,6 +70,8 @@ public class Ship extends Character {
     public int getId() {
         return id;
     }
+
+    public static void resetCounter(){counter = 0;}
 
     public void setId(int id) {
         this.id = id;

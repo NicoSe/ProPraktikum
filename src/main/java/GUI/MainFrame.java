@@ -5,12 +5,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicBorders;
-import javax.swing.text.html.Option;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -35,7 +31,6 @@ public class MainFrame {
     private JPanel pnlHostX;
     private JPanel pnlHostY;
     private JPanel pnlHostY2;
-        private JLabel lblLoad;
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
     private JPanel pnlPlay;
@@ -47,15 +42,17 @@ public class MainFrame {
     private JLabel lblPlay;
     private JLabel lblSingle;
     private JLabel lblSize;
-    private JSlider sldSize;
+    private JSlider sldSizeSingle;
     private JLabel lblDifficulty;
     private JLabel lblStartSingle;
     private JLabel lblHost;
+    private JSlider sldSizeHost;
     private JList lstLoad;
     private JScrollPane scrollpane;
     File[] data;
     private JLabel lblStartHost;
     private JLabel lblShowIP;
+    private JLabel lblLoad;
     private JLabel lblJoin;
     private JLabel lblIPAdress;
     private JTextField txfIPAdress;
@@ -75,10 +72,6 @@ public class MainFrame {
     private JLabel lblYeet3;
     private JLabel lblExit;
     private JLabel lblReturn;
-    private JLabel lblDummyObj;
-    private JLabel lblDummyObj2;
-    private JLabel lblDummyObj3;
-    private JLabel lblDummyObj4;
     private JLabel lblRect;
 
 
@@ -136,22 +129,22 @@ public class MainFrame {
         pnlButton.setMaximumSize(new Dimension(1920,1080));
         backgroundPanel.add(pnlButton);
 
+        //Panels für Host UI
         pnlHostX = new JPanel();
         pnlHostX.setOpaque(false);
         pnlHostX.setAlignmentX(Component.CENTER_ALIGNMENT);
-        pnlHostX.setMinimumSize(new Dimension(1024, 350));
-        pnlHostX.setMaximumSize((new Dimension(1980, 350)));
-        //pnlHostX.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        pnlHostX.setMinimumSize(new Dimension(950, 350));
+        pnlHostX.setMaximumSize((new Dimension(1920, 350)));
         pnlHostX.setLayout(new GridBagLayout());
 
         pnlHostY = new JPanel();
         pnlHostY.setOpaque(false);
-        pnlHostY.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        pnlHostY.setAlignmentY(Component.RIGHT_ALIGNMENT);
+        pnlHostY.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pnlHostY.setAlignmentY(Component.CENTER_ALIGNMENT);
         pnlHostY.setLayout(new BoxLayout(pnlHostY, BoxLayout.Y_AXIS));
         pnlHostY.setMinimumSize(new Dimension(300, 350));
         pnlHostY.setMaximumSize(new Dimension(300,350));
-        pnlHostY.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        pnlHostY.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
 
         pnlHostY2 = new JPanel();
         pnlHostY2.setOpaque(false);
@@ -160,7 +153,7 @@ public class MainFrame {
         pnlHostY2.setLayout(new BoxLayout(pnlHostY2, BoxLayout.Y_AXIS));
         pnlHostY2.setMinimumSize(new Dimension(300, 350));
         pnlHostY2.setMaximumSize((new Dimension(300, 350)));
-        pnlHostY2.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        pnlHostY2.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
 
         //panelPlay
         pnlPlay = new JPanel();
@@ -462,7 +455,7 @@ public class MainFrame {
                 pnlButton.removeAll();
                 pnlButton.add(lblTitle);
                 pnlButton.add(lblSize);
-                pnlButton.add(sldSize);
+                pnlButton.add(sldSizeSingle);
                 pnlButton.add(lblDifficulty);
                 pnlButton.add(lblStartSingle);
                 pnlButton.add(lblReturn);
@@ -513,27 +506,31 @@ public class MainFrame {
                     pnlButton.add(lblTitle);
 
                     GridBagConstraints c = new GridBagConstraints();
-                    c.gridheight = 3;
+                    c.gridheight = 2;
                     c.anchor = GridBagConstraints.LINE_START;
                     c.fill = GridBagConstraints.VERTICAL;
                     c.ipadx = 5;
-                    c.ipady = 5;
+                    c.ipady = 20;
                     pnlHostY.add(lblSize);
-                    pnlHostY.add(sldSize);
+                    pnlHostY.add(sldSizeHost);
+                    c.gridx = 0; c.gridy = 0;
                     pnlHostX.add(pnlHostY,c);
 
                     c.anchor = GridBagConstraints.CENTER;
                     c.fill = GridBagConstraints.VERTICAL;
+                    c.gridx = 1; c.gridy = 1;
                     pnlHostX.add(lblRect,c);
 
                     c.anchor = GridBagConstraints.LINE_END;
                     c.fill = GridBagConstraints.VERTICAL;
-                    c.gridheight = 3;
+                    c.gridheight = 2;
                     pnlHostY2.add(lblLoad);
                     pnlHostY2.add(scrollpane);
+                    c.gridx = 2; c.gridy = 0;
                     pnlHostX.add(pnlHostY2, c);
 
                     pnlButton.add(pnlHostX);
+
                     pnlButton.add(lblStartHost);
                     pnlButton.add(lblReturn);
                     pnlButton.add(lblShowIP);
@@ -631,19 +628,37 @@ public class MainFrame {
         lblSize =  new JLabel();
         lblSize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SizeBW.png")).getScaledInstance(400,100,Image.SCALE_SMOOTH)));
         lblSize.setAlignmentX(Component.CENTER_ALIGNMENT);
-        sldSize = new JSlider(5,30);
-        sldSize.setOpaque(false);
-        sldSize.setMinimumSize(new Dimension(300,50));
-        sldSize.setMaximumSize(new Dimension(300,50));
-        sldSize.setMajorTickSpacing(5);
-        sldSize.setMinorTickSpacing(1);
-        sldSize.setPaintLabels(true);
-        sldSize.setPaintTicks(true);
-        sldSize.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-        sldSize.setForeground(Color.BLACK);
-        sldSize.addChangeListener(new ChangeListener() {
+        sldSizeSingle = new JSlider(5,30);
+        sldSizeSingle.setOpaque(false);
+        sldSizeSingle.setMinimumSize(new Dimension(500,50));
+        sldSizeSingle.setMaximumSize(new Dimension(500,50));
+        sldSizeSingle.setMajorTickSpacing(5);
+        sldSizeSingle.setMinorTickSpacing(1);
+        sldSizeSingle.setPaintLabels(true);
+        sldSizeSingle.setPaintTicks(true);
+        sldSizeSingle.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        sldSizeSingle.setForeground(Color.BLACK);
+
+
+        //Size Slider Host
+        sldSizeHost = new JSlider(5,30);
+        sldSizeHost.setOpaque(false);
+        sldSizeHost.setMinimumSize(new Dimension(270,50));
+        sldSizeHost.setMaximumSize(new Dimension(350,50));
+        sldSizeHost.setMajorTickSpacing(5);
+        sldSizeHost.setMinorTickSpacing(1);
+        sldSizeHost.setPaintLabels(true);
+        sldSizeHost.setPaintTicks(true);
+        sldSizeHost.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        sldSizeHost.setForeground(Color.BLACK);
+        sldSizeHost.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+                try {
+                    lblStartHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 lstLoad.clearSelection();
                 lstLoad.setSelectedIndex(-1);
             }
@@ -667,8 +682,8 @@ public class MainFrame {
                 //pnlPlay.add(pnlReady);
 
                 //backgroundPanel.add(pnlPlay);
-                pnlGrid1 = new BasicGrid(sldSize.getValue(), GridState.PLACE);
-                Grid2D g2d = new Grid2D(sldSize.getValue());
+                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
+                Grid2D g2d = new Grid2D(sldSizeSingle.getValue());
                 g2d.generateRandom();
                 GridController controller = new GridController(g2d, pnlGrid1);
                 controller.init(GridState.PLACE);
@@ -988,8 +1003,9 @@ public class MainFrame {
         lblShowIP = new JLabel();
         InetAddress inetAddress = InetAddress.getLocalHost();
         lblShowIP.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-        lblShowIP.setText("IP ADDRESS: "+ inetAddress);
+        lblShowIP.setText("IP ADDRESS: "+ inetAddress.getHostAddress());
         lblShowIP.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblShowIP.setBorder(BorderFactory.createEmptyBorder(50,0,20,jf.getWidth()/2+100));
 
         //Load List
         lstLoad = new JList();
@@ -998,8 +1014,8 @@ public class MainFrame {
         lstLoad.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.gray, Color.BLACK, Color.WHITE));
         lstLoad.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lstLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lstLoad.setMinimumSize(new Dimension(300,50));
-        lstLoad.setMaximumSize(new Dimension(300,150));
+        lstLoad.setMinimumSize(new Dimension(270,50));
+        lstLoad.setMaximumSize(new Dimension(350,150));
 
         File dir = new File("./SaveGames");
         data = dir.listFiles();
@@ -1026,25 +1042,53 @@ public class MainFrame {
         scrollpane.setOpaque(false);
         scrollpane.setAlignmentX(Component.CENTER_ALIGNMENT);
         scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollpane.setMinimumSize(new Dimension(300,50));
-        scrollpane.setMaximumSize(new Dimension(300,100));
+        scrollpane.setMinimumSize(new Dimension(270,50));
+        scrollpane.setMaximumSize(new Dimension(350,100));
         scrollpane.getViewport().setOpaque(false);
         lstLoad.setSelectedIndex(-1);
+        lstLoad.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    lblStartHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         //Trennstrich für Host UI
         lblRect = new JLabel();
         lblRect.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblRect.setMinimumSize(new Dimension(40, 50));
-        lblRect.setMaximumSize(new Dimension(40, 50));
+        lblRect.setMaximumSize(new Dimension(40, 350));
         lblRect.setBackground(Color.BLACK);
         lblRect.setOpaque(true);
 
-        //Load Label
+        //Host Load Label
         lblLoad = new JLabel();
+        lblLoad.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
         lblLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblLoad.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/LoadBW.png"))));
-
-
     }
 
 }

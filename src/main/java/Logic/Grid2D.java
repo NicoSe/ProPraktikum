@@ -275,6 +275,24 @@ public class Grid2D {
         }
     }
 
+    //Place water everywhere after placing your ships
+    public void placeWatereverywhere(){
+        for(int i=0;i<bound;i++){
+            for(int j=0;j<bound;j++){
+                put(i,j,new Water(false));
+            }
+        }
+    }
+
+    //Place FoeGridObject everywhere after placing your ships
+    public void placeFGOeverywhere(){
+        for(int i=0;i<bound;i++){
+            for(int j=0;j<bound;j++){
+                put(i,j,new FoeGridShootObject(0));
+            }
+        }
+    }
+
     public void clear() {
         this.characters = new Character[bound][bound];
     }
