@@ -35,6 +35,7 @@ public class MainFrame {
     private JPanel pnlHostX;
     private JPanel pnlHostY;
     private JPanel pnlHostY2;
+        private JLabel lblLoad;
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
     private JPanel pnlPlay;
@@ -528,7 +529,7 @@ public class MainFrame {
                     c.anchor = GridBagConstraints.LINE_END;
                     c.fill = GridBagConstraints.VERTICAL;
                     c.gridheight = 3;
-                    pnlHostY2.add(lblPlay);
+                    pnlHostY2.add(lblLoad);
                     pnlHostY2.add(scrollpane);
                     pnlHostX.add(pnlHostY2, c);
 
@@ -1037,6 +1038,12 @@ public class MainFrame {
         lblRect.setMaximumSize(new Dimension(40, 50));
         lblRect.setBackground(Color.BLACK);
         lblRect.setOpaque(true);
+
+        //Load Label
+        lblLoad = new JLabel();
+        lblLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblLoad.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/LoadBW.png"))));
+
 
     }
 

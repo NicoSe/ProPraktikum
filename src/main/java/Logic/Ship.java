@@ -49,7 +49,7 @@ public class Ship extends Character {
     public BufferedImage getImage() throws IOException {
         switch (getSize()) {
             case 2:
-                return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+                return ImageIO.read(getClass().getResource("/Sprites/2erBoot.png"));
             case 3:
                 return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
             case 4:
