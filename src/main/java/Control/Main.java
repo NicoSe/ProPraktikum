@@ -15,6 +15,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         own_grid = new Grid2D(5);
+        foe_grid = new Grid2D(5);
         Character c = new Ship(2);
         own_grid.put(0, 0, c);
         Character c2 = new Ship(4);
@@ -24,17 +25,17 @@ public class Main {
         Character c3 = new Ship(4);
         own_grid.put(4, 0, c3);
         //System.out.println(own_grid);
+        own_grid.placeWatereverywhere();
+        foe_grid.placeFGOeverywhere();
 
-        foe_grid = new Grid2D(5);
-        foe_grid.put(1, 0,c3);
-        //System.out.println(foe_grid);
 
-        /*new Save("918419248192",own_grid,foe_grid);
+
+        new Save("270652385276",own_grid,foe_grid);
         Load lo = new Load();
-        Grid2D[] g = lo.load("1");
+        Grid2D[] g = lo.load("270652385276");
         System.out.println(g[0]);
         System.out.println(g[1]);
-*/
+
 
         //GUI
         // Create and display the form

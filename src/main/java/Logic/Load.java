@@ -66,7 +66,7 @@ public class Load {
             boolean[] ids = new boolean[64];
 
             //Grid2D own_grid = new Grid2D(bound);
-            Ship.id = 0;
+            Ship.resetCounter();
 
             int i = 0;
             while (i < owngrid.length) {                                   //Schleife über jede Zeile der Datei
