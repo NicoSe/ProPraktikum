@@ -5,12 +5,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicBorders;
-import javax.swing.text.html.Option;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -47,7 +43,8 @@ public class MainFrame {
     private JLabel lblPlay;
     private JLabel lblSingle;
     private JLabel lblSize;
-    private JSlider sldSize;
+    private JSlider sldSizeSingle;
+    private JSlider sldSizeHost;
     private JLabel lblDifficulty;
     private JLabel lblStartSingle;
     private JLabel lblHost;
@@ -462,7 +459,7 @@ public class MainFrame {
                 pnlButton.removeAll();
                 pnlButton.add(lblTitle);
                 pnlButton.add(lblSize);
-                pnlButton.add(sldSize);
+                pnlButton.add(sldSizeSingle);
                 pnlButton.add(lblDifficulty);
                 pnlButton.add(lblStartSingle);
                 pnlButton.add(lblReturn);
@@ -519,7 +516,7 @@ public class MainFrame {
                     c.ipadx = 5;
                     c.ipady = 5;
                     pnlHostY.add(lblSize);
-                    pnlHostY.add(sldSize);
+                    pnlHostY.add(sldSizeSingle);
                     pnlHostX.add(pnlHostY,c);
 
                     c.anchor = GridBagConstraints.CENTER;
@@ -631,19 +628,36 @@ public class MainFrame {
         lblSize =  new JLabel();
         lblSize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SizeBW.png")).getScaledInstance(400,100,Image.SCALE_SMOOTH)));
         lblSize.setAlignmentX(Component.CENTER_ALIGNMENT);
-        sldSize = new JSlider(5,30);
-        sldSize.setOpaque(false);
-        sldSize.setMinimumSize(new Dimension(300,50));
-        sldSize.setMaximumSize(new Dimension(300,50));
-        sldSize.setMajorTickSpacing(5);
-        sldSize.setMinorTickSpacing(1);
-        sldSize.setPaintLabels(true);
-        sldSize.setPaintTicks(true);
-        sldSize.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-        sldSize.setForeground(Color.BLACK);
-        sldSize.addChangeListener(new ChangeListener() {
+        sldSizeSingle = new JSlider(5,30);
+        sldSizeSingle.setOpaque(false);
+        sldSizeSingle.setMinimumSize(new Dimension(300,50));
+        sldSizeSingle.setMaximumSize(new Dimension(450,50));
+        sldSizeSingle.setMajorTickSpacing(5);
+        sldSizeSingle.setMinorTickSpacing(1);
+        sldSizeSingle.setPaintLabels(true);
+        sldSizeSingle.setPaintTicks(true);
+        sldSizeSingle.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        sldSizeSingle.setForeground(Color.BLACK);
+
+        //Size Slider Host UI
+        sldSizeHost = new JSlider(5,30);
+        sldSizeHost.setOpaque(false);
+        sldSizeHost.setMinimumSize(new Dimension(300,50));
+        sldSizeHost.setMaximumSize(new Dimension(300,50));
+        sldSizeHost.setMajorTickSpacing(5);
+        sldSizeHost.setMinorTickSpacing(1);
+        sldSizeHost.setPaintLabels(true);
+        sldSizeHost.setPaintTicks(true);
+        sldSizeHost.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        sldSizeHost.setForeground(Color.BLACK);
+        sldSizeHost.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+                try {
+                    lblStartHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 lstLoad.clearSelection();
                 lstLoad.setSelectedIndex(-1);
             }
@@ -667,8 +681,8 @@ public class MainFrame {
                 //pnlPlay.add(pnlReady);
 
                 //backgroundPanel.add(pnlPlay);
-                pnlGrid1 = new BasicGrid(sldSize.getValue(), GridState.PLACE);
-                Grid2D g2d = new Grid2D(sldSize.getValue());
+                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
+                Grid2D g2d = new Grid2D(sldSizeSingle.getValue());
                 g2d.generateRandom();
                 GridController controller = new GridController(g2d, pnlGrid1);
                 controller.init(GridState.PLACE);
@@ -988,8 +1002,9 @@ public class MainFrame {
         lblShowIP = new JLabel();
         InetAddress inetAddress = InetAddress.getLocalHost();
         lblShowIP.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-        lblShowIP.setText("IP ADDRESS: "+ inetAddress);
+        lblShowIP.setText("IP ADDRESS: "+ inetAddress.getHostAddress());
         lblShowIP.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblShowIP.setBorder(BorderFactory.createEmptyBorder(50,0,5,jf.getWidth()/2));
 
         //Load List
         lstLoad = new JList();
@@ -1030,6 +1045,36 @@ public class MainFrame {
         scrollpane.setMaximumSize(new Dimension(300,100));
         scrollpane.getViewport().setOpaque(false);
         lstLoad.setSelectedIndex(-1);
+        lstLoad.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    lblStartHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/LoadBW.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         //Trennstrich für Host UI
         lblRect = new JLabel();

@@ -29,13 +29,12 @@ public class Main {
         foe_grid.placeFGOeverywhere();
 
 
-
-        new Save("270652385276",own_grid,foe_grid);
+        /*new Save("270652385276",own_grid,foe_grid);
         Load lo = new Load();
         Grid2D[] g = lo.load("270652385276");
         System.out.println(g[0]);
         System.out.println(g[1]);
-
+*/
 
         //GUI
         // Create and display the form
