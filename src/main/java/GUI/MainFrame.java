@@ -86,6 +86,7 @@ public class MainFrame {
 
     private JLabel lblReady;
     private JLabel lblRandomize;
+    private JLabel lblPlaceReturn;
 
 
 
@@ -176,14 +177,17 @@ public class MainFrame {
         pnlPlay.setMaximumSize(new Dimension(1920,1080));
 
         pnlReady = new JPanel(new FlowLayout());
-        pnlReady.setPreferredSize(new Dimension(100,200));
+        pnlReady.setPreferredSize(new Dimension(100,220));
         pnlReady.setMaximumSize(new Dimension(jf.getWidth(),jf.getHeight()/7));
         pnlReady.setOpaque(false);
+        lblPlaceReturn = new JLabel();
+        lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
         lblReady = new JLabel();
         lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyBW.png"))));
         lblRandomize = new JLabel();
         lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/randomBW.png"))));
 
+        pnlReady.add(lblPlaceReturn);
         pnlReady.add(lblRandomize);
         pnlReady.add(lblReady);
 
@@ -783,6 +787,61 @@ public class MainFrame {
                     public void mouseReleased(MouseEvent e){
                         try {
                             lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomWB.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                });
+
+                lblPlaceReturn.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        try {
+                            pnlReady.setVisible(false);
+                            Helpers.playSFX("/SFX/firered_0017.wav", 1);
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
+                            lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
+                            lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+                            pnlDummy.setVisible(false);
+                            pnlButton.removeAll();
+                            pnlButton.setVisible(false);
+                            pnlButton.add(lblTitle);
+                            pnlButton.add(lblPlay);
+                            pnlButton.add(lblOptions);
+                            pnlButton.add(lblCredits);
+                            pnlButton.add(lblExit);
+                            pnlButton.setVisible(true);
+                            backgroundPanel.add(pnlButton);
+                        } catch(IOException el){
+                            el.printStackTrace();
+                        }
+                    }
+
+                    public void mouseEntered(MouseEvent e) {
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnWB.png"))));
+                            Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseExited(MouseEvent e){
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mousePressed(MouseEvent e){
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnOnPress.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseReleased(MouseEvent e){
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnWB.png"))));
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
