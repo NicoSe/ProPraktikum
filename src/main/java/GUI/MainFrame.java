@@ -1078,6 +1078,44 @@ public class MainFrame {
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
                 //pnlPlay.add(pnlGrid1);
 
+                lblRandomize.addMouseListener(new MouseAdapter() {
+                    ;
+                    public void mouseClicked (MouseEvent e){
+                        Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                        gcS.randomize();
+                    }
+
+                    public void mouseEntered (MouseEvent e){
+                        try {
+                            lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomWB.png"))));
+                            Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseExited (MouseEvent e){
+                        try {
+                            lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomBW.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mousePressed (MouseEvent e){
+                        try {
+                            lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomOnPress.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseReleased (MouseEvent e){
+                        try {
+                            lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomWB.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                });
+
                 lblReady.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -1094,7 +1132,91 @@ public class MainFrame {
                         }
                     }
 
+                    public void mouseEntered(MouseEvent e) {
+                        try {
+                            lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyWB.png"))));
+                            Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseExited(MouseEvent e){
+                        try {
+                            lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyBW.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mousePressed(MouseEvent e){
+                        try {
+                            lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyOnPress.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseReleased(MouseEvent e){
+                        try {
+                            lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyWB.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
 
+                });
+
+                lblPlaceReturn.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        try {
+                            pnlReady.setVisible(false);
+                            Helpers.playSFX("/SFX/firered_0017.wav", 1);
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
+                            lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
+                            lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+                            pnlDummy.setVisible(false);
+                            pnlButton.removeAll();
+                            pnlButton.setVisible(false);
+                            pnlButton.add(lblTitle);
+                            pnlButton.add(lblPlay);
+                            pnlButton.add(lblOptions);
+                            pnlButton.add(lblCredits);
+                            pnlButton.add(lblExit);
+                            pnlButton.setVisible(true);
+                            backgroundPanel.add(pnlButton);
+                        } catch(IOException el){
+                            el.printStackTrace();
+                        }
+                    }
+
+                    public void mouseEntered(MouseEvent e) {
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnWB.png"))));
+                            Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseExited(MouseEvent e){
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mousePressed(MouseEvent e){
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnOnPress.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseReleased(MouseEvent e){
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnWB.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                 });
 
 
@@ -1197,8 +1319,9 @@ public class MainFrame {
                 //pnlPlay.add(pnlGrid1);
 
                 lblReady.addMouseListener(new MouseAdapter() {
-                    @Override
+
                     public void mouseClicked(MouseEvent e) {
+                        Helpers.playSFX("/SFX/SA2_142.wav", 1);
                         if(self.turn()) {
                             self.sendmsg("confirmed");
                             pnlDummy.remove(pnlReady);
@@ -1209,12 +1332,128 @@ public class MainFrame {
                             pnlDummy.repaint();
                         }
                     }
+
+                    public void mouseEntered(MouseEvent e) {
+                        try {
+                            lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyWB.png"))));
+                            Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseExited(MouseEvent e){
+                        try {
+                            lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyBW.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mousePressed(MouseEvent e){
+                        try {
+                            lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyOnPress.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseReleased(MouseEvent e){
+                        try {
+                            lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyWB.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                 });
 
                 lblRandomize.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
+                        Helpers.playSFX("/SFX/SA2_142.wav", 1);
                         gcS.randomize();
+                    }
+
+                    public void mouseEntered(MouseEvent e) {
+                        try {
+                            lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomWB.png"))));
+                            Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseExited(MouseEvent e){
+                        try {
+                            lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomBW.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mousePressed(MouseEvent e){
+                        try {
+                            lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomOnPress.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseReleased(MouseEvent e){
+                        try {
+                            lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomWB.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                });
+
+                lblPlaceReturn.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        try {
+                            pnlReady.setVisible(false);
+                            Helpers.playSFX("/SFX/firered_0017.wav", 1);
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
+                            lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
+                            lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+                            pnlDummy.setVisible(false);
+                            pnlButton.removeAll();
+                            pnlButton.setVisible(false);
+                            pnlButton.add(lblTitle);
+                            pnlButton.add(lblPlay);
+                            pnlButton.add(lblOptions);
+                            pnlButton.add(lblCredits);
+                            pnlButton.add(lblExit);
+                            pnlButton.setVisible(true);
+                            backgroundPanel.add(pnlButton);
+                        } catch(IOException el){
+                            el.printStackTrace();
+                        }
+                    }
+
+                    public void mouseEntered(MouseEvent e) {
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnWB.png"))));
+                            Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseExited(MouseEvent e){
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mousePressed(MouseEvent e){
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnOnPress.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    public void mouseReleased(MouseEvent e){
+                        try {
+                            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnWB.png"))));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                 });
 
