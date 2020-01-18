@@ -122,20 +122,17 @@ public class BasicGrid extends JPanel {
     private int bound;
     private Rectangle gridRect;
     private Rectangle highlightedCell;
-    private GridState interactionState;
     private GridController controller = null;
     BufferedImage rocketNone;
     BufferedImage normalRocket;
     BufferedImage rocketNoneScaled;
     BufferedImage normalRocketScaled;
 
-    public BasicGrid(int bound, GridState interactionState) {
+    public BasicGrid(int bound, GridState state) {
         setLayout(new CustomLayoutManager(bound));
         this.bound = bound;
         int defaultSize = TILE_BASE_SIZE * bound;
         scaledSize = 0;
-
-        this.interactionState = interactionState;
 
         // TODO: maybe calculate offset?, resize this on window size change?
         gridRect = new Rectangle(getX(), getY(), defaultSize, defaultSize);
@@ -176,14 +173,6 @@ public class BasicGrid extends JPanel {
 
     public void setController(GridController controller) {
         this.controller = controller;
-    }
-
-    public void setGridInteractionState(GridState state) {
-        this.interactionState = state;
-    }
-
-    public GridState getGridInteractionState() {
-        return this.interactionState;
     }
 
     public Component addPiece(BufferedImage texture, int x, int y, int size, boolean isVertical) {

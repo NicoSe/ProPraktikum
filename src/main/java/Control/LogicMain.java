@@ -4,6 +4,9 @@ import Logic.Grid2D;
 import Logic.Ship;
 import Logic.ShipHarbor;
 import Logic.ShotResult;
+import Network.Client2;
+import Network.Connector;
+import Network.Server2;
 
 import java.util.Scanner;
 
@@ -25,6 +28,17 @@ public class LogicMain {
         boolean is_a = true;
         System.out.printf("enter command for player %s.\n", is_a ? "A" : "B");
         System.out.println("e.g. shoot x y");
+
+        boolean isServer = true;
+        for(String type : args) {
+            if(type.equals("client")) {
+                isServer = false;
+                break;
+            }
+        }
+
+        Connector con = isServer ? new Server2() : new Client2("127.0.0.1");
+
         while(s.hasNextLine()) {
             try {
                 String[] split = s.nextLine().split(" ");

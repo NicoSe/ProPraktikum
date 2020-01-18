@@ -1,25 +1,26 @@
 package Network;
 
-import Control.Konsolenanwendung;
-import Logic.Grid2D;
-import Logic.Load;
-import Logic.Save;
-import Logic.ShotResult;
-
 import java.io.*;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketException;
 
-public class Client {
+public class Client2 implements Connector {
 
     private int port = 50000;
     Socket client;
     BufferedReader usr;
+
+    //mulithreading support.
+    DataInputStream dis;
+    DataOutputStream dos;
 
     //Speichert die Addresse des Servers so ist ein eventuelles Wiederverbinden leichter.
     private InetSocketAddress address;
 
     //Abbruchvariable für die listenToNetwork()-Funktion
     public boolean Close_Socket = false;
+    private boolean turn = false;
 
     private String host;
 
@@ -28,14 +29,15 @@ public class Client {
     // und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
     // auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
     //wird abgebrochen.
-    public Client(String host) {
+    public Client2(String host) {
         this.host = host;
-        Create_Client();
+        connect();
     }
 
 
 //______________________________________________________________________________________________________________________
-    private void Create_Client(){
+    @Override
+    public void connect(){
         try {
             Close_Socket = false;
             address = new InetSocketAddress(host, port);
@@ -43,7 +45,8 @@ public class Client {
 
             client = new Socket();
             client.connect(address, 10000);
-            usr = new BufferedReader(new InputStreamReader(System.in));
+            dis = new DataInputStream(client.getInputStream());
+            dos = new DataOutputStream(client.getOutputStream());
         } catch (SocketException e) {
             System.out.println("<C>Can´t create Socket!");
             e.printStackTrace();
@@ -62,13 +65,13 @@ public class Client {
     //Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
     public void sendmsg(String msg) {
         try {
-            DataOutputStream stream_out = new DataOutputStream(client.getOutputStream());
-            stream_out.writeUTF(msg);
+            dos.writeUTF(msg);
+            turn = false;
         } catch (IOException e) {
             System.out.println("<C>Can´t send message!");
             e.printStackTrace();
             Close();
-            Create_Client();
+            connect();
             sendmsg(msg);
         }
     }
@@ -77,7 +80,8 @@ public class Client {
 
 //______________________________________________________________________________________________________________________
     //Gibt zurück ob Client verbunden
-    public boolean isconnected(){
+    @Override
+    public boolean isConnected(){
         return client.isConnected();
     }
 
@@ -95,27 +99,39 @@ public class Client {
                 break;
             }
             try {
-                DataInputStream stream_in = new DataInputStream(client.getInputStream());
-                String stream = stream_in.readUTF();
+                String stream = dis.readUTF();
                 System.out.println("<C><<< " + stream);
-                if (analyze(stream)) return stream;
+                if (analyze(stream)) {
+                    turn = true;
+                    return stream;
+                }
             } catch (SocketException e) {
                 System.out.println("<C>Can´t find Server!");
                 e.printStackTrace();
                 Close();
-                Create_Client();
+                connect();
             } catch (IOException e) {
                 System.out.println("<C>Can´t read message from client or donÂ´t get one!");
                 e.printStackTrace();
                 Close();
-                Create_Client();
+                connect();
             }
         }
         return "";
     }
 
+    @Override
+    public boolean turn() {
+        return turn;
+    }
 
-//______________________________________________________________________________________________________________________
+    @Override
+    public ConnectorType getConnectorType() {
+        return ConnectorType.CLIENT;
+    }
+
+
+    //______________________________________________________________________________________________________________________
     //Analysiert Nachichten vom Server und fuehrt je nach dem Spielbefehle aus:
     //SIZE: Erstellen des Spielfeldes mit Groeßenangabe
     //CONFIRM: Bestaetigung des Spielbeginns

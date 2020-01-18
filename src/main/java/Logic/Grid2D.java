@@ -38,6 +38,10 @@ public class Grid2D {
         }
     }
 
+    public int getShipCount() {
+        return harbor.getTotalShipCount(bound);
+    }
+
     public void generateRandom() {
         List<HarborShipData> ships = harbor.getCopyOfHarborData(bound);
         int placeCount = harbor.getTotalShipCount(bound);
