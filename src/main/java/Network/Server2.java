@@ -1,15 +1,13 @@
 package Network;
 
-import Control.Konsolenanwendung;
-import Logic.Load;
-import Logic.Save;
-import Logic.ShotResult;
-
 import java.io.*;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
 
 
-public class Server {
+public class Server2 implements Connector{
 
     private int port = 50000;
     private ServerSocket Server_Socket;
@@ -25,45 +23,45 @@ public class Server {
 
     //Abbruchvariable für die listenToNetwork()-Funktion
     public boolean Close_Socket = false;
+    private boolean turn = false;
 
 //______________________________________________________________________________________________________________________
     //Erstellt zuerst den Server, dieser wartet bis ein Client sich verbindet sollte sich
     //keiner verbinden wird abgebrochen. Wird einer gefunden kann dieser aktzeptiert werden.
-    public Server () {
-        Create_Server();
+    public Server2() {
     }
 
 //______________________________________________________________________________________________________________________
-    private void Create_Server(){
-        new Thread(() -> {
-            try {
-                Close_Socket = false;
-                System.out.println("<S>Starting Server...");
-                Server_Socket = new ServerSocket(port);       //create Server
+    @Override
+    public void connect(){
+        try {
+            Close_Socket = false;
+            System.out.println("<S>Starting Server...");
+            Server_Socket = new ServerSocket(port);       //create Server
 
-                System.out.println("<S>Wait for connection at Port:" + Server_Socket.getLocalPort());
-                Server_Socket.setSoTimeout(10000);                    //set timeout
+            System.out.println("<S>Wait for connection at Port:" + Server_Socket.getLocalPort());
 
-                usr = new BufferedReader(new InputStreamReader(System.in));
+            Client_Socket = Server_Socket.accept();                    //accept client
 
-                Client_Socket = Server_Socket.accept();                    //accept client
-                System.out.println("<S>Client connected.");
-            } catch (SocketException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        }).start();
+            dis = new DataInputStream(Client_Socket.getInputStream());
+            dos = new DataOutputStream(Client_Socket.getOutputStream());
+            turn = true;
+            System.out.println("<S>Client connected.");
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
 
 
 //______________________________________________________________________________________________________________________
     //Gibt zurück ob Server verbunden
-    public boolean isconnected(){
-        return Client_Socket.isConnected();
+    public boolean isConnected(){
+        return Client_Socket != null && Client_Socket.isConnected();
     }
 
 
@@ -73,25 +71,25 @@ public class Server {
     //Es muss ausschlieslich eine Nachricht in die Funktion uebergeben werden.
     public void sendmsg(String msg){
         try{
-            DataOutputStream stream_out = new DataOutputStream((Client_Socket.getOutputStream()));
-            stream_out.writeUTF(msg);
+            dos.writeUTF(msg);
+            turn = false;
         }catch(SocketException e) {
             System.out.println("<S>Can´t find Server!");
             e.printStackTrace();
             Close();
-            Create_Server();
+            connect();
             sendmsg(msg);
         }catch(IOException e){
             System.out.println("<S>Message can´t be send!");
             e.printStackTrace();
             Close();
-            Create_Server();
+            connect();
             sendmsg(msg);
         }catch(NullPointerException e){
             System.out.println("<S>NullPointException");
             e.printStackTrace();
             Close();
-            Create_Server();
+            connect();
             sendmsg(msg);
         }
     }
@@ -110,27 +108,39 @@ public class Server {
                 break;
             }
             try {
-                DataInputStream stream_in = new DataInputStream(Client_Socket.getInputStream());
-                String stream = stream_in.readUTF();
+                String stream = dis.readUTF();
                 System.out.println("<S><<< " + stream);
-                if (analyze(stream)) return stream;
+                if (analyze(stream)) {
+                    turn = true;
+                    return stream;
+                }
             }catch(SocketException e){
                 System.out.println("<S>Can´t find client!");
                 e.printStackTrace();
                 Close();
-                Create_Server();
+                connect();
             } catch (IOException e) {
                 System.out.println("<S>Can´t read message from client or don´t get one!");
                 e.printStackTrace();
                 Close();
-                Create_Server();
+                connect();
             }
         }
         return "";
     }
 
+    @Override
+    public boolean turn() {
+        return turn;
+    }
 
-//______________________________________________________________________________________________________________________
+    @Override
+    public ConnectorType getConnectorType() {
+        return ConnectorType.SERVER;
+    }
+
+
+    //______________________________________________________________________________________________________________________
     //Analysiert Nachichten vom Client und fuehrt je nach dem Spielbefehle aus:
     //CONFIRM: Bestaetigung des Spielbeginns
     //ANSWER: Info ueber Trefferstatus eines Schusses

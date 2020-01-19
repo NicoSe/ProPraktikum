@@ -26,10 +26,9 @@ public class AI
                and knows his initial hit of the ship.
      */
 
-    public AI(int mode)
+    public AI(Network.Connector s, int mode)
     {
-        this.chessPattern = new int[grid.getBound()][grid.getBound()];
-        this.randomPattern = new int[grid.getBound()][grid.getBound()];
+        this.s = s;
         switch (mode)
         {
             case 0:
@@ -42,6 +41,23 @@ public class AI
                 break;
             case 2:
                 this.mode = Mode.HARD;
+                setChessPattern();
+                break;
+        }
+    }
+
+    public void run() {
+
+
+        this.chessPattern = new int[grid.getBound()][grid.getBound()];
+        this.randomPattern = new int[grid.getBound()][grid.getBound()];
+        switch (mode)
+        {
+            case EASY:
+            case NORMAL:
+                setRandomPattern();
+                break;
+            case HARD:
                 setChessPattern();
                 break;
         }

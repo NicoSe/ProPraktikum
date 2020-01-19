@@ -5,6 +5,7 @@ import GUI.Grid.PlacementMEventHandler;
 import GUI.Grid.ShootMEventHandler;
 import GUI.ScaleHelper;
 import Misc.GridState;
+import Network.Connector;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 public class GridController {
     HashMap<Component, Character> c2c = new HashMap<>();
     private boolean isInitialized = false;
+    private Connector con;
     private Grid2D model;
     private BasicGrid view;
     private MouseAdapter mouseAdapter;
@@ -50,12 +52,33 @@ public class GridController {
         }
 
         if(state == GridState.SHOOT) {
-            onFinailizePlace();
+            onFinalizePlace();
         }
 
         mouseAdapter = state == GridState.SHOOT ? new ShootMEventHandler(this, view) : new PlacementMEventHandler(this, view);
         view.addMouseListener(mouseAdapter);
         view.addMouseMotionListener(mouseAdapter);
+    }
+
+    public void randomize() {
+        c2c.forEach((k,v) -> {
+            view.remove(k);
+        });
+
+        c2c.clear();
+        model.clear();
+        model.generateRandom();
+
+        model.forEachCharacter((Integer x, Integer y, Character c) -> {
+            try {
+                c2c.put(view.addPiece(c.getImage(), x, y, c.getSize(), c.isVertical()), c);
+            } catch(IOException e) {
+                System.out.printf("couldn't load character image. %s\n", e.getMessage());
+            }
+            return null;
+        });
+        view.revalidate();
+        view.repaint();
     }
 
     public void rotatePiece(Component comp) {
@@ -116,6 +139,9 @@ public class GridController {
         int shipPosOffsetX = (pos.x - c.getX() * currentTileSize) / currentTileSize;
         int shipPosOffsetY = (pos.y - c.getY() * currentTileSize) / currentTileSize;
 
+
+        //get network here and sendmsg("shoot x y") then in MainFrame loop on result 0/1/2. handle accordingly!
+
         ShotResult res = model.shoot(c.getX() + shipPosOffsetX, c.getY() + shipPosOffsetY);
         if(res == ShotResult.SUNK) {
             model.markSurrounding(c.getX(), c.getY());
@@ -144,8 +170,6 @@ public class GridController {
     }
 
     public void setInteractionState(GridState state) {
-        view.setGridInteractionState(state);
-
         view.removeMouseListener(mouseAdapter);
         view.removeMouseMotionListener(mouseAdapter);
 
@@ -154,7 +178,7 @@ public class GridController {
         }
 
         if(state == GridState.SHOOT) {
-            onFinailizePlace();
+            onFinalizePlace();
         }
 
         mouseAdapter = state == GridState.SHOOT ? new ShootMEventHandler(this, view) : new PlacementMEventHandler(this, view);
@@ -162,7 +186,7 @@ public class GridController {
         view.addMouseMotionListener(mouseAdapter);
     }
 
-    private void onFinailizePlace() {
+    private void onFinalizePlace() {
         for(int i = 0; i < model.getBound(); ++i) {
             for(int j = 0; j < model.getBound(); ++j) {
                 Character c = model.put(i, j, new Water(false));

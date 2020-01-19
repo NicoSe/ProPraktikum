@@ -16,7 +16,7 @@ public class FoeGridShootObject extends Character {
     @Override
     //Methode wird nicht gebraucht
     public boolean isAlive() {
-        return false;
+        return hitStatus != 2;
     }
 
     @Override

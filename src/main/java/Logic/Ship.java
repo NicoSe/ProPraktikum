@@ -58,7 +58,6 @@ public class Ship extends Character {
                 return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
 
         }
-        //TODO: return some kind of dummy image.
         return null;
     }
 
