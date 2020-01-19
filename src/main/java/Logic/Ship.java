@@ -22,16 +22,26 @@ public class Ship extends Character {
         counter++;
     }
 
+    public Ship(int size, boolean dead) {
+        this(size);
+        if(dead) {
+            health = 0;
+            for(int i = 0; i < size; ++i) {
+                hitbox[i] = false;
+            }
+        }
+    }
+
     @Override
     public ShotResult shoot(int hitpos) {
         System.out.printf("shot %s at pos: %d (hitbox: %s)\n", this, hitpos, Arrays.toString(hitbox));
 
         if(health <= 0) {
-            return ShotResult.ALREADY;
+            return ShotResult.SUNK;
         }
 
         if(!hitbox[hitpos]) {
-            return ShotResult.ALREADY;
+            return ShotResult.HIT;
         }
 
         hitbox[hitpos] = false;
@@ -51,7 +61,7 @@ public class Ship extends Character {
             case 2:
                 return ImageIO.read(getClass().getResource("/Sprites/2erBoot.png"));
             case 3:
-                return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+                return ImageIO.read(getClass().getResource("/Sprites/3erBoot.png"));
             case 4:
                 return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
             case 5:

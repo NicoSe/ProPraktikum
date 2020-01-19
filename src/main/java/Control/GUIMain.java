@@ -43,7 +43,7 @@ public class GUIMain {
 
                 BasicGrid guiGrid = new BasicGrid(size, GridState.PLACE);
 
-                GridController controller = new GridController(g2d, guiGrid);
+                GridController controller = new GridController(g2d, null, guiGrid);
                 controller.init(GridState.PLACE);
 
                 frame.add(guiGrid);

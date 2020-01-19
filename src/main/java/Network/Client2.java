@@ -82,7 +82,7 @@ public class Client2 implements Connector {
     //Gibt zurück ob Client verbunden
     @Override
     public boolean isConnected(){
-        return client.isConnected();
+        return !Close_Socket;
     }
 
 
@@ -94,27 +94,32 @@ public class Client2 implements Connector {
     //des Clients.
     public String listenToNetwork(){
         while (true) {
-            if (Close_Socket == true){
-                Close_Socket = false;
+            if (Close_Socket){
                 break;
             }
             try {
-                String stream = dis.readUTF();
+                String stream = dis.readUTF().toLowerCase();
                 System.out.println("<C><<< " + stream);
                 if (analyze(stream)) {
                     turn = true;
                     return stream;
                 }
+            } catch(EOFException e) {
+                System.out.println("<S>Can´t read from socket.");
             } catch (SocketException e) {
                 System.out.println("<C>Can´t find Server!");
                 e.printStackTrace();
                 Close();
-                connect();
+                //connect();
             } catch (IOException e) {
                 System.out.println("<C>Can´t read message from client or donÂ´t get one!");
                 e.printStackTrace();
                 Close();
-                connect();
+                //connect();
+            } finally {
+                if (Close_Socket){
+                    break;
+                }
             }
         }
         return "";
@@ -145,7 +150,7 @@ public class Client2 implements Connector {
         words[0] = words[0].toLowerCase();
         switch(words[0]) {
             case "size":
-            case "shoot":
+            case "shot":
             case "confirmed":
             case "save":
             case "load" :
@@ -169,6 +174,8 @@ public class Client2 implements Connector {
     public boolean Close(){
         try {
             Close_Socket = true;
+            dis.close();
+            dos.close();
             client.close();
         } catch (IOException e) {
             System.out.println("<C>Client couldn´t be closed!");

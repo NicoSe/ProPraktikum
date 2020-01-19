@@ -5,7 +5,7 @@ import java.io.IOException;
 
 //GridObject welches den Status des zugedeckten gegnerischen Feldes zeigt
 public class FoeGridShootObject extends Character {
-    private int hitStatus = 0;          //0 noch nicht beschossen, 1 wasser, 2 Schiff
+    private int hitStatus = -1;          //0 noch nicht beschossen, 1 wasser, 2 Schiff
 
     //erstelle GridObject mit Größe 1
     public FoeGridShootObject(int hitstatus) {
@@ -16,7 +16,7 @@ public class FoeGridShootObject extends Character {
     @Override
     //Methode wird nicht gebraucht
     public boolean isAlive() {
-        return hitStatus != 2;
+        return hitStatus == -1;
     }
 
     @Override
@@ -42,10 +42,6 @@ public class FoeGridShootObject extends Character {
     @Override
     // für Konsolenanwendung
     public String toString() {
-        String output;
-        if (hitStatus == 0) return "0";
-        else if (hitStatus == 1) return "1";
-        else if (hitStatus == 2) return "2";
-        return null;
+        return Integer.toString(hitStatus);
     }
 }

@@ -142,7 +142,7 @@ public class Server {
         String[] words = msg.split("\\s+");
         words[0] = words[0].toLowerCase();
         switch(words[0]) {
-            case "shoot":
+            case "shot":
             case "confirmed":
             case "save":
             case "load" :

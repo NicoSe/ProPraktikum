@@ -1,5 +1,7 @@
 package Logic;
 
+import Network.Connector;
+
 enum Mode
 {
     EASY,
@@ -29,26 +31,61 @@ public class AI
     public AI(Network.Connector s, int mode)
     {
         this.s = s;
+
         switch (mode)
         {
             case 0:
                 this.mode = Mode.EASY;
-                setRandomPattern();
                 break;
             case 1:
                 this.mode = Mode.NORMAL;
-                setRandomPattern();
                 break;
             case 2:
                 this.mode = Mode.HARD;
-                setChessPattern();
                 break;
+        }
+
+        handleData(this.s);
+    }
+
+    private void handleData(Connector c) {
+        while (true) {
+            if(!c.isConnected()) {
+                break;
+            }
+            String res = c.listenToNetwork();
+            String[] cmd = res.split(" ");
+            switch(cmd[0]) {
+                case "confirmed":
+                    routine();
+                    return;
+                case "size":
+                    this.grid = new Grid2D(Integer.parseInt(cmd[1]));
+                    this.grid.generateRandom();
+                    run();
+                    c.sendmsg("confirmed");
+                    break;
+                case "answer":
+                    System.out.println("ERROR: this should be handled by AI.");
+                    break;
+                case "shot":
+                    ShotResult sr = grid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
+                    c.sendmsg(String.format("answer %d", sr.ordinal()));
+                    if(sr == ShotResult.NONE) {
+                        routine();
+                        return;
+                    }
+                    ///wanna revalidate ui?
+                    break;
+                default:
+                    System.out.println("Invalid command.");
+                    System.out.println(res);
+                    break;
+            }
         }
     }
 
     public void run() {
-
-
         this.chessPattern = new int[grid.getBound()][grid.getBound()];
         this.randomPattern = new int[grid.getBound()][grid.getBound()];
         switch (mode)
@@ -79,6 +116,7 @@ public class AI
             {
                 search(chessPattern);
             }
+            handleData(s);
         }
     }
 
@@ -121,30 +159,45 @@ public class AI
     }
 
 //Shoots in the middle of the grid
-    public void firstShot()
+    public boolean firstShot()
     {
         int x = grid.getBound()/2;
         int y = grid.getBound()/2;
 
-        s.sendmsg(String.format("SHOOT %d %d", x, y));
+        s.sendmsg(String.format("shot %d %d", x, y));
         chessPattern[x][y] = 0;
-        if (s.listenToNetwork().equals("HIT"))
-        {
-            destroy(x,y);
-        }
+
+        String res = s.listenToNetwork();
         counter++;
+
+        if(res.equals("answer 0")) {
+            return false;
+        } else if (res.equals("answer 1")) {
+            if(!destroy(x, y)) {
+                return false;
+            }
+            return true;
+        }
+        ///this can never happen.
+        return false;
     }
 
     public void search(int[][] pattern)
     {
         if (counter == 0 && this.mode == Mode.HARD)
         {
-            firstShot();
+            if(!firstShot()) {
+                s.sendmsg("pass");
+                return;
+            }
         }
 //If a ship is already damaged, it will fire at the initial coordinates but in the opposite direction
         if(direction != -1)
         {
-            shootInDirection(initialX, initialY, direction);
+            if(!shootInDirection(initialX, initialY, direction)) {
+                s.sendmsg("pass");
+                return;
+            }
         }
 
 //Shoots at the marked fields of the pattern and searches so for a ship
@@ -154,70 +207,76 @@ public class AI
             {
                 if (pattern[x][y] == 1)
                 {
-                    s.sendmsg(String.format("SHOOT %d %d", x, y));
+                    s.sendmsg(String.format("shot %d %d", x, y));
                     pattern[x][y] = 0;
 
-                    if(s.listenToNetwork().equals("HIT") && this.mode == Mode.NORMAL || this.mode == Mode.HARD)
+                    String res = s.listenToNetwork();
+                    //stop shooting when we missed.
+                    if(res.equals("answer 0")) {
+                        s.sendmsg("pass");
+                        return;
+                    }
+
+                    if(res.equals("answer 1") && this.mode == Mode.NORMAL || this.mode == Mode.HARD)
                     {
-                        destroy(x,y);
+                        if(!destroy(x, y)) {
+                            s.sendmsg("pass");
+                            return;
+                        }
                     }
                 }
             }
         }
     }
-    public void destroy(int x, int y)
+    public boolean destroy(int x, int y)
     {
 //Limit tightens the range and so prevents that the same field is shot at twice
         int i = Util.GetRandomNumberInRange(0+ limit,3);
         {
 //Locates the direction in which a ship lays
+            int shootx = -1;
+            int shooty = -1;
             switch (i)
             {
                 case 0:
-                    s.sendmsg(String.format("SHOOT %d %d", x, y-1));
-                    if(s.listenToNetwork().equals("HIT"))
-                    {
-                        shootInDirection(x, y-1, i);
-                        initialY = y-1;
-                        initialX = x;
-                        direction = i;
-                        break;
-                    }
+                    shootx = x;
+                    shooty = y-1;
+                    break;
                 case 1:
-                    s.sendmsg(String.format("SHOOT %d %d", x+1, y));
-                    if(s.listenToNetwork().equals("HIT"))
-                    {
-                        shootInDirection(x+1, y, i);
-                        initialY = y;
-                        initialX = x+1;
-                        direction = i;
-                        break;
-                    }
+                    shootx = x+1;
+                    shooty = y;
+                    break;
                 case 2:
-                    s.sendmsg(String.format("SHOOT %d %d", x, y+1));
-                    if(s.listenToNetwork().equals("HIT"))
-                    {
-                        shootInDirection(x, y+1, i);
-                        initialY = y+1;
-                        initialX = x;
-                        direction = i;
-                        break;
-                    }
+                    shootx = x;
+                    shooty = y+1;
+                    break;
                 case 3:
-                    s.sendmsg(String.format("SHOOT %d %d", x-1, y));
-                    if(s.listenToNetwork().equals("HIT"))
-                    {
-                        shootInDirection(x-1, y, i);
-                        initialY = y;
-                        initialX = x-1;
-                        direction = i;
-                        break;
-                    }
+                    shootx = x-1;
+                    shooty = y;
+                    break;
             }
+            s.sendmsg(String.format("shot %d %d", shootx, shooty));
+            String res = s.listenToNetwork();
+            //return false so the calling function sendmsg pass to oponent and breaks the for loop.
             limit++;
+            if(res.equals("answer 0"))
+            {
+                return false;
+            }
+            if(res.equals("answer 1"))
+            {
+                if(!shootInDirection(x, y+1, i)) {
+                    return false;
+                }
+                initialY = y+1;
+                initialX = x;
+                direction = i;
+            }
         }
+        return true;
     }
-    public void shootInDirection(int x, int y, int i)
+
+    public boolean shootInDirection(int x, int y, int i)
     {
         int directionX, directionY;
 
@@ -227,66 +286,61 @@ public class AI
             i = direction;
         }
 
-//Shoots in a direction till the answer is "SUNK" or "MISS"
+//Shoots in a direction till the answer is "answer 2" or "MISS"
+        String res = "";
         switch (i)
         {
             case 0:
                 directionY = -1;
                 do
                 {
-                    s.sendmsg(String.format("SHOOT %d %d", x, y + directionY));
-                    if (s.listenToNetwork().equals("SUNK"))
-                    {
-                        limit = 0;
-                        break;
-                    }
+                    s.sendmsg(String.format("shot %d %d", x, y + directionY));
+                    res = s.listenToNetwork();
                     directionY--;
                 }
-                while (s.listenToNetwork().equals("HIT"));
+                while (res.equals("answer 1"));
                 break;
             case 1:
                 directionX = 1;
                 do
                 {
-                    s.sendmsg(String.format("SHOOT %d %d", x + directionX, y));
-                    if (s.listenToNetwork().equals("SUNK"))
-                    {
-                        limit = 0;
-                        break;
-                    }
+                    s.sendmsg(String.format("shot %d %d", x + directionX, y));
+                    res = s.listenToNetwork();
                     directionX++;
                 }
-                while (s.listenToNetwork().equals("HIT"));
+                while (res.equals("answer 1"));
                 break;
             case 2:
                 directionY = 1;
                 do
                 {
-                    s.sendmsg(String.format("SHOOT %d %d", x, y + directionY));
-                    if (s.listenToNetwork().equals("SUNK"))
-                    {
-                        limit = 0;
-                        break;
-                    }
+                    s.sendmsg(String.format("shot %d %d", x, y + directionY));
+                    res = s.listenToNetwork();
                     directionY++;
                 }
-                while (s.listenToNetwork().equals("HIT"));
+                while (res.equals("answer 1"));
                 break;
             case 3:
                 directionX = -1;
                 do
                 {
-                    s.sendmsg(String.format("SHOOT %d %d", x + directionX, y));
-                    if (s.listenToNetwork().equals("SUNK"))
-                    {
-                        limit = 0;
-                        break;
-                    }
+                    s.sendmsg(String.format("shot %d %d", x + directionX, y));
+                    res = s.listenToNetwork();
                     directionX--;
                 }
-                while (s.listenToNetwork().equals("HIT"));
+                while (res.equals("answer 1"));
                 break;
         }
+
+        if (res.equals("answer 0")) {
+            return false;
+        }
+        if (res.equals("answer 2"))
+        {
+            limit = 0;
+        }
+        return true;
+
     }
     public void switchDirection(int direction)
     {

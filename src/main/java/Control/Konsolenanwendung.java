@@ -99,7 +99,7 @@ public class Konsolenanwendung {
                     a = new Grid2D(Integer.parseInt(split[1]));
                     a.generateRandom();
                     b = new Grid2D(Integer.parseInt(split[1]));
-                    FoeGridShootObject temp = new FoeGridShootObject(0);
+                    FoeGridShootObject temp = new FoeGridShootObject(-1);
                     //b.setFoeGridObjects();
                     System.out.printf("Grid A:\n%s\n", a);
                     System.out.printf("Grid B:\n%s\n", b);

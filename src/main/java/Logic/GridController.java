@@ -8,23 +8,31 @@ import Misc.GridState;
 import Network.Connector;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class GridController {
     HashMap<Component, Character> c2c = new HashMap<>();
+    private Connector connector;
     private boolean isInitialized = false;
     private Connector con;
     private Grid2D model;
     private BasicGrid view;
     private MouseAdapter mouseAdapter;
+    private int lastx = -1;
+    private int lasty = -1;
 
-    public GridController(Grid2D model, BasicGrid view) {
+    public GridController(Grid2D model, Connector connector, BasicGrid view) {
         this.model = model;
         this.view = view;
+        this.connector = connector;
         view.setController(this);
     }
 
@@ -123,8 +131,17 @@ public class GridController {
     }
 
     public void shoot(Component comp, Point pos) {
+        if(connector != null && !connector.turn()) {
+            return;
+        }
+
         Character c = c2c.get(comp);
         if(c == null) {
+            return;
+        }
+
+        //dont shoot if the ship is dead already.
+        if(!c.isAlive()) {
             return;
         }
 
@@ -139,8 +156,12 @@ public class GridController {
         int shipPosOffsetX = (pos.x - c.getX() * currentTileSize) / currentTileSize;
         int shipPosOffsetY = (pos.y - c.getY() * currentTileSize) / currentTileSize;
 
-
-        //get network here and sendmsg("shoot x y") then in MainFrame loop on result 0/1/2. handle accordingly!
+        if(c instanceof FoeGridShootObject) {
+            //get network here and sendmsg("shoot x y") then in MainFrame loop on result 0/1/2. handle accordingly!
+            lastx = c.getX() + shipPosOffsetX;
+            lasty = c.getY() + shipPosOffsetY;
+            connector.sendmsg(String.format("shot %d %d", lastx, lasty));
+        }
 
         ShotResult res = model.shoot(c.getX() + shipPosOffsetX, c.getY() + shipPosOffsetY);
         if(res == ShotResult.SUNK) {
@@ -149,6 +170,50 @@ public class GridController {
         view.revalidate();
         view.repaint();
         // TODO: modify view/ship panel according to shot result.
+    }
+
+    public void processShotResult(int shotResult) {
+        ShotResult r = ShotResult.values()[shotResult];
+        Character c = model.getCharacter(lastx, lasty);
+
+        LinkedList<Integer[]> markedPos;
+        Ship s = null;
+        switch (r) {
+            case NONE:
+                c.shoot(0); // 0 -> wasser
+                break;
+            case HIT:
+                c.shoot(1); // 1 -> ship
+                break;
+            case SUNK:
+                c.shoot(2); // 2 -> sunk
+                markedPos = NetGridHelper.MarkSunkShipCorrectly(model, lastx, lasty);
+                if(markedPos != null) {
+                    int shipSize = markedPos.size();
+                    s = new Ship(shipSize, true);
+                    Ship finalS = s;
+                    markedPos.forEach((Integer[] xy) -> {
+                        model.replaceThrough(xy[0], xy[1], finalS);
+                    });
+                    s.setPosition(markedPos.getFirst()[0], markedPos.getFirst()[1]);
+                    s.setRotation((markedPos.getLast()[0] - markedPos.getFirst()[0]) == 0 ? Rotation.VERTICAL : Rotation.HORIZONTAL);
+                    model.markSurrounding(s.getX(), s.getY());
+                }
+                break;
+        }
+
+        Ship finalS1 = s;
+        SwingUtilities.invokeLater(() -> {
+            if(finalS1 != null) {
+                try {
+                    c2c.put(view.addPiece(finalS1.getImage(), finalS1.getX(), finalS1.getY(), finalS1.getSize(), finalS1.isVertical()), finalS1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            view.revalidate();
+            view.repaint();
+        });
     }
 
     public void highlightCell(Component c) {

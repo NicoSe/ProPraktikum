@@ -21,7 +21,7 @@ import Network.*;
 public class MainFrame {
 
     //net
-    Connector self;
+    Connector net;
     Connector foe;
 
     Grid2D selfGrid;
@@ -29,6 +29,8 @@ public class MainFrame {
 
     GridController gcS;
     GridController gcF;
+
+    AI ai;
 
     //Variablen
     private JFrame jf;
@@ -703,7 +705,7 @@ public class MainFrame {
                 pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
-                gcS = new GridController(selfGrid, pnlGrid1);
+                gcS = new GridController(selfGrid, null, pnlGrid1);
                 gcS.init(GridState.PLACE);
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -713,8 +715,8 @@ public class MainFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         Helpers.playSFX("/SFX/SA2_142.wav", 1);
-                        if(self.turn()) {
-                            self.sendmsg("confirmed");
+                        if(net.turn()) {
+                            net.sendmsg("confirmed");
                             pnlDummy.remove(pnlReady);
                             pnlDummy.remove(pnlGrid1);
                             pnlDummy.add(pnlGrid2);
@@ -851,7 +853,7 @@ public class MainFrame {
                 pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
                 foeGrid.placeFGOeverywhere();
-                gcF = new GridController(foeGrid, pnlGrid2);
+                gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
                 //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
@@ -864,10 +866,14 @@ public class MainFrame {
 
                 backgroundPanel.add(pnlDummyThicc);
 
+                pnlDummyThicc.removeAll();
+                pnlDummy.removeAll();
                 pnlDummy.setOpaque(false);
                 pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
                 pnlDummy.add(pnlGrid1);
                 pnlDummy.add(pnlReady);
+                pnlDummy.setVisible(true);
+                pnlButton.setVisible(true);
                 try {
                     backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
                 } catch (IOException ex) {
@@ -880,8 +886,8 @@ public class MainFrame {
                     jf.setSize(new Dimension(1025,851));
                     jf.setSize(new Dimension(1024,850));
                 }
-
-
+                jf.revalidate();
+                jf.repaint();
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -1072,7 +1078,7 @@ public class MainFrame {
                 pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
-                gcS = new GridController(selfGrid, pnlGrid1);
+                gcS = new GridController(selfGrid, null, pnlGrid1);
                 gcS.init(GridState.PLACE);
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -1121,8 +1127,8 @@ public class MainFrame {
                     public void mouseClicked(MouseEvent e) {
                         Helpers.playSFX("/SFX/SA2_142.wav", 1);
 
-                        if(self.turn()) {
-                            self.sendmsg("confirmed");
+                        if(net.turn()) {
+                            net.sendmsg("confirmed");
                             pnlDummy.remove(pnlReady);
                             pnlDummy.remove(pnlGrid1);
                             pnlDummy.add(pnlGrid2);
@@ -1223,7 +1229,7 @@ public class MainFrame {
                 pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
                 foeGrid.placeFGOeverywhere();
-                gcF = new GridController(foeGrid, pnlGrid2);
+                gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
                 //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
@@ -1312,7 +1318,7 @@ public class MainFrame {
                 pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
-                gcS = new GridController(selfGrid, pnlGrid1);
+                gcS = new GridController(selfGrid, null, pnlGrid1);
                 gcS.init(GridState.PLACE);
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -1322,8 +1328,8 @@ public class MainFrame {
 
                     public void mouseClicked(MouseEvent e) {
                         Helpers.playSFX("/SFX/SA2_142.wav", 1);
-                        if(self.turn()) {
-                            self.sendmsg("confirmed");
+                        if(net.turn()) {
+                            net.sendmsg("confirmed");
                             pnlDummy.remove(pnlReady);
                             pnlDummy.remove(pnlGrid1);
                             pnlDummy.add(pnlGrid2);
@@ -1460,7 +1466,7 @@ public class MainFrame {
                 pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
                 foeGrid.placeFGOeverywhere();
-                gcF = new GridController(foeGrid, pnlGrid2);
+                gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
                 //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
@@ -1633,39 +1639,81 @@ public class MainFrame {
 
     }
 
+    private void resetThiccPanel() {
+
+    }
+
     private void runSingleplayer(int bound) {
-        runMultiplayerServer(bound);
+        resetNetwork();
         new Thread(() -> {
-            foe = new Client2("127.0.0.1");
-            handleData(foe);
+            net = new Server2();
+            net.connect();
+
+            net.sendmsg(String.format("size %d", bound));
+            handleData(net);
+        }).start();
+
+        new Thread(() -> {
+            ai = new AI(new Client2("127.0.0.1"), 2);
+            //handleData(foe);
         }).start();
     }
 
     private void handleData(Connector c) {
         while (true) {
+            if(!c.isConnected()) {
+                break;
+            }
             String res = c.listenToNetwork();
             String[] cmd = res.split(" ");
             switch(cmd[0]) {
+                case "confirmed":
+                    break;
                 case "size":
+                    break;
+                case "pass":
+                    break;
+                case "answer":
+                    gcF.processShotResult(Integer.parseInt(cmd[1]));
+                    break;
+                case "shot":
+                    c.sendmsg(String.format("answer %d", selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])).ordinal()));
+                    break;
+                default:
+                    System.out.println("Invalid command.");
+                    System.out.println(res);
                     break;
             }
         }
     }
 
-    private void runMultiplayerServer(int bound) {
-        new Thread(() -> {
-            self = new Server2();
-            self.connect();
+    private void resetNetwork() {
+        if(net != null) {
+            net.Close();
+        }
+        if(foe != null) {
+            foe.Close();
+        }
+        net = null;
+        foe = null;
+    }
 
-            self.sendmsg(String.format("size %d", bound));
-            handleData(self);
+    private void runMultiplayerServer(int bound) {
+        resetNetwork();
+        new Thread(() -> {
+            net = new Server2();
+            net.connect();
+
+            net.sendmsg(String.format("size %d", bound));
+            handleData(net);
         }).start();
     }
 
     private void runMuliplayerClient(String host) {
+        resetNetwork();
         new Thread(() -> {
-            self = new Client2(host);
-            handleData(self);
+            net = new Client2(host);
+            handleData(net);
         }).start();
     }
 

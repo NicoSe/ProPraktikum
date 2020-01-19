@@ -2,10 +2,8 @@ package GUI.Grid;
 
 import GUI.ImageHelper;
 import GUI.ScaleHelper;
+import Logic.*;
 import Logic.Character;
-import Logic.GridController;
-import Logic.Ship;
-import Logic.Water;
 import Misc.GridState;
 //import org.w3c.dom.css.Rect;
 
@@ -201,7 +199,20 @@ public class BasicGrid extends JPanel {
                                 if(!ch.isAlive()) {
                                     g.drawImage(rocketNoneScaled, 0, 0, this);
                                 }
-                            } else if(ch instanceof Ship) {
+                            } else if(ch instanceof FoeGridShootObject) {
+                                //not shot on, dont paint anything.
+                                if(ch.isAlive()) {
+                                    return;
+                                }
+
+                                FoeGridShootObject fgso = (FoeGridShootObject)ch;
+                                if(fgso.getHitStatus() == 0) {
+                                    g.drawImage(rocketNoneScaled, 0, 0, this);
+                                } else if(fgso.getHitStatus() == 1 || fgso.getHitStatus() == 2) {
+                                    g.drawImage(normalRocketScaled, 0, 0, this);
+                                }
+                            }
+                            else if(ch instanceof Ship) {
                                 Ship s = (Ship)ch;
                                 boolean[] hitbox = s.getHitbox();
                                 for(int i = 0; i < hitbox.length; ++i) {

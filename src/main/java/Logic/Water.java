@@ -25,7 +25,7 @@ public class Water extends Character {
     public ShotResult shoot(int hitpos) {
         if(isHit) {
             System.out.println("water that was hit already.");
-            return ShotResult.ALREADY;
+            return ShotResult.NONE;
         }
         isHit = true;
         System.out.println("Water hit!");

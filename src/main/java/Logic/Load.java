@@ -121,7 +121,9 @@ public class Load {
 
                 int j = 1;
                 while (j < col.length) {
-                    if (col[j].equals("0")) {
+                    if(col[j].equals("-1")) {
+                        foe_grid.put(j-1, i, new FoeGridShootObject(-1));
+                    } else if (col[j].equals("0")) {
                         foe_grid.put(j-1, i, new FoeGridShootObject(0));
                     } else if (col[j].equals("1")) {
                         foe_grid.put(j-1, i, new FoeGridShootObject(1));          //*************Anzeigen ob gegnerisches virtuelles Schiff getroffen

@@ -38,7 +38,7 @@ public class Server2 implements Connector{
             Close_Socket = false;
             System.out.println("<S>Starting Server...");
             Server_Socket = new ServerSocket(port);       //create Server
-
+            Server_Socket.setReuseAddress(true);
             System.out.println("<S>Wait for connection at Port:" + Server_Socket.getLocalPort());
 
             Client_Socket = Server_Socket.accept();                    //accept client
@@ -61,7 +61,7 @@ public class Server2 implements Connector{
 //______________________________________________________________________________________________________________________
     //Gibt zurück ob Server verbunden
     public boolean isConnected(){
-        return Client_Socket != null && Client_Socket.isConnected();
+        return !Close_Socket;
     }
 
 
@@ -103,27 +103,32 @@ public class Server2 implements Connector{
     //des Servers.
     public String listenToNetwork(){
         while(true){
-            if (Close_Socket == true){
-                Close_Socket = false;
+            if (Close_Socket){
                 break;
             }
             try {
-                String stream = dis.readUTF();
+                String stream = dis.readUTF().toLowerCase();
                 System.out.println("<S><<< " + stream);
                 if (analyze(stream)) {
                     turn = true;
                     return stream;
                 }
+            } catch(EOFException e) {
+                System.out.println("<S>Can´t read from socket.");
             }catch(SocketException e){
                 System.out.println("<S>Can´t find client!");
                 e.printStackTrace();
-                Close();
-                connect();
+                //Close();
+                //connect();
             } catch (IOException e) {
                 System.out.println("<S>Can´t read message from client or don´t get one!");
                 e.printStackTrace();
-                Close();
-                connect();
+                //Close();
+                //connect();
+            } finally {
+                if (Close_Socket){
+                    break;
+                }
             }
         }
         return "";
@@ -152,7 +157,7 @@ public class Server2 implements Connector{
         String[] words = msg.split("\\s+");
         words[0] = words[0].toLowerCase();
         switch(words[0]) {
-            case "shoot":
+            case "shot":
             case "confirmed":
             case "save":
             case "load" :
@@ -176,6 +181,8 @@ public class Server2 implements Connector{
     public boolean Close(){
         try {
             Close_Socket = true;
+            dis.close();
+            dos.close();
             Server_Socket.close();
             Client_Socket.close();
         } catch (IOException e) {

@@ -38,8 +38,23 @@ public class Grid2D {
         }
     }
 
+    public Character getCharacter(int x, int y) {
+        if(x < 0 || y < 0 || x >= bound || y >= bound) {
+            return null;
+        }
+        return characters[x][y];
+    }
+
     public int getShipCount() {
         return harbor.getTotalShipCount(bound);
+    }
+
+    //this is a dangerous method.
+    public void replaceThrough(int x, int y, Character c) {
+        if(x < 0 || y < 0 || x >= bound || y >= bound) {
+            return;
+        }
+        characters[x][y] = c;
     }
 
     public void generateRandom() {
@@ -78,12 +93,11 @@ public class Grid2D {
             return false;
         }
 
-
         //check if position is empty or not.
         for(int local_x = 0; local_x < width; ++local_x) {
             for(int local_y = 0; local_y < height; ++local_y) {
                 if(characters[x+local_x][y+local_y] != null) {
-                    if(characters[x+local_x][y+local_y] instanceof Water || characters[x+local_x][y+local_y] instanceof FoeGridShootObject) continue;
+                    if(characters[x+local_x][y+local_y] instanceof Water) continue;
                     return false;
                 }
             }
@@ -157,7 +171,7 @@ public class Grid2D {
         }
 
         // make sure there is no collision between ships
-        if(!(inst instanceof Water)) {
+        if(!(inst instanceof Water) && !(inst instanceof FoeGridShootObject)) {
             if (!isValidAt(x, y, width, height)) {
                 return null;
             }
@@ -292,7 +306,7 @@ public class Grid2D {
     public void placeFGOeverywhere(){
         for(int i=0;i<bound;i++){
             for(int j=0;j<bound;j++){
-                put(i,j,new FoeGridShootObject(0));
+                put(i,j,new FoeGridShootObject(-1));
             }
         }
     }

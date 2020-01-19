@@ -7,4 +7,5 @@ public interface Connector {
     boolean turn();
     boolean isConnected();
     ConnectorType getConnectorType();
+    boolean Close();
 }
