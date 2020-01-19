@@ -147,7 +147,7 @@ public class GridController {
 
         int currentTileSize = view.getScaledTileSize();
 
-        //check for invalid pos
+        ///check for invalid pos
         Rectangle validRect = new Rectangle(c.getX()*currentTileSize, c.getY()*currentTileSize, c.getSize()*currentTileSize, c.getSize()*currentTileSize);
         if(!validRect.contains(pos)) {
             return;
@@ -157,7 +157,7 @@ public class GridController {
         int shipPosOffsetY = (pos.y - c.getY() * currentTileSize) / currentTileSize;
 
         if(c instanceof FoeGridShootObject) {
-            //get network here and sendmsg("shoot x y") then in MainFrame loop on result 0/1/2. handle accordingly!
+            ///get network here and sendmsg("shoot x y") then in MainFrame loop on result 0/1/2. handle accordingly!
             lastx = c.getX() + shipPosOffsetX;
             lasty = c.getY() + shipPosOffsetY;
             connector.sendmsg(String.format("shot %d %d", lastx, lasty));

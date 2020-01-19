@@ -61,14 +61,14 @@ public class Grid2D {
         List<HarborShipData> ships = harbor.getCopyOfHarborData(bound);
         int placeCount = harbor.getTotalShipCount(bound);
         while(placeCount > 0) {
-            // 0 -> 5 ship; 1 -> 4 ship; 2 -> 3 ship; 3 -> 2 ship
+            /// 0 -> 5 ship; 1 -> 4 ship; 2 -> 3 ship; 3 -> 2 ship
             int randomShip = new Random().nextInt(ships.size());
             HarborShipData data = ships.get(randomShip);
 
             int randomX = Util.GetRandomNumberInRange(0, bound-1);
             int randomY = Util.GetRandomNumberInRange(0, bound-1);
 
-            //generate all ships vertical, everything else won't happen for now.
+            ///generate all ships vertical, everything else won't happen for now.
             Ship s = new Ship(data.size);
             s.setRotation(Rotation.values()[new Random().nextInt(Rotation.MAX_NUM.ordinal())]);
 
@@ -85,7 +85,7 @@ public class Grid2D {
     }
 
     private boolean isEmptyAt(int x, int y, int width, int height) {
-        //check if pos is valid or not.
+        ///check if pos is valid or not.
         if(x+width < 0 || x+width > this.bound) {
             return false;
         }
@@ -93,7 +93,8 @@ public class Grid2D {
             return false;
         }
 
-        //check if position is empty or not.
+
+        ///check if position is empty or not.
         for(int local_x = 0; local_x < width; ++local_x) {
             for(int local_y = 0; local_y < height; ++local_y) {
                 if(characters[x+local_x][y+local_y] != null) {
@@ -107,29 +108,32 @@ public class Grid2D {
     }
 
     private boolean isValidAt(int x, int y, int width, int height) {
-        //check left, right, top, bot for another ship
-        // make sure to keep edge cases like placing it at field bounds
+        /**
+         *check left, right, top, bot for another ship
+         *make sure to keep edge cases like placing it at field bounds
+         */
 
-        //left
+        ///left
         if(x-1 >= 0 && !isEmptyAt(x-1, y, 1, height)) {
             return false;
         }
 
-        //top
+        ///top
         if(y-1 >= 0 && !isEmptyAt(x, y-1, width, 1)) {
             return false;
         }
 
-        //right
+        ///right
         if(x+width < bound && !isEmptyAt(x+width, y, 1, height)) {
             return false;
         }
 
-        //bot
+        ///bot
         if(y+height < bound && !isEmptyAt(x, y+height, width, 1)) {
             return false;
         }
 
+        //TODO:
         //things to do for corner hinting...
         //check if we are in bounds...
         //true: if we are, check if the position is empty.
@@ -137,17 +141,17 @@ public class Grid2D {
         //...
         //if we arent in bounds at every pos then we cant collide with anything and thus we have a valid pos!
 
-        //top-left
+        ///top-left
         if(x-1 >= 0 && y-1 >= 0 && !isEmptyAt(x-1, y-1, 1, 1)) {
             return false;
         }
 
-        //bottom-left
+        ///bottom-left
         if(x-1 >= 0 && y+height < bound && !isEmptyAt(x-1, y+height, 1, 1)) {
             return false;
         }
 
-        //top-right
+        ///top-right
         if(x+width < bound && y-1 >= 0 && !isEmptyAt(x+width, y-1, 1, 1)) {
             return false;
         }
@@ -165,12 +169,12 @@ public class Grid2D {
         int height = inst.isVertical() ? size : 1;
         int width = inst.isVertical() ? 1 : size;
 
-        // this also validates the position.
+        /// this also validates the position.
         if(!isEmptyAt(x, y, width, height)) {
             return null;
         }
 
-        // make sure there is no collision between ships
+        /// make sure there is no collision between ships
         if(!(inst instanceof Water) && !(inst instanceof FoeGridShootObject)) {
             if (!isValidAt(x, y, width, height)) {
                 return null;
@@ -293,7 +297,7 @@ public class Grid2D {
         }
     }
 
-    //Place water everywhere after placing your ships
+    ///Place water everywhere after placing your ships
     public void placeWatereverywhere(){
         for(int i=0;i<bound;i++){
             for(int j=0;j<bound;j++){
@@ -302,7 +306,7 @@ public class Grid2D {
         }
     }
 
-    //Place FoeGridObject everywhere after placing your ships
+    ///Place FoeGridObject everywhere after placing your ships
     public void placeFGOeverywhere(){
         for(int i=0;i<bound;i++){
             for(int j=0;j<bound;j++){

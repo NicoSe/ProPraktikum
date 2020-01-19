@@ -20,7 +20,7 @@ import Network.*;
 
 public class MainFrame {
 
-    //net
+    ///net
     Connector net;
     Connector foe;
 
@@ -32,7 +32,7 @@ public class MainFrame {
 
     AI ai;
 
-    //Variablen
+    ///Variablen
     private JFrame jf;
     private BackgroundPanel backgroundPanel;
     private JPanel pnlButton;
@@ -98,7 +98,7 @@ public class MainFrame {
         this.mf = this;
     }
 
-    //Komponenten
+    ///Komponenten
     private void Components() throws IOException {
         //Frame
         jf = new JFrame();
@@ -138,7 +138,7 @@ public class MainFrame {
         pnlGrid2 = new BasicGrid(2,GridState.FORBID);
         */
 
-        //panel
+        ///panel
         pnlButton = new JPanel();
         pnlButton.setOpaque(true);
         pnlButton.setLayout(new BoxLayout(pnlButton,BoxLayout.Y_AXIS));
@@ -172,7 +172,7 @@ public class MainFrame {
         pnlHostY2.setMaximumSize((new Dimension(300, 350)));
         pnlHostY2.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
-        //panelPlay
+        ///panelPlay
         pnlPlay = new JPanel();
         pnlPlay.setLayout(new BoxLayout(pnlPlay,BoxLayout.Y_AXIS));
         pnlPlay.setMinimumSize(new Dimension(1024,850));
@@ -194,7 +194,7 @@ public class MainFrame {
         pnlReady.add(lblReady);
 
 
-        //panel DUmmythicc
+        ///panel DUmmythicc
         pnlDummyThicc =  new JPanel(new BorderLayout());
         pnlDummyThicc.setBackground(Color.RED);
         pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/10,jf.getWidth()/10,jf.getHeight()/10,jf.getWidth()/10));
@@ -205,15 +205,15 @@ public class MainFrame {
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-//Buttons for Button panel and Object Disign
+///Buttons for Button panel and Object Disign
 
-        //Titel
+        ///Titel
         lblTitle = new JLabel();
         lblTitle.setIcon(new ImageIcon(getClass().getResource("/Sprites/Title_v11.gif")));
         lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         pnlButton.add(lblTitle);
 
-        //Play Button
+        ///Play Button
         lblPlay = new JLabel();
         lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
         lblPlay.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -262,7 +262,7 @@ public class MainFrame {
             }
         });
 
-        //Options Button
+        ///Options Button
         lblOptions = new JLabel();
         lblOptions.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsBW.png"))));
         lblOptions.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -314,7 +314,7 @@ public class MainFrame {
             }
         });
 
-        //Credits Button
+        ///Credits Button
         lblCredits = new JLabel();
         lblCredits.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/CreditsBW.png"))));
         lblCredits.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -367,7 +367,7 @@ public class MainFrame {
             }
         });
 
-        //Exit Button
+        ///Exit Button
         lblExit = new JLabel();
         lblExit.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ExitBW.png"))));
         lblExit.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -409,7 +409,7 @@ public class MainFrame {
             }
         });
 
-        //Return Button
+        ///Return Button
         lblReturn = new JLabel();
         lblReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnBW.png"))));
         lblReturn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -466,7 +466,7 @@ public class MainFrame {
             }
         });
 
-        //Singleplayer Button
+        ///Singleplayer Button
         lblSingle = new JLabel();
         lblSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleBW.png"))));
         lblSingle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -516,7 +516,7 @@ public class MainFrame {
             }
         });
 
-        //Host Button
+        ///Host Button
         lblHost = new JLabel();
         lblHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/HostBW.png"))));
         lblHost.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -591,7 +591,7 @@ public class MainFrame {
             }
         });
 
-        //Join Button
+        ///Join Button
         lblJoin = new JLabel();
         lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
         lblJoin.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -644,7 +644,7 @@ public class MainFrame {
             }
         });
 
-        //Size Slider and label
+        ///Size Slider and label
         lblSize =  new JLabel();
         lblSize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SizeBW.png")).getScaledInstance(400,100,Image.SCALE_SMOOTH)));
         lblSize.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -683,12 +683,12 @@ public class MainFrame {
             }
         });
 
-        //Difficulty
+        ///Difficulty
         lblDifficulty = new JLabel();
         lblDifficulty.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DifficultyBW.png"))));
         lblDifficulty.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //Start Game Button
+        ///Start Game Button
         lblStartSingle = new JLabel();
         lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
         lblStartSingle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -920,12 +920,12 @@ public class MainFrame {
             }
         });
 
-        //Fullscreen Button
+        ///Fullscreen Button
         lblFullscreen = new JLabel();
         lblFullscreen.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/FullscreenBW.png"))));
         lblFullscreen.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //Fullscreen Checkbox Picture
+        ///Fullscreen Checkbox Picture
         lblFullscreenPicture = new JLabel();
         if (OptionsHandler.getFullscreenMode()){
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
@@ -982,17 +982,17 @@ public class MainFrame {
             }
         });
 
-        //Music Label
+        ///Music Label
         lblMusic = new JLabel();
         lblMusic.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/musicVolumeBW.png"))));
         lblMusic.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //SFX Label
+        ///SFX Label
         lblSFX = new JLabel();
         lblSFX.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/sfxVolumeBW.png"))));
         lblSFX.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //Music Slider
+        ///Music Slider
         sldMusicSlider = new JSlider(0,100);
         sldMusicSlider.setPreferredSize(new Dimension(200,50));
         sldMusicSlider.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
@@ -1029,7 +1029,7 @@ public class MainFrame {
             }
         });
 
-        //IPAdress Label and Text Field
+        ///IPAdress Label and Text Field
         lblIPAdress = new JLabel();
         lblIPAdress.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleBW.png"))));
         lblIPAdress.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -1061,7 +1061,7 @@ public class MainFrame {
             public void keyReleased(KeyEvent e) {}
         });
 
-        //Connect Button
+        ///Connect Button
         lblConnect = new JLabel();
         lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
         lblConnect.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -1301,7 +1301,7 @@ public class MainFrame {
         });
 
 
-        //Host Start Button
+        ///Host Start Button
         lblStartHost = new JLabel();
         lblStartHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
         lblStartHost.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -1547,7 +1547,7 @@ public class MainFrame {
             }
         });
 
-        //Show own IP adress
+        ///Show own IP adress
         lblShowIP = new JLabel();
         InetAddress inetAddress = InetAddress.getLocalHost();
         lblShowIP.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
@@ -1555,7 +1555,7 @@ public class MainFrame {
         lblShowIP.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblShowIP.setBorder(BorderFactory.createEmptyBorder(50,0,5,jf.getWidth()/2));
 
-        //Load List
+        ///Load List
         lstLoad = new JList();
         lstLoad.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         lstLoad.setOpaque(false);
@@ -1625,7 +1625,7 @@ public class MainFrame {
             }
         });
 
-        //Trennstrich für Host UI
+        ///Trennstrich für Host UI
         lblRect = new JLabel();
         lblRect.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblRect.setMinimumSize(new Dimension(40, 50));

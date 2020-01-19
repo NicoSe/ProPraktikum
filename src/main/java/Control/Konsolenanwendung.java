@@ -41,7 +41,7 @@ public class Konsolenanwendung {
             try {
                 String[] split = s.nextLine().split(" ");
 
-                //simulate shit with x: split[1]&y: split[2]
+                ///simulate shit with x: split[1]&y: split[2]
                 if (split[0].equals("shoot")) {
                     x = Integer.parseInt(split[1]);
                     y = Integer.parseInt(split[2]);
@@ -90,7 +90,7 @@ public class Konsolenanwendung {
             try {
                 String[] split = s.nextLine().split(" ");
 
-                //simulate shit with x: split[1]&y: split[2]
+                ///simulate shit with x: split[1]&y: split[2]
                 if (split[0].equals("size")) {
                     if (Integer.parseInt(split[1]) < 5 || Integer.parseInt(split[1]) > 30) {
                         System.out.println("Field must be between 3 and 30!");
@@ -100,7 +100,7 @@ public class Konsolenanwendung {
                     a.generateRandom();
                     b = new Grid2D(Integer.parseInt(split[1]));
                     FoeGridShootObject temp = new FoeGridShootObject(-1);
-                    //b.setFoeGridObjects();
+                    ///b.setFoeGridObjects();
                     System.out.printf("Grid A:\n%s\n", a);
                     System.out.printf("Grid B:\n%s\n", b);
                     S_socket.sendmsg(split[0] + " " + split[1]);
@@ -164,12 +164,12 @@ public class Konsolenanwendung {
             case "answer":
                 switch (words[1].toUpperCase()) {
                     case "0":
-                        //b.shoot(0);
-                        //S_socket.sendmsg("pass");
+                        ///b.shoot(0);
+                        ///S_socket.sendmsg("pass");
                     case "1":
-                        //b.shoot(1);
+                        ///b.shoot(1);
                     case "2":
-                        //b.shoot(1);
+                        ///b.shoot(1);
                 }
                 break;
             case "pass":
@@ -216,12 +216,12 @@ public class Konsolenanwendung {
             case "answer":
                 switch (words[1].toUpperCase()) {
                     case "0":
-                        //b.shoot(0);
+                        ///b.shoot(0);
                         C_socket.sendmsg("pass");
                     case "1":
-                        //b.shoot(1);
+                        ///b.shoot(1);
                     case "2":
-                        //b.shoot(2);
+                        ///b.shoot(2);
                 }
                 break;
             case "pass":
@@ -231,7 +231,7 @@ public class Konsolenanwendung {
                 C_socket.Close();
                 break;
             case "load":
-                //Load.load(words[1]);
+                ///Load.load(words[1]);
                 break;
         }
     }

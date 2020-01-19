@@ -4,19 +4,19 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-//Wasserobject für eigenes Grid, wird erst *nach* den Schiffen platziert!
+///Wasserobject für eigenes Grid, wird erst *nach* den Schiffen platziert!
 public class Water extends Character {
 
-    private boolean isHit = false;             //false für noch nihct beschossen, true für bereits beschossen
+    private boolean isHit = false;             //false für noch nicht beschossen, true für bereits beschossen
 
-    //Wasserobject hat Größe 1
+    ///Wasserobject hat Größe 1
     Water(boolean hit) {
         super(1);
         this.isHit = hit;
     }
 
     @Override
-    //returne den Status des Waterobjects, zb für die Abfrage ob man noch mal hin schiesen darf
+    ///return den Status des Waterobjects, zb für die Abfrage ob man noch mal hin schiesen darf
     public boolean isAlive() {
         return !isHit;
     }

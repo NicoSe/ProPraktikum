@@ -19,7 +19,7 @@ import java.util.Map;
 public class BasicGrid extends JPanel {
     public static final int TILE_BASE_SIZE = 64;
 
-    //docs: John Zukowski: The Definitive Guide to Java Swing (page 345)
+    ///docs: John Zukowski: The Definitive Guide to Java Swing (page 345)
     static class CustomLayoutManager implements LayoutManager2 {
         private Map<Component, Rectangle> compGrid;
         private int gridBounds;
@@ -56,14 +56,14 @@ public class BasicGrid extends JPanel {
             return new Dimension(TILE_BASE_SIZE * gridBounds, TILE_BASE_SIZE * gridBounds);
         }
 
-        //alignment around x axis, 0.5 means center.
+        ///alignment around x axis, 0.5 means center.
         @Override
         public float getLayoutAlignmentX(Container target) {
             //
             return 0.5f;
         }
 
-        //alignment around y axis, 0.5 means center.
+        ///alignment around y axis, 0.5 means center.
         @Override
         public float getLayoutAlignmentY(Container target) {
             return 0.5f;
@@ -76,7 +76,7 @@ public class BasicGrid extends JPanel {
 
         @Override
         public void addLayoutComponent(String name, Component comp) {
-//            throw new NotImplementedException();
+///            throw new NotImplementedException();
         }
 
         @Override
@@ -101,7 +101,7 @@ public class BasicGrid extends JPanel {
                 Component comp = comps[i];
                 Rectangle rect = compGrid.get(comp);
                 if(rect == null) {
-                    //?
+                    ///
                     continue;
                 }
                 Point p = rect.getLocation();
@@ -109,7 +109,7 @@ public class BasicGrid extends JPanel {
 
                 int scaledTile = GetScaledTileSize(parent.getParent() != null ? parent.getParent() : parent, gridBounds);
                 comp.setBounds(new Rectangle(p.x * scaledTile, p.y * scaledTile, d.width * scaledTile, d.height * scaledTile));
-                //System.out.printf("on layout container comp bounds: %s\n", comp.getBounds());
+                ///System.out.printf("on layout container comp bounds: %s\n", comp.getBounds());
             }
         }
     }
@@ -132,16 +132,16 @@ public class BasicGrid extends JPanel {
         int defaultSize = TILE_BASE_SIZE * bound;
         scaledSize = 0;
 
-        // TODO: maybe calculate offset?, resize this on window size change?
+        /// TODO: maybe calculate offset?, resize this on window size change?
         gridRect = new Rectangle(getX(), getY(), defaultSize, defaultSize);
 
         baseImg = new BufferedImage(defaultSize, defaultSize, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = baseImg.createGraphics();
 
-        /*
-        g2d.setColor(Color.BLUE);
-        g2d.fill(new Rectangle(0, 0, defaultSize, defaultSize));
-         */
+
+        ///g2d.setColor(Color.BLUE);
+        ///g2d.fill(new Rectangle(0, 0, defaultSize, defaultSize));
+
         try {
             rocketNone = ImageIO.read(getClass().getResource("/Sprites/whitepin2.png"));
             normalRocket = ImageIO.read(getClass().getResource("/Sprites/rackete2.png"));
@@ -227,12 +227,12 @@ public class BasicGrid extends JPanel {
                     } catch(NullPointerException e) {
                         System.out.printf("ERR: PIECE TEXTURE IS NULL!\nerr: %s\n", e.getMessage());
                     }
-                    //g.setColor(Color.red);
-                    //g.fillRect(0, 0, this.getWidth(), this.getHeight());
+                    ///g.setColor(Color.red);
+                    ///g.fillRect(0, 0, this.getWidth(), this.getHeight());
                 }
             };
             piece.setSize(100, 100);
-            //piece.setIcon(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/Luke.png"))));
+            ///piece.setIcon(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/Luke.png"))));
         } catch (Exception ex) {
             piece.setBackground(new Color(255, 0, 0, 64));
             piece.setOpaque(true);
@@ -281,7 +281,7 @@ public class BasicGrid extends JPanel {
     public void setPiecePos(Component comp, Point pos) {
         CustomLayoutManager lmgr = (CustomLayoutManager)getLayout();
         lmgr.changePiecePos(comp, pos);
-        //invalidate();
+        ///invalidate();
         revalidate();
         repaint();
     }
@@ -293,7 +293,7 @@ public class BasicGrid extends JPanel {
     public static int GetScaledTileSize(Component c, int bound) {
         double defaultSize = TILE_BASE_SIZE * bound;
         double size = Math.min(c.getWidth(), c.getHeight());
-        // TODO: differenciate between width and height.
+        /// TODO: differenciate between width and height.
         double prefSize = size == c.getWidth() ? c.getPreferredSize().width : c.getPreferredSize().height;
         double sf = size / defaultSize;
         return (int) (Math.floor(TILE_BASE_SIZE * sf));

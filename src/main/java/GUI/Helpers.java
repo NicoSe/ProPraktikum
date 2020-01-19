@@ -12,9 +12,10 @@ import javax.sound.sampled.FloatControl;
 
 
 public class Helpers {
-
-    //play Sound effects
-    //musictype can be 0(music) and 1(SFX)
+    /**
+    *play Sound effects
+    *musictype can be 0(music) and 1(SFX)
+    */
     public static void playSFX(String filepath, int musicType){
         try{
             Clip clip = AudioSystem.getClip();
