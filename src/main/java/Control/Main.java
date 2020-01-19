@@ -20,24 +20,23 @@ public class Main {
         own_grid.put(0, 0, c);
         Character c2 = new Ship(4);
         own_grid.put(2, 0, c2);
-        // System.out.println(grid);
-        //grid.rotate(0);
+        /// System.out.println(grid);
+        ///grid.rotate(0);
         Character c3 = new Ship(4);
         own_grid.put(4, 0, c3);
-        //System.out.println(own_grid);
+        ///System.out.println(own_grid);
         own_grid.placeWatereverywhere();
         foe_grid.placeFGOeverywhere();
 
 
-        /*new Save("270652385276",own_grid,foe_grid);
-        Load lo = new Load();
-        Grid2D[] g = lo.load("270652385276");
-        System.out.println(g[0]);
-        System.out.println(g[1]);
-*/
+        ///new Save("270652385276",own_grid,foe_grid);
+        ///Load lo = new Load();
+        ///Grid2D[] g = lo.load("270652385276");
+        ///System.out.println(g[0]);
+        ///System.out.println(g[1]);
 
-        //GUI
-        // Create and display the form
+        ///GUI
+        /// Create and display the form
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {

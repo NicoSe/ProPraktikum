@@ -54,15 +54,15 @@ public class ShipHarbor {
             InputStreamReader sr = new InputStreamReader(is, StandardCharsets.UTF_8);
             BufferedReader br = new BufferedReader(sr);
 
-            //skip first line
+            ///skip first line
             br.readLine();
 
             for (String line; (line = br.readLine()) != null;) {
-                // Process line
+                /// Process line
                 String[] split = line.split(";");
                 int rowVolume = 0;
 
-                //
+
                 ArrayList<HarborShipData> currentBoundShipData = new ArrayList();
                 int gridBounds = Integer.parseInt(split[split.length-1]);
                 for(int i = 0; i < split.length-1; ++i) {

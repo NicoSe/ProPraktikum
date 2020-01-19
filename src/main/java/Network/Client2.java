@@ -11,24 +11,26 @@ public class Client2 implements Connector {
     Socket client;
     BufferedReader usr;
 
-    //mulithreading support.
+    ///mulithreading support.
     DataInputStream dis;
     DataOutputStream dos;
 
-    //Speichert die Addresse des Servers so ist ein eventuelles Wiederverbinden leichter.
+    ///Speichert die Addresse des Servers so ist ein eventuelles Wiederverbinden leichter.
     private InetSocketAddress address;
 
-    //Abbruchvariable für die listenToNetwork()-Funktion
+    ///Abbruchvariable für die listenToNetwork()-Funktion
     public boolean Close_Socket = false;
     private boolean turn = false;
 
     private String host;
 
 //______________________________________________________________________________________________________________________
-    //Erstellt zuerst eine Addresse, die sich aus der IP-Addresse des Servers
-    // und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
-    // auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
-    //wird abgebrochen.
+    /**
+     *     Erstellt zuerst eine Addresse, die sich aus der IP-Addresse des Servers
+     *     und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
+     *     auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
+     *     wird abgebrochen.
+     */
     public Client2(String host) {
         this.host = host;
         connect();
@@ -61,8 +63,9 @@ public class Client2 implements Connector {
 
 
 //______________________________________________________________________________________________________________________
-    //Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
-    //Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
+    /**Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
+     *  Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
+     */
     public void sendmsg(String msg) {
         try {
             dos.writeUTF(msg);
@@ -79,7 +82,7 @@ public class Client2 implements Connector {
 
 
 //______________________________________________________________________________________________________________________
-    //Gibt zurück ob Client verbunden
+    ///Gibt zurück ob Client verbunden
     @Override
     public boolean isConnected(){
         return client.isConnected();
@@ -87,11 +90,12 @@ public class Client2 implements Connector {
 
 
 //______________________________________________________________________________________________________________________
-    //ist die Funktion die den Client anweist das Netwerk zu ueberwachen, bei
-    //lesen einer Nachicht vom Server wird analyze() ausgefuehrt um die
-    //Nachicht zu deuten. Die Funktion kann ueber die Variable
-    //Closed_Socket=true abgebrochen werden, dies geschiet auch beim Beenden(Close())
-    //des Clients.
+    /**ist die Funktion die den Client anweist das Netwerk zu ueberwachen, bei
+     *lesen einer Nachicht vom Server wird analyze() ausgefuehrt um die
+     *Nachicht zu deuten. Die Funktion kann ueber die Variable
+     *Closed_Socket=true abgebrochen werden, dies geschiet auch beim Beenden(Close())
+     *des Clients.
+     */
     public String listenToNetwork(){
         while (true) {
             if (Close_Socket == true){
@@ -130,16 +134,17 @@ public class Client2 implements Connector {
         return ConnectorType.CLIENT;
     }
 
-
-    //______________________________________________________________________________________________________________________
-    //Analysiert Nachichten vom Server und fuehrt je nach dem Spielbefehle aus:
-    //SIZE: Erstellen des Spielfeldes mit Groeßenangabe
-    //CONFIRM: Bestaetigung des Spielbeginns
-    //ANSWER: Info ueber Trefferstatus eines Schusses
-    //SHOOT: Schuss vom Server mit x und y Koordinate
-    //SAVE: Befehl zum speichern des aktuellen Spiels, uebergibt Name der Datei
-    //LOAD: Befehl zum Laden eines bestimmten Spielstandes, uebergibt Name der Datei
-    //PASS: passend es Zuges
+//______________________________________________________________________________________________________________________
+    /**
+     * Analysiert Nachichten vom Server und fuehrt je nach dem Spielbefehle aus:
+     *     SIZE: Erstellen des Spielfeldes mit Groeßenangabe
+     *     CONFIRM: Bestaetigung des Spielbeginns
+     *     ANSWER: Info ueber Trefferstatus eines Schusses
+     *     SHOOT: Schuss vom Server mit x und y Koordinate
+     *     SAVE: Befehl zum speichern des aktuellen Spiels, uebergibt Name der Datei
+     *     LOAD: Befehl zum Laden eines bestimmten Spielstandes, uebergibt Name der Datei
+     *     PASS: passend es Zuges
+     */
     private boolean analyze(String msg){
         String[] words = msg.split("\\s+");
         words[0] = words[0].toLowerCase();
@@ -164,8 +169,10 @@ public class Client2 implements Connector {
 
 
 //______________________________________________________________________________________________________________________
-    // Beenden des Clientsockets, bei Erfolg true, ansonsten false. Beendet zudem
-    //auch die listenToNetwork() Funktion durch Closed_Socket=true.
+    /**
+     *     Beenden des Clientsockets, bei Erfolg true, ansonsten false. Beendet zudem
+     *     auch die listenToNetwork() Funktion durch Closed_Socket=true.
+     */
     public boolean Close(){
         try {
             Close_Socket = true;

@@ -11,7 +11,7 @@ import Network.Server2;
 import java.util.Scanner;
 
 public class LogicMain {
-    //args[0]: size;
+    ///args[0]: size;
     public static void main(String[] args) {
         if(args.length <= 0) {
             System.exit(1);

@@ -15,19 +15,20 @@ public class Client {
     Socket client;
     BufferedReader usr;
 
-    //Speichert die Addresse des Servers so ist ein eventuelles Wiederverbinden leichter.
+    ///Speichert die Addresse des Servers so ist ein eventuelles Wiederverbinden leichter.
     private InetSocketAddress address;
 
-    //Abbruchvariable für die listenToNetwork()-Funktion
+    ///Abbruchvariable für die listenToNetwork()-Funktion
     public boolean Close_Socket = false;
 
     private String host;
 
 //______________________________________________________________________________________________________________________
-    //Erstellt zuerst eine Addresse, die sich aus der IP-Addresse des Servers
-    // und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
-    // auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
-    //wird abgebrochen.
+    /**Erstellt zuerst eine Addresse, die sich aus der IP-Addresse des Servers
+    * und dem Port zusammensetzt. Danach wird ein Socket erstellt der sich
+    * auf diese Addresse einwaehlt. Sollte kein Server gefunden werden,
+    * wird abgebrochen.
+    */
     public Client(String host) {
         this.host = host;
         Create_Client();
@@ -58,8 +59,9 @@ public class Client {
 
 
 //______________________________________________________________________________________________________________________
-    //Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
-    //Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
+    /**Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
+    *  Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
+    */
     public void sendmsg(String msg) {
         try {
             DataOutputStream stream_out = new DataOutputStream(client.getOutputStream());
@@ -76,18 +78,19 @@ public class Client {
 
 
 //______________________________________________________________________________________________________________________
-    //Gibt zurück ob Client verbunden
+    ///Gibt zurück ob Client verbunden
     public boolean isconnected(){
         return client.isConnected();
     }
 
 
 //______________________________________________________________________________________________________________________
-    //ist die Funktion die den Client anweist das Netwerk zu ueberwachen, bei
-    //lesen einer Nachicht vom Server wird analyze() ausgefuehrt um die
-    //Nachicht zu deuten. Die Funktion kann ueber die Variable
-    //Closed_Socket=true abgebrochen werden, dies geschiet auch beim Beenden(Close())
-    //des Clients.
+    /**ist die Funktion die den Client anweist das Netwerk zu ueberwachen, bei
+    *lesen einer Nachicht vom Server wird analyze() ausgefuehrt um die
+    *Nachicht zu deuten. Die Funktion kann ueber die Variable
+    *Closed_Socket=true abgebrochen werden, dies geschiet auch beim Beenden(Close())
+    *des Clients.
+    */
     public String listenToNetwork(){
         while (true) {
             if (Close_Socket == true){
@@ -116,14 +119,16 @@ public class Client {
 
 
 //______________________________________________________________________________________________________________________
-    //Analysiert Nachichten vom Server und fuehrt je nach dem Spielbefehle aus:
-    //SIZE: Erstellen des Spielfeldes mit Groeßenangabe
-    //CONFIRM: Bestaetigung des Spielbeginns
-    //ANSWER: Info ueber Trefferstatus eines Schusses
-    //SHOOT: Schuss vom Server mit x und y Koordinate
-    //SAVE: Befehl zum speichern des aktuellen Spiels, uebergibt Name der Datei
-    //LOAD: Befehl zum Laden eines bestimmten Spielstandes, uebergibt Name der Datei
-    //PASS: passend es Zuges
+    /**
+     * Analysiert Nachichten vom Server und fuehrt je nach dem Spielbefehle aus:
+     *     SIZE: Erstellen des Spielfeldes mit Groeßenangabe
+     *     CONFIRM: Bestaetigung des Spielbeginns
+     *     ANSWER: Info ueber Trefferstatus eines Schusses
+     *     SHOOT: Schuss vom Server mit x und y Koordinate
+     *     SAVE: Befehl zum speichern des aktuellen Spiels, uebergibt Name der Datei
+     *     LOAD: Befehl zum Laden eines bestimmten Spielstandes, uebergibt Name der Datei
+     *     PASS: passend es Zuges
+     */
     private boolean analyze(String msg){
         String[] words = msg.split("\\s+");
         words[0] = words[0].toLowerCase();
@@ -148,8 +153,11 @@ public class Client {
 
 
 //______________________________________________________________________________________________________________________
-    // Beenden des Clientsockets, bei Erfolg true, ansonsten false. Beendet zudem
-    //auch die listenToNetwork() Funktion durch Closed_Socket=true.
+    /**
+     *     Beenden des Clientsockets, bei Erfolg true, ansonsten false. Beendet zudem
+     *     auch die listenToNetwork() Funktion durch Closed_Socket=true.
+     */
+
     public boolean Close(){
         try {
             Close_Socket = true;

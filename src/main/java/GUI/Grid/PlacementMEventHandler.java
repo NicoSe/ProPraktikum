@@ -9,13 +9,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class PlacementMEventHandler extends MouseAdapter {
-    /*
-    private Grid grid;
-    public MouseEventHandler(Grid g) {
-        this.grid = g;
-    }
 
-     */
+    ///private Grid grid;
+    ///public MouseEventHandler(Grid g) {
+    ///    this.grid = g;
+    ///}
+
     private Component currentComponent;
     private GridController controller;
     private BasicGrid grid;
@@ -53,7 +52,7 @@ public class PlacementMEventHandler extends MouseAdapter {
 
             currentComponent.setLocation(e.getX() - offset.x, e.getY() - offset.y);
 
-            // TODO: check what we like better..
+            /// TODO: check what we like better..
             Point alteredLocation = currentComponent.getLocation();
             alteredLocation.x += grid.getScaledTileSize() / 2;
             alteredLocation.y += grid.getScaledTileSize() / 2;

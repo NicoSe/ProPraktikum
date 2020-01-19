@@ -18,12 +18,12 @@ public class AI
     private static int initialX, initialY, direction = -1;
     static int limit = 0;
 
-    /*
-    Easy Mode: Just fires in a random pattern at the enemy.
-    Normal Mode: Shoots in a random pattern at the enemy. If its manages to hit a ship, it will try to find out its direction and shoot in this direction.
-                 At the first "MISS" it will fire in the opposite direction, starting form the initial hit+1.
-    Hard Mode: Its first shot will be the middle of the grid. After that it will fire in a chess pattern at the enemy. It also tries to locate the direction of a damaged ship
-               and knows his initial hit of the ship.
+    /**
+     * Easy Mode: Just fires in a random pattern at the enemy.
+     * Normal Mode: Shoots in a random pattern at the enemy. If its manages to hit a ship, it will try to find out its direction and shoot in this direction.
+     *              At the first "MISS" it will fire in the opposite direction, starting form the initial hit+1.
+     * Hard Mode: Its first shot will be the middle of the grid. After that it will fire in a chess pattern at the enemy. It also tries to locate the direction of a damaged ship
+     *            and knows his initial hit of the ship.
      */
 
     public AI(Network.Connector s, int mode)
@@ -82,7 +82,7 @@ public class AI
         }
     }
 
-//Marks the grid in a chess pattern.
+///Marks the grid in a chess pattern.
     public int[][] setChessPattern()
     {
         for(int x = 0; x < chessPattern.length; x++)
@@ -101,7 +101,7 @@ public class AI
         return chessPattern;
     }
 
-//Marks the grid in a random pattern without reoccurring indices
+///Marks the grid in a random pattern without reoccurring indices
     public int[][] setRandomPattern()
     {
         int counter = 0;
@@ -112,7 +112,7 @@ public class AI
             int y = Util.GetRandomNumberInRange(0,grid.getBound()-1);
 
             if(randomPattern[x][y] != 1)
-            {//If the value at index x y != 1 --> field wasn't marked and indices are unique
+            {///If the value at index x y != 1 --> field wasn't marked and indices are unique
                 randomPattern[x][y] = 1;
                 counter++;
             }
@@ -120,7 +120,7 @@ public class AI
         return randomPattern;
     }
 
-//Shoots in the middle of the grid
+///Shoots in the middle of the grid
     public void firstShot()
     {
         int x = grid.getBound()/2;
@@ -141,13 +141,13 @@ public class AI
         {
             firstShot();
         }
-//If a ship is already damaged, it will fire at the initial coordinates but in the opposite direction
+///If a ship is already damaged, it will fire at the initial coordinates but in the opposite direction
         if(direction != -1)
         {
             shootInDirection(initialX, initialY, direction);
         }
 
-//Shoots at the marked fields of the pattern and searches so for a ship
+///Shoots at the marked fields of the pattern and searches so for a ship
         for (int x = 0; x < pattern.length; x++)
         {
             for (int y = 0; y < pattern.length; y++)
@@ -167,10 +167,10 @@ public class AI
     }
     public void destroy(int x, int y)
     {
-//Limit tightens the range and so prevents that the same field is shot at twice
+///Limit tightens the range and so prevents that the same field is shot at twice
         int i = Util.GetRandomNumberInRange(0+ limit,3);
         {
-//Locates the direction in which a ship lays
+///Locates the direction in which a ship lays
             switch (i)
             {
                 case 0:
@@ -227,7 +227,7 @@ public class AI
             i = direction;
         }
 
-//Shoots in a direction till the answer is "SUNK" or "MISS"
+///Shoots in a direction till the answer is "SUNK" or "MISS"
         switch (i)
         {
             case 0:

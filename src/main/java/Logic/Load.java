@@ -69,24 +69,24 @@ public class Load {
             Ship.resetCounter();
 
             int i = 0;
-            while (i < owngrid.length) {                                   //Schleife über jede Zeile der Datei
+            while (i < owngrid.length) {                                   ///Schleife über jede Zeile der Datei
                 String[] col = owngrid[i].split("\\|");
 
                 int j = 1;
-                while (j < col.length) {                                   //Schleife über jedes Element einer Zeile
+                while (j < col.length) {                                   ///Schleife über jedes Element einer Zeile
                     String[] temp = col[j].split(",");
                     if (col[j].equals("null") || col[j].equals("")) {
                         break;
 
-                    } else if (temp[0].equals("w")) {                             //Wassertreffer realisieren
+                    } else if (temp[0].equals("w")) {                             ///Wassertreffer realisieren
                         if (temp[1].equals("1")) own_grid.put(j-1,i, new Water(false));
                         else own_grid.put(j-1,i, new Water(true));
 
                     } else if (ids[Integer.parseInt(temp[0])] == false) {    //Schiffe erstellen
                         ids[Integer.parseInt(temp[0])] = true;
-                        //create ship
+                        ///create ship
                         Character c = new Ship(Integer.parseInt(temp[1]));
-                        //set rotation
+                        ///set rotation
                         switch (temp[2]) {
                             case "VERTICAL":
                                 c.setRotation(Rotation.VERTICAL);
@@ -95,9 +95,9 @@ public class Load {
                                 c.setRotation(Rotation.HORIZONTAL);
                                 break;
                         }
-                        //place ship in grid
+                        ///place ship in grid
                         own_grid.put(j-1,i, c);
-                        //call ship status
+                        ///call ship status
                         for (int hit = 3; hit < temp.length; hit++) {
                             if (temp[hit].equals("0")) c.shoot(hit - 3);
                         }
@@ -116,7 +116,7 @@ public class Load {
         Grid2D foe_grid = new Grid2D(bound);
         try {
             int i = 0;
-            while (i < foegrid.length) {                                   //Schleife über jede Zeile der Datei
+            while (i < foegrid.length) {                                   ///Schleife über jede Zeile der Datei
                 String[] col = foegrid[i].split("\\|");
 
                 int j = 1;
@@ -124,7 +124,7 @@ public class Load {
                     if (col[j].equals("0")) {
                         foe_grid.put(j-1, i, new FoeGridShootObject(0));
                     } else if (col[j].equals("1")) {
-                        foe_grid.put(j-1, i, new FoeGridShootObject(1));          //*************Anzeigen ob gegnerisches virtuelles Schiff getroffen
+                        foe_grid.put(j-1, i, new FoeGridShootObject(1));          ///Anzeigen ob gegnerisches virtuelles Schiff getroffen
                     } else if (col[j].equals("2")) {
                         foe_grid.put(j-1, i, new FoeGridShootObject(2));
                     } else if (col[j].equals("null") || col[j].equals("")) {

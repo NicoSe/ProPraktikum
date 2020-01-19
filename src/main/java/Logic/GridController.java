@@ -130,7 +130,7 @@ public class GridController {
 
         int currentTileSize = view.getScaledTileSize();
 
-        //check for invalid pos
+        ///check for invalid pos
         Rectangle validRect = new Rectangle(c.getX()*currentTileSize, c.getY()*currentTileSize, c.getSize()*currentTileSize, c.getSize()*currentTileSize);
         if(!validRect.contains(pos)) {
             return;
@@ -140,7 +140,7 @@ public class GridController {
         int shipPosOffsetY = (pos.y - c.getY() * currentTileSize) / currentTileSize;
 
 
-        //get network here and sendmsg("shoot x y") then in MainFrame loop on result 0/1/2. handle accordingly!
+        ///get network here and sendmsg("shoot x y") then in MainFrame loop on result 0/1/2. handle accordingly!
 
         ShotResult res = model.shoot(c.getX() + shipPosOffsetX, c.getY() + shipPosOffsetY);
         if(res == ShotResult.SUNK) {
