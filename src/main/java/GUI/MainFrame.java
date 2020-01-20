@@ -80,10 +80,6 @@ public class MainFrame {
     private JLabel lblYeet3;
     private JLabel lblExit;
     private JLabel lblReturn;
-    private JLabel lblDummyObj;
-    private JLabel lblDummyObj2;
-    private JLabel lblDummyObj3;
-    private JLabel lblDummyObj4;
     private JLabel lblRect;
 
     private JLabel lblReady;
@@ -151,7 +147,6 @@ public class MainFrame {
         pnlHostX.setAlignmentX(Component.CENTER_ALIGNMENT);
         pnlHostX.setMinimumSize(new Dimension(1024, 350));
         pnlHostX.setMaximumSize((new Dimension(1980, 350)));
-        //pnlHostX.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         pnlHostX.setLayout(new GridBagLayout());
 
         pnlHostY = new JPanel();
@@ -654,6 +649,7 @@ public class MainFrame {
         sldSizeSingle.setMaximumSize(new Dimension(450,50));
         sldSizeSingle.setMajorTickSpacing(5);
         sldSizeSingle.setMinorTickSpacing(1);
+        sldSizeSingle.setValue(10);
         sldSizeSingle.setPaintLabels(true);
         sldSizeSingle.setPaintTicks(true);
         sldSizeSingle.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
@@ -668,6 +664,7 @@ public class MainFrame {
         sldSizeHost.setMinorTickSpacing(1);
         sldSizeHost.setPaintLabels(true);
         sldSizeHost.setPaintTicks(true);
+        sldSizeHost.setValue(10);
         sldSizeHost.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         sldSizeHost.setForeground(Color.BLACK);
         sldSizeHost.addChangeListener(new ChangeListener() {
@@ -1203,6 +1200,8 @@ public class MainFrame {
                             pnlButton.add(lblExit);
                             pnlButton.setVisible(true);
                             backgroundPanel.add(pnlButton);
+                            resetNetwork();
+
                         } catch(IOException el){
                             el.printStackTrace();
                         }
@@ -1441,6 +1440,7 @@ public class MainFrame {
                             pnlButton.add(lblExit);
                             pnlButton.setVisible(true);
                             backgroundPanel.add(pnlButton);
+                            resetNetwork();
                         } catch(IOException el){
                             el.printStackTrace();
                         }
@@ -1673,7 +1673,7 @@ public class MainFrame {
         }
 
         new Thread(() -> {
-            ai = new AI(new Client2("127.0.0.1"), 2);
+            ai = new AI(new Client2("localhost"), 2);
             //handleData(foe);
         }).start();
     }
