@@ -1,6 +1,7 @@
 package Network;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
@@ -49,6 +50,11 @@ public class Client2 implements Connector {
             client.connect(address, 10000);
             dis = new DataInputStream(client.getInputStream());
             dos = new DataOutputStream(client.getOutputStream());
+            System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
+        } catch (ConnectException e) {
+            System.out.println("Couldn't connect. retrying...");
+            Close();
+            connect();
         } catch (SocketException e) {
             System.out.println("<C>Can´t create Socket!");
             e.printStackTrace();
@@ -58,7 +64,6 @@ public class Client2 implements Connector {
             e.printStackTrace();
             Close();
         }
-        System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
     }
 
 
@@ -109,7 +114,8 @@ public class Client2 implements Connector {
                     return stream;
                 }
             } catch(EOFException e) {
-                System.out.println("<S>Can´t read from socket.");
+                System.out.println("<C>Can´t read from socket.");
+                Close();
             } catch (SocketException e) {
                 System.out.println("<C>Can´t find Server!");
                 e.printStackTrace();
@@ -181,9 +187,15 @@ public class Client2 implements Connector {
     public boolean Close(){
         try {
             Close_Socket = true;
-            dis.close();
-            dos.close();
-            client.close();
+            if(dis != null) {
+                dis.close();
+            }
+            if(dos != null) {
+                dos.close();
+            }
+            if(client != null) {
+                client.close();
+            }
         } catch (IOException e) {
             System.out.println("<C>Client couldn´t be closed!");
             return false;

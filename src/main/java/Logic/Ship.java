@@ -63,7 +63,7 @@ public class Ship extends Character {
             case 3:
                 return ImageIO.read(getClass().getResource("/Sprites/3erBoot.png"));
             case 4:
-                return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
+                return ImageIO.read(getClass().getResource("/Sprites/4erBoot.png"));
             case 5:
                 return ImageIO.read(getClass().getResource("/Sprites/takethismydude.png"));
 

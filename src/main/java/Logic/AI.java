@@ -48,6 +48,10 @@ public class AI
         handleData(this.s);
     }
 
+    public void close() {
+        s.Close();
+    }
+
     private void handleData(Connector c) {
         while (true) {
             if(!c.isConnected()) {

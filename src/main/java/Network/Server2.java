@@ -121,6 +121,7 @@ public class Server2 implements Connector{
                 }
             } catch(EOFException e) {
                 System.out.println("<S>Can´t read from socket.");
+                Close();
             }catch(SocketException e){
                 System.out.println("<S>Can´t find client!");
                 e.printStackTrace();
@@ -192,10 +193,17 @@ public class Server2 implements Connector{
     public boolean Close(){
         try {
             Close_Socket = true;
-            dis.close();
-            dos.close();
+            if(dis != null) {
+                dis.close();
+            }
+            if(dos != null) {
+                dos.close();
+            }
+
             Server_Socket.close();
-            Client_Socket.close();
+            if(Client_Socket != null) {
+                Client_Socket.close();
+            }
         } catch (IOException e) {
             System.out.println("<S>Sockets couldnßt be closed!");
             return false;
