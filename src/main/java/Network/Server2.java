@@ -121,6 +121,7 @@ public class Server2 implements Connector{
                 }
             } catch(EOFException e) {
                 System.out.println("<S>Can´t read from socket.");
+                Close();
             }catch(SocketException e){
                 System.out.println("<S>Can´t find client!");
                 e.printStackTrace();

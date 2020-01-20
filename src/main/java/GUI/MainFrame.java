@@ -866,14 +866,28 @@ public class MainFrame {
 
                 backgroundPanel.add(pnlDummyThicc);
 
+
+                /*
+                                            pnlDummy.setVisible(false);
+                            pnlButton.removeAll();
+                            pnlButton.setVisible(false);
+                            pnlButton.add(lblTitle);
+                            pnlButton.add(lblPlay);
+                            pnlButton.add(lblOptions);
+                            pnlButton.add(lblCredits);
+                            pnlButton.add(lblExit);
+                            pnlButton.setVisible(true);
+                            backgroundPanel.add(pnlButton);
+                 */
+
                 pnlDummyThicc.removeAll();
                 pnlDummy.removeAll();
                 pnlDummy.setOpaque(false);
                 pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
                 pnlDummy.add(pnlGrid1);
                 pnlDummy.add(pnlReady);
+                pnlReady.setVisible(true);
                 pnlDummy.setVisible(true);
-                pnlButton.setVisible(true);
                 try {
                     backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
                 } catch (IOException ex) {
@@ -1653,10 +1667,19 @@ public class MainFrame {
             handleData(net);
         }).start();
 
+        if(ai != null) {
+            ai.close();
+            ai = null;
+        }
+
         new Thread(() -> {
             ai = new AI(new Client2("127.0.0.1"), 2);
             //handleData(foe);
         }).start();
+    }
+
+    private void closeSinglePlayerConnection(Client2 client){
+        client.Close();
     }
 
     private void handleData(Connector c) {

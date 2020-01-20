@@ -109,7 +109,8 @@ public class Client2 implements Connector {
                     return stream;
                 }
             } catch(EOFException e) {
-                System.out.println("<S>Can´t read from socket.");
+                System.out.println("<C>Can´t read from socket.");
+                Close();
             } catch (SocketException e) {
                 System.out.println("<C>Can´t find Server!");
                 e.printStackTrace();
