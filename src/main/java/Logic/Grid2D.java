@@ -58,6 +58,9 @@ public class Grid2D {
     }
 
     public void generateRandom() {
+        int timeout = 0;
+        clear();
+
         List<HarborShipData> ships = harbor.getCopyOfHarborData(bound);
         int placeCount = harbor.getTotalShipCount(bound);
         while(placeCount > 0) {
@@ -73,8 +76,13 @@ public class Grid2D {
             s.setRotation(Rotation.values()[new Random().nextInt(Rotation.MAX_NUM.ordinal())]);
 
             while(put(randomX, randomY, s) == null) {
+                if(timeout > 1000) {
+                    generateRandom();
+                    return;
+                }
                 randomX = Util.GetRandomNumberInRange(0, bound-1);
                 randomY = Util.GetRandomNumberInRange(0, bound-1);
+                ++timeout;
             }
 
             if(--data.amount <= 0) {
@@ -82,6 +90,7 @@ public class Grid2D {
             }
             placeCount--;
         }
+        System.out.printf("timeout: %d\n", timeout);
     }
 
     private boolean isEmptyAt(int x, int y, int width, int height) {
