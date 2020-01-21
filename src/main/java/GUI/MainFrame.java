@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.awt.GridBagLayout;
 
 import GUI.Grid.*;
 import Logic.*;
@@ -39,12 +40,12 @@ public class MainFrame {
     private JPanel pnlHostX;
     private JPanel pnlHostY;
     private JPanel pnlHostY2;
-        private JLabel lblLoad;
+    private JLabel lblLoad;
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
     private JPanel pnlPlay;
     private JPanel pnlDummyThicc;
-        private JPanel pnlDummy;
+    private JPanel pnlDummy;
 
 
     private JLabel lblTitle;
@@ -85,6 +86,8 @@ public class MainFrame {
     private JLabel lblReady;
     private JLabel lblRandomize;
     private JLabel lblPlaceReturn;
+
+    private JPanel pnlFoeGrid;
 
 
 
@@ -173,6 +176,7 @@ public class MainFrame {
         pnlPlay.setMinimumSize(new Dimension(1024,850));
         pnlPlay.setMaximumSize(new Dimension(1920,1080));
 
+        ///panel with Ready,Return and Randomize Button on grid
         pnlReady = new JPanel(new FlowLayout());
         pnlReady.setPreferredSize(new Dimension(100,220));
         pnlReady.setMaximumSize(new Dimension(jf.getWidth(),jf.getHeight()/7));
@@ -188,6 +192,12 @@ public class MainFrame {
         pnlReady.add(lblRandomize);
         pnlReady.add(lblReady);
 
+        ///Panel that Holds Enemy Grid
+        pnlFoeGrid = new JPanel(new FlowLayout());
+        pnlFoeGrid.setPreferredSize(new Dimension(200,200));
+        pnlFoeGrid.setMaximumSize(new Dimension(jf.getWidth(),jf.getHeight()/7));
+        pnlFoeGrid.setOpaque(false);
+
 
         ///panel DUmmythicc
         pnlDummyThicc =  new JPanel(new BorderLayout());
@@ -196,7 +206,11 @@ public class MainFrame {
 
         pnlDummy =  new JPanel();
         pnlDummy.setBackground(Color.GREEN);
+        //pnlDummy.setLayout(new GridBagLayout());
+
+        //GridBagConstraints gbc = new GridBagConstraints();
         //pnlDummy.setPreferredSize(new Dimension(425,425));
+
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -793,9 +807,16 @@ public class MainFrame {
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
                 if(net.turn()) {
                     net.sendmsg("confirmed");
+                    gcS.setInteractionState(GridState.FORBID);
+                    pnlFoeGrid.add(pnlGrid1);
+                    pnlFoeGrid.setAlignmentY(Component.BOTTOM_ALIGNMENT);
                     pnlDummy.remove(pnlReady);
                     pnlDummy.remove(pnlGrid1);
+
+
                     pnlDummy.add(pnlGrid2);
+
+                    pnlDummy.add(pnlFoeGrid);
                     gcF.setInteractionState(GridState.SHOOT);
                     pnlDummy.revalidate();
                     pnlDummy.repaint();

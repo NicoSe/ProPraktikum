@@ -315,4 +315,5 @@ public class BasicGrid extends JPanel {
         highlightedCell = hc;
         repaint();
     }
+
 }
