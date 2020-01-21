@@ -143,8 +143,8 @@ public class BasicGrid extends JPanel {
         ///g2d.fill(new Rectangle(0, 0, defaultSize, defaultSize));
 
         try {
-            rocketNone = ImageIO.read(getClass().getResource("/Sprites/whitepin2.png"));
-            normalRocket = ImageIO.read(getClass().getResource("/Sprites/rackete2.png"));
+            rocketNone = ImageIO.read(getClass().getResource("/Sprites/RocketMiss.png"));
+            normalRocket = ImageIO.read(getClass().getResource("/Sprites/RocketHit2.png"));
             rocketNoneScaled = rocketNone;
             normalRocketScaled = normalRocket;
 
