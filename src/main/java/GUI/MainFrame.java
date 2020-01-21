@@ -1087,51 +1087,6 @@ public class MainFrame {
 
                 runMuliplayerClient(txfIPAdress.getText());
 
-                backgroundPanel.removeAll();
-
-                //backgroundPanel.add(pnlPlay);
-                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
-                selfGrid = new Grid2D(sldSizeSingle.getValue());
-                selfGrid.generateRandom();
-                gcS = new GridController(selfGrid, null, pnlGrid1);
-                gcS.init(GridState.PLACE);
-                pnlGrid1.setOpaque(false);
-                pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
-                //pnlPlay.add(pnlGrid1);
-
-                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
-                foeGrid = new Grid2D(sldSizeSingle.getValue());
-                foeGrid.placeFGOeverywhere();
-                gcF = new GridController(foeGrid, net, pnlGrid2);
-                gcF.init(GridState.FORBID);
-
-                //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
-                //GridController controller2 = new GridController(g2d,pnlGrid2);
-                //pnlGrid2.setOpaque(false);
-                //pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
-                //controller2.init(GridState.SHOOT);
-
-                //backgroundPanel.add(pnlPlay);
-
-                backgroundPanel.add(pnlDummyThicc);
-
-                pnlDummy.setOpaque(false);
-                pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
-                pnlDummy.add(pnlGrid1);
-                pnlDummy.add(pnlReady);
-                try {
-                    backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                if(OptionsHandler.getFullscreenMode()){
-                    jf.setSize(new Dimension(1981,1080));
-                    jf.setSize(new Dimension(1980,1080));
-                }else{
-                    jf.setSize(new Dimension(1025,851));
-                    jf.setSize(new Dimension(1024,850));
-                }
-
                 /*
                 Client c = new Client(txfIPAdress.getText());
                 if (c.isconnected()){
@@ -1413,11 +1368,16 @@ public class MainFrame {
                 case "confirmed":
                     break;
                 case "size":
+                    this.handleSizeEvent(Integer.parseInt(cmd[1]));
                     break;
                 case "pass":
                     break;
                 case "answer":
-                    gcF.processShotResult(Integer.parseInt(cmd[1]));
+                    int answer = Integer.parseInt(cmd[1]);
+                    gcF.processShotResult(answer);
+                    if(answer == 0) {
+                        c.sendmsg("pass");
+                    }
                     break;
                 case "shot":
                     c.sendmsg(String.format("answer %d", selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])).ordinal()));
@@ -1458,6 +1418,53 @@ public class MainFrame {
             net = new Client2(host);
             handleData(net);
         }).start();
+    }
+
+    private void handleSizeEvent(int size) {
+        backgroundPanel.removeAll();
+
+        //backgroundPanel.add(pnlPlay);
+        pnlGrid1 = new BasicGrid(size, GridState.PLACE);
+        selfGrid = new Grid2D(size);
+        selfGrid.generateRandom();
+        gcS = new GridController(selfGrid, null, pnlGrid1);
+        gcS.init(GridState.PLACE);
+        pnlGrid1.setOpaque(false);
+        pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //pnlPlay.add(pnlGrid1);
+
+        pnlGrid2 = new BasicGrid(size, GridState.FORBID);
+        foeGrid = new Grid2D(size);
+        foeGrid.placeFGOeverywhere();
+        gcF = new GridController(foeGrid, net, pnlGrid2);
+        gcF.init(GridState.FORBID);
+
+        //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
+        //GridController controller2 = new GridController(g2d,pnlGrid2);
+        //pnlGrid2.setOpaque(false);
+        //pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //controller2.init(GridState.SHOOT);
+
+        //backgroundPanel.add(pnlPlay);
+
+        backgroundPanel.add(pnlDummyThicc);
+
+        pnlDummy.setOpaque(false);
+        pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
+        pnlDummy.add(pnlGrid1);
+        pnlDummy.add(pnlReady);
+        try {
+            backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        if(OptionsHandler.getFullscreenMode()){
+            jf.setSize(new Dimension(1981,1080));
+            jf.setSize(new Dimension(1980,1080));
+        }else{
+            jf.setSize(new Dimension(1025,851));
+            jf.setSize(new Dimension(1024,850));
+        }
     }
 
     private void runKIvsKI() {
