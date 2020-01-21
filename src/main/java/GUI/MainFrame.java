@@ -1369,7 +1369,7 @@ public class MainFrame {
         }
 
         new Thread(() -> {
-            ai = new AI(new Client2("localhost"), 2);
+            ai = new AI(new Client2("localhost"), 1);
             //handleData(foe);
         }).start();
     }
@@ -1390,18 +1390,26 @@ public class MainFrame {
                     break;
                 case "size":
                     this.handleSizeEvent(Integer.parseInt(cmd[1]));
+                    pnlFoeGrid.revalidate();
+                    pnlFoeGrid.repaint();
                     break;
                 case "pass":
+                    pnlFoeGrid.revalidate();
+                    pnlFoeGrid.repaint();
                     break;
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
                     gcF.processShotResult(answer);
                     if(answer == 0) {
                         c.sendmsg("pass");
+                        pnlFoeGrid.revalidate();
+                        pnlFoeGrid.repaint();
                     }
                     break;
                 case "shot":
                     c.sendmsg(String.format("answer %d", selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])).ordinal()));
+                    pnlFoeGrid.revalidate();
+                    pnlFoeGrid.repaint();
                     break;
                 default:
                     System.out.println("Invalid command.");
