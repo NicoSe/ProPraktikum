@@ -1417,6 +1417,7 @@ public class MainFrame {
     }
 
     private void refreshFoeGrid() {
+
         SwingUtilities.invokeLater(() -> {
             pnlFoeGrid.revalidate();
             pnlFoeGrid.repaint();

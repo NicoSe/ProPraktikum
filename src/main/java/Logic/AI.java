@@ -77,12 +77,11 @@ public class AI
                 case "shot":
                     ShotResult sr = grid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
                     c.sendmsg(String.format("answer %d", sr.ordinal()));
-                    if(sr == ShotResult.NONE) {
-                        routine();
-                        return;
-                    }
                     ///wanna revalidate ui?
                     break;
+                case "pass":
+                    routine();
+                    return;
                 default:
                     System.out.println("Invalid command.");
                     System.out.println(res);
