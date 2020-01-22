@@ -2,7 +2,7 @@ package Logic;
 
 import Network.Connector;
 
-import java.util.ArrayList;
+import javax.swing.*;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -42,11 +42,12 @@ public class NewKI
 
     private Grid2D grid;
     private Connector s;
-    private boolean[][] enemyField;
+    private Grid2D enemyGrid;
     private Mode mode;
     static boolean firstAction = true;
     private static int initialX, initialY, direction = -1;
     private int[] usedCases = new int[4];
+    private int enemyShipsAlive = 0;
 
     private FoundShip ship;
 
@@ -87,7 +88,9 @@ public class NewKI
     private void init(int bound) {
         grid = new Grid2D(bound);
         grid.generateRandom();
-        enemyField = new boolean[bound][bound];
+        enemyShipsAlive = grid.getShipCount();
+        enemyGrid = new Grid2D(bound);
+        enemyGrid.placeFGOeverywhere();
     }
 
     private void handleData(Connector c) {
@@ -108,20 +111,37 @@ public class NewKI
                     break;
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
+                    int x,y;
                     switch(answer) {
                         case 0:
-                            ship.validXPos.removeLast();
-                            ship.validYPos.removeLast();
+                            enemyGrid.shoot(ship.validXPos.removeLast(), ship.validYPos.removeLast(), answer);
+                            if(ship.lastDir != null) {
+                                ship.lastDir = null;
+                            } else {
+                                ship = null;
+                            }
+
                             c.sendmsg("pass");
-                            ship.lastDir = null;
                             break;
                         case 1:
+                            enemyGrid.shoot(ship.validXPos.peekLast(), ship.validYPos.peekLast(), answer);
+
                             removeImpossibleDirections();
                             shoot();
                             break;
                         case 2:
+                            enemyShipsAlive--;
+                            if(checkWinCondition()) {
+                                SwingUtilities.invokeLater(() -> {
+                                    JOptionPane.showMessageDialog(null, "COMPUTER WON, GET REKT.");
+                                });
+                                return;
+                            }
+
+                            enemyGrid.shoot(ship.validXPos.peekLast(), ship.validYPos.peekLast(), answer);
                             markSunkenShip();
                             ship = null;
+                            shoot();
                             break;
                     }
                     break;
@@ -136,15 +156,26 @@ public class NewKI
         }
     }
 
+    public boolean checkWinCondition() {
+        return enemyShipsAlive <= 0;
+    }
+
     private void shoot() {
         if(ship != null) {
             tryFinishShip();
         } else {
             ship = new FoundShip();
-            ship.x = 0;
-            ship.y = 0;
+            ship.x = Util.GetRandomNumberInRange(0, enemyGrid.getBound()-1);
+            ship.y = Util.GetRandomNumberInRange(0, enemyGrid.getBound()-1);
 
-            shootCommand(0, 0);
+            Character c = enemyGrid.getCharacter(ship.x, ship.y);
+            if(c == null || !c.isAlive()) {
+                ship = null;
+                shoot();
+                return;
+            }
+
+            shootCommand(ship.x, ship.y);
         }
     }
 
@@ -186,21 +217,25 @@ public class NewKI
                     if(x < 0 || y < 0 || x >= grid.getBound() || y >= grid.getBound()) {
                         continue;
                     }
-                    enemyField[x][y] = true;
-                    System.out.printf("mark sunken ship at x %d y %d\n", x, y);
+
+                    if(enemyGrid.getCharacter(x, y).isAlive()) {
+                        enemyGrid.shoot(x, y, 0);
+                        System.out.printf("mark sunken ship at x %d y %d\n", x, y);
+                    }
                 }
             }
         }
     }
 
     private boolean shootCommand(int x, int y) {
-        if(x < 0 || y < 0 || x >= grid.getBound() || y >= grid.getBound() || enemyField[x][y]) {
+        if(x < 0 || y < 0 || x >= grid.getBound() || y >= grid.getBound() /*|| enemyGrid[x][y]*/) {
             return false;
         }
-        s.sendmsg(String.format("shot %d %d", x, y));
-        enemyField[x][y] = true;
+
         ship.validXPos.addLast(x);
         ship.validYPos.addLast(y);
+        s.sendmsg(String.format("shot %d %d", x, y));
+        //enemyGrid[x][y] = true;
 
         return true;
     }
@@ -216,9 +251,10 @@ public class NewKI
         switch(ship.lastDir) {
             case NORTH:
                 //shot would be invalid, try other direction.
-                if(ship.y - ship.shotCount - 1 < grid.getBound()) {
+                if(ship.y - ship.shotCount - 1 < 0) {
                     ship.lastDir = null;
                     tryFinishShip();
+                    return;
                 }
                 if(shootCommand(ship.x, ship.y - (ship.shotCount+1))) ++ship.shotCount;
                 break;
@@ -227,6 +263,7 @@ public class NewKI
                 if(ship.x + ship.shotCount + 1 >= grid.getBound()) {
                     ship.lastDir = null;
                     tryFinishShip();
+                    return;
                 }
                 if(shootCommand(ship.x + (ship.shotCount + 1), ship.y)) ++ship.shotCount;
                 break;
@@ -235,15 +272,17 @@ public class NewKI
                 if(ship.y + ship.shotCount + 1 >= grid.getBound()) {
                     ship.lastDir = null;
                     tryFinishShip();
+                    return;
                 }
                 if(shootCommand(ship.x, ship.y + (ship.shotCount+1))) ++ship.shotCount;
                 break;
 
             case WEST:
                 //shot would be invalid, try other direction.
-                if(ship.y - ship.shotCount - 1 < grid.getBound()) {
+                if(ship.x - ship.shotCount - 1 < 0) {
                     ship.lastDir = null;
                     tryFinishShip();
+                    return;
                 }
                 if(shootCommand(ship.x - (ship.shotCount+1), ship.y)) ++ship.shotCount;
                 break;

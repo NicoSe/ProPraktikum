@@ -19,7 +19,6 @@ public class FoeGridShootObject extends Character {
         return hitStatus == -1;
     }
 
-    @Override
     /// überschriebene shoot-Methode, welche den Status statt der Koordinaten schreibt
     public ShotResult shoot(int status) {
         if (status < 0 || status > 2) {

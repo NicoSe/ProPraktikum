@@ -225,6 +225,34 @@ public class Grid2D {
         return inst;
     }
 
+    public ShotResult shoot(int x, int y, int shotResult) {
+        if(x < 0 || y < 0 || x >= bound || y >= bound) {
+            return null;
+        }
+
+        Character c = characters[x][y];
+        if(!(c instanceof FoeGridShootObject)) {
+            return null;
+        }
+
+        FoeGridShootObject fgso = (FoeGridShootObject)c;
+        ShotResult res = fgso.shoot(shotResult);
+        if(shotResult == 2) {
+            LinkedList<Integer[]> markedPos = NetGridHelper.MarkSunkShipCorrectly(this, x, y);
+            if(markedPos != null) {
+                int shipSize = markedPos.size();
+                Ship s = new Ship(shipSize, true);
+                markedPos.forEach((Integer[] xy) -> {
+                    replaceThrough(xy[0], xy[1], s);
+                });
+                s.setPosition(markedPos.getFirst()[0], markedPos.getFirst()[1]);
+                s.setRotation((markedPos.getLast()[0] - markedPos.getFirst()[0]) == 0 ? Rotation.VERTICAL : Rotation.HORIZONTAL);
+                markSurrounding(s.getX(), s.getY());
+            }
+        }
+        return ShotResult.values()[shotResult];
+    }
+
     public ShotResult shoot(int x, int y) {
         if(x < 0 || y < 0 || x >= bound || y >= bound) {
             return null;
