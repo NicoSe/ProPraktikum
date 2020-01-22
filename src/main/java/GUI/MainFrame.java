@@ -31,8 +31,8 @@ public class MainFrame {
     GridController gcS;
     GridController gcF;
 
-    AI ai;
-
+    //AI ai;
+    NewKI ki;
     ///Variablen
     private JFrame jf;
     private BackgroundPanel backgroundPanel;
@@ -186,7 +186,7 @@ public class MainFrame {
         lblReady = new JLabel();
         lblReady.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReadyBW.png"))));
         lblRandomize = new JLabel();
-        lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/randomBW.png"))));
+        lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomBW.png"))));
 
         pnlReady.add(lblPlaceReturn);
         pnlReady.add(lblRandomize);
@@ -1364,13 +1364,20 @@ public class MainFrame {
             handleData(net);
         }).start();
 
+/*
         if(ai != null) {
             ai.close();
             ai = null;
         }
+ */
+        if(ki != null) {
+            ki.close();
+            ki = null;
+        }
 
         new Thread(() -> {
-            ai = new AI(new Client2("localhost"), 1);
+            ki = new NewKI(new Client2("localhost"), 1);
+            //ai = new AI(new Client2("localhost"), 1);
             //handleData(foe);
         }).start();
     }

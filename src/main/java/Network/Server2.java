@@ -41,7 +41,7 @@ public class Server2 implements Connector{
             System.out.println("<S>Starting Server...");
             Server_Socket = new ServerSocket(port);       //create Server
             Server_Socket.setReuseAddress(true);
-            System.out.println("<S>Wait for connection at Port:" + Server_Socket.getLocalPort());
+            System.out.printf("<S>Wait for connection at Port: %d (%s)\n", Server_Socket.getLocalPort(), Server_Socket);
 
             Client_Socket = Server_Socket.accept();                    //accept client
 

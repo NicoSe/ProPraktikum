@@ -113,7 +113,6 @@ public class Grid2D {
             }
         }
         return true;
-
     }
 
     private boolean isValidAt(int x, int y, int width, int height) {
