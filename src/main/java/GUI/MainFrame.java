@@ -214,7 +214,7 @@ public class MainFrame {
         pnlDummy.setBackground(Color.GREEN);
 
         /// Combobox for KI difficulty selection
-        String[] difficultyOptions = {"Easy", "Medium", "Hard"};
+        String[] difficultyOptions = {"Easy", "Medium"};
         comboDifficulty = new JComboBox<String>(difficultyOptions);
         comboDifficulty.setPreferredSize(new Dimension(10,10));
         comboDifficulty.setOpaque(true);
@@ -1538,7 +1538,7 @@ public class MainFrame {
         }
 
         new Thread(() -> {
-            ki = new NewKI(new Client2("localhost"), 1);
+            ki = new NewKI(new Client2("localhost"), comboDifficulty.getSelectedIndex());
             //ai = new AI(new Client2("localhost"), 1);
             //handleData(foe);
         }).start();
