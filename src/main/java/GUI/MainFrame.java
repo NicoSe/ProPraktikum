@@ -806,6 +806,7 @@ public class MainFrame {
             public void mouseClicked(MouseEvent e) {
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
                 if(net.turn()) {
+                    gcS.onFinalizePlace();
                     net.sendmsg("confirmed");
                     gcS.setInteractionState(GridState.FORBID);
                     pnlFoeGrid.add(pnlGrid1);
@@ -1390,26 +1391,22 @@ public class MainFrame {
                     break;
                 case "size":
                     this.handleSizeEvent(Integer.parseInt(cmd[1]));
-                    pnlFoeGrid.revalidate();
-                    pnlFoeGrid.repaint();
+                    refreshFoeGrid();
                     break;
                 case "pass":
-                    pnlFoeGrid.revalidate();
-                    pnlFoeGrid.repaint();
+                    refreshFoeGrid();
                     break;
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
                     gcF.processShotResult(answer);
                     if(answer == 0) {
                         c.sendmsg("pass");
-                        pnlFoeGrid.revalidate();
-                        pnlFoeGrid.repaint();
+                        refreshFoeGrid();
                     }
                     break;
                 case "shot":
                     c.sendmsg(String.format("answer %d", selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])).ordinal()));
-                    pnlFoeGrid.revalidate();
-                    pnlFoeGrid.repaint();
+                    refreshFoeGrid();
                     break;
                 default:
                     System.out.println("Invalid command.");
@@ -1417,6 +1414,13 @@ public class MainFrame {
                     break;
             }
         }
+    }
+
+    private void refreshFoeGrid() {
+        SwingUtilities.invokeLater(() -> {
+            pnlFoeGrid.revalidate();
+            pnlFoeGrid.repaint();
+        });
     }
 
     private void resetNetwork() {

@@ -251,7 +251,7 @@ public class GridController {
         view.addMouseMotionListener(mouseAdapter);
     }
 
-    private void onFinalizePlace() {
+    public void onFinalizePlace() {
         for(int i = 0; i < model.getBound(); ++i) {
             for(int j = 0; j < model.getBound(); ++j) {
                 Character c = model.put(i, j, new Water(false));
