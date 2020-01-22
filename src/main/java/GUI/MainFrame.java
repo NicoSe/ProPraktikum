@@ -81,6 +81,7 @@ public class MainFrame {
     private JLabel lblYeet3;
     private JLabel lblExit;
     private JLabel lblReturn;
+    private JLabel lblReturnToGameMode;
     private JLabel lblRect;
 
     private JLabel lblReady;
@@ -426,6 +427,7 @@ public class MainFrame {
             @Override
             public void mouseClicked(MouseEvent e){
                 try {
+
                     Helpers.playSFX("/SFX/firered_0017.wav", 1);
                     lblReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnBW.png"))));
                     pnlButton.removeAll();
@@ -436,6 +438,7 @@ public class MainFrame {
                     pnlButton.add(lblCredits);
                     pnlButton.add(lblExit);
                     pnlButton.setVisible(true);
+
                 } catch(IOException el){
                     el.printStackTrace();
                 }
@@ -475,6 +478,67 @@ public class MainFrame {
             }
         });
 
+        ///Return Button
+        lblReturnToGameMode = new JLabel();
+        lblReturnToGameMode.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnBW.png"))));
+        lblReturnToGameMode.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblReturnToGameMode.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                try {
+
+                    Helpers.playSFX("/SFX/firered_0017.wav", 1);
+                    lblSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleBW.png"))));
+                    lblReturnToGameMode.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnBW.png"))));
+                    pnlButton.setVisible(false);
+                    pnlButton.removeAll();
+                    pnlButton.add(lblTitle);
+                    pnlButton.add(lblSingle);
+                    pnlButton.add(lblHost);
+                    pnlButton.add(lblJoin);
+                    pnlButton.add(lblReturn);
+                    pnlButton.setVisible(true);
+
+
+                } catch(IOException el){
+                    el.printStackTrace();
+                }
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblReturnToGameMode.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnWB.png"))));
+                    lblCredits.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/CreditsBW.png"))));
+                    lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
+                    lblOptions.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsBW.png"))));
+                    lblExit.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ExitBW.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblReturnToGameMode.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblReturnToGameMode.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblReturnToGameMode.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         ///Singleplayer Button
         lblSingle = new JLabel();
         lblSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleBW.png"))));
@@ -491,7 +555,7 @@ public class MainFrame {
                 pnlButton.add(sldSizeSingle);
                 pnlButton.add(lblDifficulty);
                 pnlButton.add(lblStartSingle);
-                pnlButton.add(lblReturn);
+                pnlButton.add(lblReturnToGameMode);
                 pnlButton.setVisible(true);
             }
             public void mouseEntered(MouseEvent e) {
@@ -561,7 +625,7 @@ public class MainFrame {
 
                     pnlButton.add(pnlHostX);
                     pnlButton.add(lblStartHost);
-                    pnlButton.add(lblReturn);
+                    pnlButton.add(lblReturnToGameMode);
                     pnlButton.add(lblShowIP);
                     pnlButton.setVisible(true);
                     lblHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/HostBW.png"))));
@@ -615,7 +679,7 @@ public class MainFrame {
                     pnlButton.add(lblIPAdress);
                     pnlButton.add(txfIPAdress);
                     pnlButton.add(lblConnect);
-                    pnlButton.add(lblReturn);
+                    pnlButton.add(lblReturnToGameMode);
                     pnlButton.setVisible(true);
                     lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
                 } catch(IOException el){
@@ -821,6 +885,7 @@ public class MainFrame {
                     gcF.setInteractionState(GridState.SHOOT);
                     pnlDummy.revalidate();
                     pnlDummy.repaint();
+                    jf.pack();
                 }
             }
 
@@ -1068,7 +1133,7 @@ public class MainFrame {
 
         ///IPAdress Label and Text Field
         lblIPAdress = new JLabel();
-        lblIPAdress.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleBW.png"))));
+        lblIPAdress.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/IpAddressBW.png"))));
         lblIPAdress.setAlignmentX(Component.CENTER_ALIGNMENT);
         txfIPAdress = new JTextField();
         txfIPAdress.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -1100,7 +1165,7 @@ public class MainFrame {
 
         ///Connect Button
         lblConnect = new JLabel();
-        lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+        lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectBW.png"))));
         lblConnect.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblConnect.addMouseListener(new MouseAdapter(){
             @Override
@@ -1122,28 +1187,28 @@ public class MainFrame {
             }
             public void mouseEntered(MouseEvent e) {
                 try {
-                    lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayWB.png"))));
+                    lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectWB.png"))));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
             public void mouseExited(MouseEvent e){
                 try {
-                    lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
+                    lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectBW.png"))));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
             public void mousePressed(MouseEvent e){
                 try {
-                    lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayOnPress.png"))));
+                    lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectOnPress.png"))));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
             public void mouseReleased(MouseEvent e){
                 try {
-                    lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayWB.png"))));
+                    lblConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectWB.png"))));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -1226,6 +1291,7 @@ public class MainFrame {
                     pnlButton.setVisible(true);
                 }
                  */
+
             }
             public void mouseEntered(MouseEvent e) {
                 try {
