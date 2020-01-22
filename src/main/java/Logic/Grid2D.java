@@ -7,6 +7,7 @@ public class Grid2D {
     private int bound;
     private Character[][] characters;
     private ShipHarbor harbor;
+    private int shipsAlive;
 
     public Grid2D(int bound) {
         if(bound < 0) {
@@ -57,10 +58,15 @@ public class Grid2D {
         characters[x][y] = c;
     }
 
+    public int getShipsAliveCount() {
+        return shipsAlive;
+    }
+
     public void generateRandom() {
         int timeout = 0;
         clear();
 
+        shipsAlive = harbor.getTotalShipCount(bound);
         List<HarborShipData> ships = harbor.getCopyOfHarborData(bound);
         int placeCount = harbor.getTotalShipCount(bound);
         while(placeCount > 0) {
@@ -265,10 +271,20 @@ public class Grid2D {
 
         int[] basePos = c.getPosition();
 
+        ShotResult result;
+
+        boolean wasAliveBefore = c.isAlive();
+
         if(!c.isVertical()) {
-            return c.shoot(x - basePos[0]);
+            result = c.shoot(x - basePos[0]);
+        } else {
+            result = c.shoot(y-basePos[1]);
         }
-        return c.shoot(y - basePos[1]);
+
+        if(result == ShotResult.SUNK && wasAliveBefore) {
+            shipsAlive--;
+        }
+        return result;
     }
 
     public boolean move(int old_x, int old_y, int x, int y, Rotation rot) {

@@ -133,7 +133,8 @@ public class NewKI
                             enemyShipsAlive--;
                             if(checkWinCondition()) {
                                 SwingUtilities.invokeLater(() -> {
-                                    JOptionPane.showMessageDialog(null, "COMPUTER WON, GET REKT.");
+                                    JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                                    System.exit(0);
                                 });
                                 return;
                             }

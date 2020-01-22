@@ -30,6 +30,7 @@ public class MainFrame {
 
     GridController gcS;
     GridController gcF;
+    int foeAliveCount;
 
     //AI ai;
     NewKI ki;
@@ -965,6 +966,8 @@ public class MainFrame {
                 gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
+                foeAliveCount = selfGrid.getShipCount();
+
                 //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
                 //GridController controller2 = new GridController(g2d,pnlGrid2);
                 //pnlGrid2.setOpaque(false);
@@ -1267,6 +1270,8 @@ public class MainFrame {
                 gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
+                foeAliveCount = selfGrid.getShipCount();
+
                 //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
                 //GridController controller2 = new GridController(g2d,pnlGrid2);
                 //pnlGrid2.setOpaque(false);
@@ -1374,6 +1379,8 @@ public class MainFrame {
                 foeGrid.placeFGOeverywhere();
                 gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
+
+                foeAliveCount = selfGrid.getShipCount();
 
                 //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
                 //GridController controller2 = new GridController(g2d,pnlGrid2);
@@ -1605,14 +1612,27 @@ public class MainFrame {
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
                     gcF.processShotResult(answer);
+                    if(answer == 2 && --foeAliveCount <= 0) {
+                        SwingUtilities.invokeLater(() -> {
+                            JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                            System.exit(0);
+                        });
+                    }
                     if(answer == 0) {
                         c.sendmsg("pass");
                         refreshFoeGrid();
                     }
                     break;
                 case "shot":
-                    c.sendmsg(String.format("answer %d", selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])).ordinal()));
+                    ShotResult result = selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
+                    c.sendmsg(String.format("answer %d", result.ordinal()));
                     refreshFoeGrid();
+                    if(selfGrid.getShipsAliveCount() <= 0) {
+                        SwingUtilities.invokeLater(() -> {
+                            JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                            System.exit(0);
+                        });
+                    }
                     break;
                 default:
                     System.out.println("Invalid command.");
@@ -1678,6 +1698,8 @@ public class MainFrame {
         foeGrid.placeFGOeverywhere();
         gcF = new GridController(foeGrid, net, pnlGrid2);
         gcF.init(GridState.FORBID);
+
+        foeAliveCount = selfGrid.getShipCount();
 
         //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
         //GridController controller2 = new GridController(g2d,pnlGrid2);
