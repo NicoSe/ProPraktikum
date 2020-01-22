@@ -1140,7 +1140,7 @@ public class MainFrame {
 
                 backgroundPanel.removeAll();
 
-                runMultiplayerServer(sldSizeHost.getValue());
+                runMultiplayerServer(sldSizeSingle.getValue());
 
                 //backgroundPanel.add(pnlPlay);
                 pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
