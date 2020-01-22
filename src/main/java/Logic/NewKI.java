@@ -6,14 +6,12 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.LinkedList;
 
-/*
-enum Mode
+
+enum KIMode
 {
-    EASY,
+    STUPID,
     NORMAL,
-    HARD,
 }
- */
 
 enum PossibleDirection {
     NORTH,
@@ -43,7 +41,7 @@ public class NewKI
     private Grid2D grid;
     private Connector s;
     private Grid2D enemyGrid;
-    private Mode mode;
+    private KIMode mode;
     static boolean firstAction = true;
     private static int initialX, initialY, direction = -1;
     private int[] usedCases = new int[4];
@@ -63,17 +61,10 @@ public class NewKI
     {
         this.s = s;
 
-        switch (mode)
-        {
-            case 0:
-                this.mode = Mode.EASY;
-                break;
-            case 1:
-                this.mode = Mode.NORMAL;
-                break;
-            case 2:
-                this.mode = Mode.HARD;
-                break;
+        if (mode == 0) {
+            this.mode = KIMode.STUPID;
+        } else {
+            this.mode = KIMode.NORMAL;
         }
 
         //check if connector is server, create grid and send size.
@@ -162,7 +153,7 @@ public class NewKI
     }
 
     private void shoot() {
-        if(ship != null) {
+        if(ship != null && mode != KIMode.STUPID) {
             tryFinishShip();
         } else {
             ship = new FoundShip();

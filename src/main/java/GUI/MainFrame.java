@@ -90,8 +90,10 @@ public class MainFrame {
     private JLabel lblRandomize;
     private JLabel lblPlaceReturn;
 
-    private JPanel pnlFoeGrid;
+    private JLabel pnlFoeGrid;
+    private boolean foeBigState = false;
     private JLabel lblLoading;
+    private MouseListener resizeFoeGridListener;
 
 
     private MainFrame mf;
@@ -110,6 +112,7 @@ public class MainFrame {
         jf.setLocationRelativeTo(null);
         jf.setVisible(true);
         jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //jf.setLayout(new BorderLayout());
 
         if (OptionsHandler.getFullscreenMode()){
             jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -198,7 +201,9 @@ public class MainFrame {
         pnlReady = new JPanel(new FlowLayout());
         pnlReady.setPreferredSize(new Dimension(100,220));
         pnlReady.setMaximumSize(new Dimension(jf.getWidth(),jf.getHeight()/7));
-        pnlReady.setOpaque(false);
+        pnlReady.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
+        pnlReady.setBackground(Color.GREEN);
+
         lblPlaceReturn = new JLabel();
         lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
         lblReady = new JLabel();
@@ -211,16 +216,18 @@ public class MainFrame {
         pnlReady.add(lblReady);
 
         ///Panel that Holds Enemy Grid
-        pnlFoeGrid = new JPanel(new FlowLayout());
-        pnlFoeGrid.setPreferredSize(new Dimension(200,200));
-        pnlFoeGrid.setMaximumSize(new Dimension(jf.getWidth(),jf.getHeight()/7));
-        pnlFoeGrid.setOpaque(false);
+        pnlFoeGrid = new JLabel();
+        pnlFoeGrid.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        pnlFoeGrid.setPreferredSize(new Dimension(225,225));
+        pnlFoeGrid.setMaximumSize(new Dimension(jf.getWidth(),jf.getHeight()/6));
+        pnlFoeGrid.setBackground(Color.BLUE);
+        pnlFoeGrid.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
 
 
         ///panel DUmmythicc
         pnlDummyThicc =  new JPanel(new BorderLayout());
         pnlDummyThicc.setBackground(Color.RED);
-        pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/10,jf.getWidth()/10,jf.getHeight()/10,jf.getWidth()/10));
+        pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
 
         pnlDummy =  new JPanel();
         pnlDummy.setBackground(Color.GREEN);
@@ -800,6 +807,8 @@ public class MainFrame {
                     lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
                     lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
                     pnlDummy.setVisible(false);
+                    pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
+                    pnlGrid1.removeMouseListener(resizeFoeGridListener);
                     pnlButton.removeAll();
                     pnlButton.setVisible(false);
                     pnlButton.add(lblTitle);
@@ -896,14 +905,46 @@ public class MainFrame {
                     net.sendmsg("confirmed");
                     gcS.setInteractionState(GridState.FORBID);
                     pnlFoeGrid.add(pnlGrid1);
-                    pnlFoeGrid.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+
+                    resizeFoeGridListener = new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            pnlFoeGrid.setPreferredSize(new Dimension(foeBigState ? 390 : 250, foeBigState ? 390 : 250));
+                            pnlFoeGrid.revalidate();
+                            pnlFoeGrid.repaint();
+                            System.out.println("enter");
+                        }
+
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                            pnlFoeGrid.setPreferredSize(new Dimension(foeBigState ? 375 : 225, foeBigState ? 400 : 225));
+                            pnlFoeGrid.revalidate();
+                            pnlFoeGrid.repaint();
+                            System.out.println("ima head out");
+                        }
+
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            foeBigState = !foeBigState;
+                            pnlFoeGrid.setPreferredSize(new Dimension(foeBigState ? 375 : 225, foeBigState ? 375 : 225));
+                            pnlFoeGrid.revalidate();
+                            pnlFoeGrid.repaint();
+                            System.out.println("clicked.");
+                        }
+                    };
+                    pnlGrid1.addMouseListener(resizeFoeGridListener);
+
+
+                    pnlDummyThicc.setBorder(null);
+
                     pnlDummy.remove(pnlReady);
                     pnlDummy.remove(pnlGrid1);
 
 
                     pnlDummy.add(pnlGrid2);
+                    backgroundPanel.add(pnlFoeGrid, BorderLayout.SOUTH);
 
-                    pnlDummy.add(pnlFoeGrid);
+                    //pnlDummy.add(pnlFoeGrid);
                     gcF.setInteractionState(GridState.SHOOT);
                     pnlDummy.revalidate();
                     pnlDummy.repaint();
@@ -994,7 +1035,7 @@ public class MainFrame {
 
                 pnlDummyThicc.removeAll();
                 pnlDummy.removeAll();
-                pnlDummy.setOpaque(false);
+                pnlDummy.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
                 pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
                 pnlDummy.add(pnlGrid1);
                 pnlDummy.add(pnlReady);
@@ -1600,6 +1641,11 @@ public class MainFrame {
             String res = c.listenToNetwork();
             String[] cmd = res.split(" ");
             switch(cmd[0]) {
+                case "load":
+                    break;
+                case "save":
+                    Save s = new Save(String.format("%s", cmd[1]), selfGrid, foeGrid);
+                    break;
                 case "confirmed":
                     break;
                 case "size":
