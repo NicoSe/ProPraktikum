@@ -44,7 +44,6 @@ public class MainFrame {
     private JLabel lblLoad;
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
-    private JPanel pnlPlay;
     private JPanel pnlDummyThicc;
     private JPanel pnlDummy;
 
@@ -92,6 +91,7 @@ public class MainFrame {
 
     private JPanel pnlFoeGrid;
     private JLabel lblLoading;
+    private JComboBox<String> comboDifficulty;
 
 
     private MainFrame mf;
@@ -118,27 +118,10 @@ public class MainFrame {
             jf.setVisible(true);
         }
 
-
-        //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/Sprites/ee7d4460451792a.gif"));
-        //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/Sprites/Waltertile2_1024.png"));
         backgroundPanel = new BackgroundPanel(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")), BackgroundPanel.TILED);
-        //backgroundPanel = new GamePanel(image);
         backgroundPanel.setMinimumSize(new Dimension(1024, 850));
         backgroundPanel.setMaximumSize(new Dimension(1920, 1080));
         jf.setContentPane(backgroundPanel);
-
-        /* unused...
-        //grid Panel
-        pnlGrid1 = new BasicGrid(5, GridState.PLACE);
-        Grid2D g2d = new Grid2D(5);
-        pnlGrid1.setSize(new Dimension(50,50));
-        g2d.generateRandom();
-        GridController controller = new GridController(g2d, pnlGrid1);
-        controller.init(GridState.PLACE);
-
-        //grid Panel enemy
-        pnlGrid2 = new BasicGrid(2,GridState.FORBID);
-        */
 
         ///panel
         pnlButton = new JPanel();
@@ -148,6 +131,7 @@ public class MainFrame {
         pnlButton.setMaximumSize(new Dimension(1920,1080));
         backgroundPanel.add(pnlButton);
 
+        /// Panel that holds left and right side of Host selection
         pnlHostX = new JPanel();
         pnlHostX.setOpaque(false);
         pnlHostX.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -155,6 +139,7 @@ public class MainFrame {
         pnlHostX.setMaximumSize((new Dimension(1980, 350)));
         pnlHostX.setLayout(new GridBagLayout());
 
+        ///Left Panel of Host selection
         pnlHostY = new JPanel();
         pnlHostY.setOpaque(false);
         pnlHostY.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -179,6 +164,7 @@ public class MainFrame {
 
         });
 
+        ///Right Panel of Host Selection
         pnlHostY2 = new JPanel();
         pnlHostY2.setOpaque(false);
         pnlHostY2.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -188,11 +174,6 @@ public class MainFrame {
         pnlHostY2.setMaximumSize((new Dimension(300, 350)));
         pnlHostY2.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
-        ///panelPlay
-        pnlPlay = new JPanel();
-        pnlPlay.setLayout(new BoxLayout(pnlPlay,BoxLayout.Y_AXIS));
-        pnlPlay.setMinimumSize(new Dimension(1024,850));
-        pnlPlay.setMaximumSize(new Dimension(1920,1080));
 
         ///panel with Ready,Return and Randomize Button on grid
         pnlReady = new JPanel(new FlowLayout());
@@ -217,18 +198,20 @@ public class MainFrame {
         pnlFoeGrid.setOpaque(false);
 
 
-        ///panel DUmmythicc
+        ///panel DUmmythicc contains the Main Gridpanel
         pnlDummyThicc =  new JPanel(new BorderLayout());
         pnlDummyThicc.setBackground(Color.RED);
         pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/10,jf.getWidth()/10,jf.getHeight()/10,jf.getWidth()/10));
 
         pnlDummy =  new JPanel();
         pnlDummy.setBackground(Color.GREEN);
-        //pnlDummy.setLayout(new GridBagLayout());
 
-        //GridBagConstraints gbc = new GridBagConstraints();
-        //pnlDummy.setPreferredSize(new Dimension(425,425));
-
+        /// Combobox for KI difficulty selection
+        String[] difficultyOptions = {"Easy", "Medium", "Hard"};
+        comboDifficulty = new JComboBox<String>(difficultyOptions);
+        comboDifficulty.setPreferredSize(new Dimension(10,10));
+        comboDifficulty.setOpaque(true);
+        comboDifficulty.setSelectedIndex(1);
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -245,7 +228,7 @@ public class MainFrame {
         lblLoading.setIcon(new ImageIcon(getClass().getResource("/Sprites/Loadinanimation.gif")));
         lblLoading.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        ///Play Button
+        ///Play Button  moves to Mode selection
         lblPlay = new JLabel();
         lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
         lblPlay.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -294,7 +277,7 @@ public class MainFrame {
             }
         });
 
-        ///Options Button
+        ///Options Button moves to option selection
         lblOptions = new JLabel();
         lblOptions.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsBW.png"))));
         lblOptions.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -346,7 +329,7 @@ public class MainFrame {
             }
         });
 
-        ///Credits Button
+        ///Credits Button shows creators of this game
         lblCredits = new JLabel();
         lblCredits.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/CreditsBW.png"))));
         lblCredits.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -399,7 +382,7 @@ public class MainFrame {
             }
         });
 
-        ///Exit Button
+        ///Exit Button quits the application
         lblExit = new JLabel();
         lblExit.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ExitBW.png"))));
         lblExit.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -441,7 +424,7 @@ public class MainFrame {
             }
         });
 
-        ///Return Button
+        ///Return Button Returns to the Main Menu
         lblReturn = new JLabel();
         lblReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnBW.png"))));
         lblReturn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -500,7 +483,7 @@ public class MainFrame {
             }
         });
 
-        ///Return Button
+        ///Return Button Returns to the Gamemode Selection screen
         lblReturnToGameMode = new JLabel();
         lblReturnToGameMode.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnBW.png"))));
         lblReturnToGameMode.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -561,7 +544,7 @@ public class MainFrame {
             }
         });
 
-        ///Singleplayer Button
+        ///Singleplayer Button Opens the singleplayer Options
         lblSingle = new JLabel();
         lblSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleBW.png"))));
         lblSingle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -576,6 +559,7 @@ public class MainFrame {
                 pnlButton.add(lblSize);
                 pnlButton.add(sldSizeSingle);
                 pnlButton.add(lblDifficulty);
+                pnlButton.add(comboDifficulty);
                 pnlButton.add(lblStartSingle);
                 pnlButton.add(lblReturnToGameMode);
                 pnlButton.setVisible(true);
@@ -611,7 +595,7 @@ public class MainFrame {
             }
         });
 
-        ///Host Button
+        ///Host Button Opens the host game options
         lblHost = new JLabel();
         lblHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/HostBW.png"))));
         lblHost.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -686,7 +670,7 @@ public class MainFrame {
             }
         });
 
-        ///Join Button
+        ///Join Button Opens the Join game options
         lblJoin = new JLabel();
         lblJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
         lblJoin.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -739,7 +723,7 @@ public class MainFrame {
             }
         });
 
-        ///Size Slider and label
+        ///Size Slider and label used to determine grid size on singleplayer
         lblSize =  new JLabel();
         lblSize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SizeBW.png")).getScaledInstance(400,100,Image.SCALE_SMOOTH)));
         lblSize.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -755,7 +739,7 @@ public class MainFrame {
         sldSizeSingle.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         sldSizeSingle.setForeground(Color.BLACK);
 
-        //Size Slider Host UI
+        //Size Slider Host UI used to determine grid size on HostGame
         sldSizeHost = new JSlider(5,30);
         sldSizeHost.setOpaque(false);
         sldSizeHost.setMinimumSize(new Dimension(300,50));
@@ -780,16 +764,17 @@ public class MainFrame {
             }
         });
 
-        ///Difficulty
+        ///Difficulty sprite
         lblDifficulty = new JLabel();
         lblDifficulty.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DifficultyBW.png"))));
         lblDifficulty.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        ///Start Game Button
+        ///Start Game Button Starts a singleplayer game TODO: seperate to startsinglenew and startsingleLoad
         lblStartSingle = new JLabel();
         lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
         lblStartSingle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        /// button that returns from Grid back to menu
         lblPlaceReturn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -849,6 +834,7 @@ public class MainFrame {
             }
         });
 
+        ///Button that places the ships randomly on the grid
         lblRandomize.addMouseListener(new MouseAdapter() {
             ;
             public void mouseClicked (MouseEvent e){
@@ -887,6 +873,7 @@ public class MainFrame {
             }
         });
 
+        /// button that confirms that you´re done placing your ships and ready to play
         lblReady.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -942,6 +929,7 @@ public class MainFrame {
             }
         });
 
+        /// starts the singleplayer game
         lblStartSingle.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
@@ -950,7 +938,6 @@ public class MainFrame {
 
                 runSingleplayer(sldSizeSingle.getValue());
 
-                //backgroundPanel.add(pnlPlay);
                 pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
@@ -958,7 +945,6 @@ public class MainFrame {
                 gcS.init(GridState.PLACE);
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
-                //pnlPlay.add(pnlGrid1);
 
                 pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
@@ -968,29 +954,7 @@ public class MainFrame {
 
                 foeAliveCount = selfGrid.getShipCount();
 
-                //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
-                //GridController controller2 = new GridController(g2d,pnlGrid2);
-                //pnlGrid2.setOpaque(false);
-                //pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
-                //controller2.init(GridState.SHOOT);
-
-                //backgroundPanel.add(pnlPlay);
-
                 backgroundPanel.add(pnlDummyThicc);
-
-
-                /*
-                                            pnlDummy.setVisible(false);
-                            pnlButton.removeAll();
-                            pnlButton.setVisible(false);
-                            pnlButton.add(lblTitle);
-                            pnlButton.add(lblPlay);
-                            pnlButton.add(lblOptions);
-                            pnlButton.add(lblCredits);
-                            pnlButton.add(lblExit);
-                            pnlButton.setVisible(true);
-                            backgroundPanel.add(pnlButton);
-                 */
 
                 pnlDummyThicc.removeAll();
                 pnlDummy.removeAll();
@@ -1253,7 +1217,7 @@ public class MainFrame {
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
                 backgroundPanel.removeAll();
 
-                //backgroundPanel.add(pnlPlay);
+
                 pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
@@ -1261,7 +1225,6 @@ public class MainFrame {
                 gcS.init(GridState.PLACE);
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
-                //pnlPlay.add(pnlGrid1);
 
                 pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
@@ -1271,29 +1234,8 @@ public class MainFrame {
 
                 foeAliveCount = selfGrid.getShipCount();
 
-                //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
-                //GridController controller2 = new GridController(g2d,pnlGrid2);
-                //pnlGrid2.setOpaque(false);
-                //pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
-                //controller2.init(GridState.SHOOT);
-
-                //backgroundPanel.add(pnlPlay);
 
                 backgroundPanel.add(pnlDummyThicc);
-
-
-                /*
-                                            pnlDummy.setVisible(false);
-                            pnlButton.removeAll();
-                            pnlButton.setVisible(false);
-                            pnlButton.add(lblTitle);
-                            pnlButton.add(lblPlay);
-                            pnlButton.add(lblOptions);
-                            pnlButton.add(lblCredits);
-                            pnlButton.add(lblExit);
-                            pnlButton.setVisible(true);
-                            backgroundPanel.add(pnlButton);
-                 */
 
                 pnlDummyThicc.removeAll();
                 pnlDummy.removeAll();
@@ -1363,7 +1305,7 @@ public class MainFrame {
 
                 runMultiplayerServer(sldSizeSingle.getValue());
 
-                //backgroundPanel.add(pnlPlay);
+
                 pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
@@ -1371,7 +1313,7 @@ public class MainFrame {
                 gcS.init(GridState.PLACE);
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
-                //pnlPlay.add(pnlGrid1);
+
 
                 pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
@@ -1381,13 +1323,6 @@ public class MainFrame {
 
                 foeAliveCount = selfGrid.getShipCount();
 
-                //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
-                //GridController controller2 = new GridController(g2d,pnlGrid2);
-                //pnlGrid2.setOpaque(false);
-                //pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
-                //controller2.init(GridState.SHOOT);
-
-                //backgroundPanel.add(pnlPlay);
 
                 backgroundPanel.add(pnlDummyThicc);
 
@@ -1408,25 +1343,6 @@ public class MainFrame {
                     jf.setSize(new Dimension(1024,850));
                 }
 
-                /*
-                Server s = new Server();
-                if (s.isconnected()){
-                    pnlButton.setVisible(false);
-                    pnlButton.removeAll();
-                    System.out.println("Play Game");
-                    if(lstLoad.getSelectedIndex() == -1){
-                        //play Game with selected Size
-                    }
-                    else{
-                        String filename = data[lstLoad.getSelectedIndex()].toString();
-                        s.sendmsg("load " + filename);
-                        Load l = new Load();
-                        Grid2D[] grids = l.load(filename);
-                        //play Game with loaded grids
-                    }
-                    pnlButton.setVisible(true);
-                }
-                 */
 
             }
             public void mouseEntered(MouseEvent e) {
@@ -1510,14 +1426,14 @@ public class MainFrame {
         lstLoad.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                    pnlButton.setVisible(false);
-                    pnlButton.remove(lblStartHostNew);
-                    pnlButton.remove(lblShowIP);
-                    pnlButton.remove(lblReturnToGameMode);
-                    pnlButton.add(lblStartHostLoad);
-                    pnlButton.add(lblReturnToGameMode);
-                    pnlButton.add(lblShowIP);
-                    pnlButton.setVisible(true);
+                pnlButton.setVisible(false);
+                pnlButton.remove(lblStartHostNew);
+                pnlButton.remove(lblShowIP);
+                pnlButton.remove(lblReturnToGameMode);
+                pnlButton.add(lblStartHostLoad);
+                pnlButton.add(lblReturnToGameMode);
+                pnlButton.add(lblShowIP);
+                pnlButton.setVisible(true);
             }
 
             @Override
@@ -1682,7 +1598,7 @@ public class MainFrame {
     private void handleSizeEvent(int size) {
         backgroundPanel.removeAll();
 
-        //backgroundPanel.add(pnlPlay);
+
         pnlGrid1 = new BasicGrid(size, GridState.PLACE);
         selfGrid = new Grid2D(size);
         selfGrid.generateRandom();
@@ -1690,7 +1606,7 @@ public class MainFrame {
         gcS.init(GridState.PLACE);
         pnlGrid1.setOpaque(false);
         pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //pnlPlay.add(pnlGrid1);
+
 
         pnlGrid2 = new BasicGrid(size, GridState.FORBID);
         foeGrid = new Grid2D(size);
@@ -1700,13 +1616,6 @@ public class MainFrame {
 
         foeAliveCount = selfGrid.getShipCount();
 
-        //pnlGrid2 = new BasicGrid(sldSize.getValue(),GridState.FORBID);
-        //GridController controller2 = new GridController(g2d,pnlGrid2);
-        //pnlGrid2.setOpaque(false);
-        //pnlGrid2.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //controller2.init(GridState.SHOOT);
-
-        //backgroundPanel.add(pnlPlay);
 
         backgroundPanel.add(pnlDummyThicc);
 
