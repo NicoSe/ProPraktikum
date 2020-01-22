@@ -5,6 +5,7 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLOutput;
 
 public class Client2 implements Connector {
 
@@ -33,12 +34,9 @@ public class Client2 implements Connector {
      *     wird abgebrochen.
      */
     public Client2(String host) {
-        if(host.isEmpty() || host.equals("") || host == null || host.length()<10) return;
-        if(host.contains(".")){
-            this.host = host;
-            connect();
-        }
-
+        if(host.isEmpty() || host.equals("") || host == null || host.length()<8) return;
+        this.host = host;
+        connect();
     }
 
 
@@ -130,6 +128,9 @@ public class Client2 implements Connector {
                 e.printStackTrace();
                 Close();
                 //connect();
+            } catch (NullPointerException e){
+                System.out.println("<C>Es wurde kein Client erzeugt!");
+                Close();
             } finally {
                 if (Close_Socket){
                     break;
