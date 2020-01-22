@@ -56,7 +56,7 @@ public class Client2 implements Connector {
         } catch (ConnectException e) {
             System.out.println("Couldn't connect. retrying...");
             Close();
-            connect();
+            //connect();
         } catch (SocketException e) {
             System.out.println("<C>Can´t create Socket!");
             e.printStackTrace();
