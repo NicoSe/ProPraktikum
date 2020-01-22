@@ -33,8 +33,12 @@ public class Client2 implements Connector {
      *     wird abgebrochen.
      */
     public Client2(String host) {
-        this.host = host;
-        connect();
+        if(host.isEmpty() || host.equals("") || host == null || host.length()<10) return;
+        if(host.contains(".")){
+            this.host = host;
+            connect();
+        }
+
     }
 
 
@@ -47,7 +51,7 @@ public class Client2 implements Connector {
             System.out.println("<C>Searching for Server");
 
             client = new Socket();
-            client.connect(address, 10000);
+            client.connect(address, 5000);
             dis = new DataInputStream(client.getInputStream());
             dos = new DataOutputStream(client.getOutputStream());
             System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());

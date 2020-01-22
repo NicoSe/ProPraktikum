@@ -1,11 +1,5 @@
 package Network;
 
-import Control.Konsolenanwendung;
-import Logic.Grid2D;
-import Logic.Load;
-import Logic.Save;
-import Logic.ShotResult;
-
 import java.io.*;
 import java.net.*;
 
