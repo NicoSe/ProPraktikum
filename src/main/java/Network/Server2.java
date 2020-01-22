@@ -125,12 +125,12 @@ public class Server2 implements Connector{
             }catch(SocketException e){
                 System.out.println("<S>Can´t find client!");
                 e.printStackTrace();
-                //Close();
+                Close();
                 //connect();
             } catch (IOException e) {
                 System.out.println("<S>Can´t read message from client or don´t get one!");
                 e.printStackTrace();
-                //Close();
+                Close();
                 //connect();
             } finally {
                 if (Close_Socket){

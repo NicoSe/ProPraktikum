@@ -5,6 +5,7 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLOutput;
 
 public class Client2 implements Connector {
 
@@ -33,6 +34,7 @@ public class Client2 implements Connector {
      *     wird abgebrochen.
      */
     public Client2(String host) {
+        if(host.isEmpty() || host.equals("") || host == null || host.length()<8) return;
         this.host = host;
         connect();
     }
@@ -47,14 +49,14 @@ public class Client2 implements Connector {
             System.out.println("<C>Searching for Server");
 
             client = new Socket();
-            client.connect(address, 10000);
+            client.connect(address, 5000);
             dis = new DataInputStream(client.getInputStream());
             dos = new DataOutputStream(client.getOutputStream());
             System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
         } catch (ConnectException e) {
             System.out.println("Couldn't connect. retrying...");
             Close();
-            connect();
+            //connect();
         } catch (SocketException e) {
             System.out.println("<C>Can´t create Socket!");
             e.printStackTrace();
@@ -126,6 +128,9 @@ public class Client2 implements Connector {
                 e.printStackTrace();
                 Close();
                 //connect();
+            } catch (NullPointerException e){
+                System.out.println("<C>Es wurde kein Client erzeugt!");
+                Close();
             } finally {
                 if (Close_Socket){
                     break;
