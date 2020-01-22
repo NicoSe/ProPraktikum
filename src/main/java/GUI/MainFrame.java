@@ -1249,10 +1249,9 @@ public class MainFrame {
             @Override
             public void mouseClicked(MouseEvent e){
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
-
-                backgroundPanel.removeAll();
-
                 runMultiplayerServer(sldSizeSingle.getValue());
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                backgroundPanel.removeAll();
 
                 //backgroundPanel.add(pnlPlay);
                 pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
@@ -1282,10 +1281,28 @@ public class MainFrame {
 
                 backgroundPanel.add(pnlDummyThicc);
 
+
+                /*
+                                            pnlDummy.setVisible(false);
+                            pnlButton.removeAll();
+                            pnlButton.setVisible(false);
+                            pnlButton.add(lblTitle);
+                            pnlButton.add(lblPlay);
+                            pnlButton.add(lblOptions);
+                            pnlButton.add(lblCredits);
+                            pnlButton.add(lblExit);
+                            pnlButton.setVisible(true);
+                            backgroundPanel.add(pnlButton);
+                 */
+
+                pnlDummyThicc.removeAll();
+                pnlDummy.removeAll();
                 pnlDummy.setOpaque(false);
                 pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
                 pnlDummy.add(pnlGrid1);
                 pnlDummy.add(pnlReady);
+                pnlReady.setVisible(true);
+                pnlDummy.setVisible(true);
                 try {
                     backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
                 } catch (IOException ex) {
@@ -1298,26 +1315,8 @@ public class MainFrame {
                     jf.setSize(new Dimension(1025,851));
                     jf.setSize(new Dimension(1024,850));
                 }
-
-                /*
-                Server s = new Server();
-                if (s.isconnected()){
-                    pnlButton.setVisible(false);
-                    pnlButton.removeAll();
-                    System.out.println("Play Game");
-                    if(lstLoad.getSelectedIndex() == -1){
-                        //play Game with selected Size
-                    }
-                    else{
-                        String filename = data[lstLoad.getSelectedIndex()].toString();
-                        s.sendmsg("load " + filename);
-                        Load l = new Load();
-                        Grid2D[] grids = l.load(filename);
-                        //play Game with loaded grids
-                    }
-                    pnlButton.setVisible(true);
-                }
-                 */
+                jf.revalidate();
+                jf.repaint();
 
             }
             public void mouseEntered(MouseEvent e) {
