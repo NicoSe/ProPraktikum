@@ -896,24 +896,30 @@ public class MainFrame {
                     resizeFoeGridListener = new MouseAdapter() {
                         @Override
                         public void mouseEntered(MouseEvent e) {
+                            /*
                             pnlFoeGrid.setPreferredSize(new Dimension(foeBigState ? 390 : 250, foeBigState ? 390 : 250));
                             pnlFoeGrid.revalidate();
                             pnlFoeGrid.repaint();
+                            */
+                            pnlGrid1.setBorder(BorderFactory.createLineBorder(Color.RED));
                             System.out.println("enter");
                         }
 
                         @Override
                         public void mouseExited(MouseEvent e) {
+                            /*
                             pnlFoeGrid.setPreferredSize(new Dimension(foeBigState ? 375 : 225, foeBigState ? 400 : 225));
                             pnlFoeGrid.revalidate();
                             pnlFoeGrid.repaint();
+                            */
+                            pnlGrid1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                             System.out.println("ima head out");
                         }
 
                         @Override
                         public void mouseClicked(MouseEvent e) {
                             foeBigState = !foeBigState;
-                            pnlFoeGrid.setPreferredSize(new Dimension(foeBigState ? 375 : 225, foeBigState ? 375 : 225));
+                            pnlFoeGrid.setPreferredSize(new Dimension(foeBigState ? 600 : 150, foeBigState ? 600 : 150));
                             pnlFoeGrid.revalidate();
                             pnlFoeGrid.repaint();
                             System.out.println("clicked.");
