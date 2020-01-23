@@ -44,8 +44,6 @@ public class NewKI
     private Grid2D enemyGrid;
     private KIMode mode;
     static boolean firstAction = true;
-    private static int initialX, initialY, direction = -1;
-    private int[] usedCases = new int[4];
     private int enemyShipsAlive = 0;
     private int[][] chessPattern;
 
@@ -86,7 +84,10 @@ public class NewKI
         enemyShipsAlive = grid.getShipCount();
         enemyGrid = new Grid2D(bound);
         enemyGrid.placeFGOeverywhere();
-        setChessPattern();//TODO:find better placement?
+        if (mode == KIMode.HARD)
+        {
+            setChessPattern();//TODO:find better placement?
+        }
     }
 
     private void handleData(Connector c) {
@@ -166,7 +167,15 @@ public class NewKI
                 ship.x = Util.GetRandomNumberInRange(0, enemyGrid.getBound()-1);
                 ship.y = Util.GetRandomNumberInRange(0, enemyGrid.getBound()-1);
             } else {
-                getChessPattern();
+                if (firstAction)///First shot goes into the middle of the grid
+                {
+                    ship.x = grid.getBound()/2;
+                    ship.y = grid.getBound()/2;
+                    firstAction = false;
+                }else
+                {
+                    getChessPattern();
+                }
             }
 
             Character c = enemyGrid.getCharacter(ship.x, ship.y);
