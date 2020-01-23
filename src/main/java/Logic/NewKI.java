@@ -11,6 +11,7 @@ enum KIMode
 {
     STUPID,
     NORMAL,
+    HARD,
 }
 
 enum PossibleDirection {
@@ -46,6 +47,7 @@ public class NewKI
     private static int initialX, initialY, direction = -1;
     private int[] usedCases = new int[4];
     private int enemyShipsAlive = 0;
+    private int[][] chessPattern;
 
     private FoundShip ship;
 
@@ -63,8 +65,10 @@ public class NewKI
 
         if (mode == 0) {
             this.mode = KIMode.STUPID;
-        } else {
+        } else if (mode == 1){
             this.mode = KIMode.NORMAL;
+        } else {
+            this.mode = KIMode.HARD;
         }
 
         //check if connector is server, create grid and send size.
@@ -82,6 +86,7 @@ public class NewKI
         enemyShipsAlive = grid.getShipCount();
         enemyGrid = new Grid2D(bound);
         enemyGrid.placeFGOeverywhere();
+        setChessPattern();//TODO:find better placement?
     }
 
     private void handleData(Connector c) {
@@ -157,8 +162,12 @@ public class NewKI
             tryFinishShip();
         } else {
             ship = new FoundShip();
-            ship.x = Util.GetRandomNumberInRange(0, enemyGrid.getBound()-1);
-            ship.y = Util.GetRandomNumberInRange(0, enemyGrid.getBound()-1);
+            if (mode != KIMode.HARD) {
+                ship.x = Util.GetRandomNumberInRange(0, enemyGrid.getBound()-1);
+                ship.y = Util.GetRandomNumberInRange(0, enemyGrid.getBound()-1);
+            } else {
+                getChessPattern();
+            }
 
             Character c = enemyGrid.getCharacter(ship.x, ship.y);
             if(c == null || !c.isAlive()) {
@@ -278,6 +287,42 @@ public class NewKI
                 }
                 if(shootCommand(ship.x - (ship.shotCount+1), ship.y)) ++ship.shotCount;
                 break;
+        }
+    }
+///Marks the grid in a chess pattern.
+    public void setChessPattern()
+    {
+        chessPattern = new int[grid.getBound()][grid.getBound()];
+
+        for(int x = 0; x < chessPattern.length; x++)
+        {
+            for(int y = 0; y < chessPattern.length; y++)
+            {
+                if(x % 2 != 0 && y % 2 == 0)
+                {
+                    chessPattern[x][y] = 1;
+                }else if(x % 2 == 0 && y % 2 != 0)
+                {
+                    chessPattern[x][y] = 1;
+                }
+            }
+        }
+    }
+///Sets ship.x and ship.y
+    public void getChessPattern()
+    {
+        for (int y = 0; y < chessPattern.length; y++)
+        {
+            for (int x = 0; x < chessPattern.length; x++)
+            {
+                if (chessPattern[x][y] == 1)
+                {
+                    ship.x = x;
+                    ship.y = y;
+                    chessPattern[x][y] = 0;
+                    return;
+                }
+            }
         }
     }
 }

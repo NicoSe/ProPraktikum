@@ -178,6 +178,8 @@ public class AI
         if(res.equals("answer 0")) {
             return false;
         } else if (res.equals("answer 1")) {
+            initialX = x;
+            initialY = y;
             if(!destroy(x, y)) {
                 return false;
             }
@@ -189,15 +191,24 @@ public class AI
 
     public void search(int[][] pattern)
     {
-        if (firstAction == true && this.mode == Mode.HARD)
+        if (firstAction && this.mode == Mode.HARD)
         {
             if(!firstShot()) {
                 s.sendmsg("pass");
                 return;
             }
         }
+///If a hit was registered but no direction was selected
+        if (initialX != -1 && direction == -1)
+        {
+            if (!destroy(initialX, initialY))
+            {//TODO: Adi examine
+                s.sendmsg("pass");
+                return;
+            }
+        }
 ///If a ship is already damaged, it will fire at the initial coordinates but in the opposite direction
-        if(direction != -1)
+        if(direction != -1 && initialX != -1)
         {
             if(!shootInDirection(initialX, initialY, direction)) {
                 s.sendmsg("pass");
@@ -223,6 +234,8 @@ public class AI
 
                     if(res.equals("answer 1") && this.mode == Mode.NORMAL || this.mode == Mode.HARD)
                     {
+                        initialX = x;
+                        initialY = y;
                         if(!destroy(x, y)) {
                             s.sendmsg("pass");
                             return;
@@ -237,9 +250,10 @@ public class AI
         int i = Util.GetRandomNumberInRange(1,4);
         {
 ///Locates the direction in which a ship lays
+            //TODO: Endfuck the ki, if all cases are used it will fire at -1,-1 --> boom
             int shootx = -1;
             int shooty = -1;
-
+///if the case is unused and the direction is within the grid --> shoot
             switch (i)
             {
                 case 1:
@@ -247,6 +261,10 @@ public class AI
                     {
                         shootx = x;
                         shooty = y-1;
+                        if (!isValid(shootx, shooty))
+                        {
+                            return destroy(x, y);
+                        }
                         break;
                     }
                 case 2:
@@ -254,6 +272,10 @@ public class AI
                     {
                         shootx = x+1;
                         shooty = y;
+                        if (!isValid(shootx, shooty))
+                        {
+                            return destroy(x, y);
+                        }
                         break;
                     }
                 case 3:
@@ -261,6 +283,10 @@ public class AI
                     {
                         shootx = x;
                         shooty = y+1;
+                        if (!isValid(shootx, shooty))
+                        {
+                            return destroy(x, y);
+                        }
                         break;
                     }
                 case 4:
@@ -268,6 +294,10 @@ public class AI
                     {
                         shootx = x-1;
                         shooty = y;
+                        if (!isValid(shootx, shooty))
+                        {
+                            return destroy(x, y);
+                        }
                         break;
                     }
             }
@@ -280,12 +310,12 @@ public class AI
             }
             if(res.equals("answer 1"))
             {
-                if(!shootInDirection(x, y, i)) {
-                    initialY = y;//wird nie gemacht weil es immer ein return false von shootInDirection gibt --> if == true und nie dieser block, fix: schieb in den if
-                    initialX = x;//TODO: fix, pull within upper if
-                    direction = i;
+//                initialY = y;//wird nie gemacht weil es immer ein return false von shootInDirection gibt --> if == true und nie dieser block, fix: schieb in den if
+//                initialX = x;
+                if(!shootInDirection(shootx, shooty, i)) {
                     return false;
                 }
+                direction = i;
             }
         }
         return true;
@@ -308,7 +338,7 @@ public class AI
             case 1:
                 directionY = -1;
 ///If isValid == true, try direction else go to next case
-                if (isValid(x, directionY))
+                if (isValid(x, y + directionY))
                 {
                     do
                     {
@@ -321,7 +351,7 @@ public class AI
                 }
             case 2:
                 directionX = 1;
-                if (isValid(directionX, y))
+                if (isValid(x + directionX, y))
                 {
                     do
                     {
@@ -334,7 +364,7 @@ public class AI
                 }
             case 3:
                 directionY = 1;
-                if (isValid(x, directionY))
+                if (isValid(x, directionY + y))
                 {
                     do
                     {
@@ -347,7 +377,7 @@ public class AI
                 }
             case 4:
                 directionX = -1;
-                if (isValid(directionX, y))
+                if (isValid(directionX + x, y))
                 {
                     do
                     {
@@ -365,7 +395,9 @@ public class AI
         }
         if (res.equals("answer 2"))
         {
-            Arrays.fill(usedCases, 0);///set all values to 0
+///resets "memory" of the KI --> start now to shoot again at the pattern
+            Arrays.fill(usedCases, 0);//TODO: marksuroundings with 0, start with inixY
+            initialX = initialY = direction = -1;
         }
         return true;
     }
@@ -390,7 +422,7 @@ public class AI
         return true;
     }
 ///checks if the direction selected in the destroy method was already used
-    public boolean unusedCase(int i)
+    public boolean unusedCase(int i)//TODO: please end my sorrow
     {
         for (int j = 0; j < usedCases.length; j++)
         {
@@ -400,6 +432,7 @@ public class AI
             }else if(usedCases[j] == 0)
             {
                 usedCases[j] = i;
+                break;
             }
         }
         return true;
