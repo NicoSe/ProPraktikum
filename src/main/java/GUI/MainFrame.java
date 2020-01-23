@@ -214,7 +214,7 @@ public class MainFrame {
         pnlDummy.setBackground(Color.GREEN);
 
         /// Combobox for KI difficulty selection
-        String[] difficultyOptions = {"Easy", "Medium"};
+        String[] difficultyOptions = {"Easy", "Medium", "Hard"};
         comboDifficulty = new JComboBox<String>(difficultyOptions);
         comboDifficulty.setPreferredSize(new Dimension(10,10));
         comboDifficulty.setOpaque(true);
