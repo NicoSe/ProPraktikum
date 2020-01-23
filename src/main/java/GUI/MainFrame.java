@@ -1020,11 +1020,15 @@ public class MainFrame {
                     ex.printStackTrace();
                 }
                 if(OptionsHandler.getFullscreenMode()){
-                    jf.setSize(new Dimension(1981,1080));
-                    jf.setSize(new Dimension(1980,1080));
+                    jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    jf.dispose();
+                    jf.setUndecorated(true);
+                    jf.setVisible(true);
                 }else{
-                    jf.setSize(new Dimension(1025,851));
                     jf.setSize(new Dimension(1024,850));
+                    jf.dispose();
+                    jf.setUndecorated(false);
+                    jf.setVisible(true);
                 }
                 jf.revalidate();
                 jf.repaint();
@@ -1073,7 +1077,6 @@ public class MainFrame {
         else{
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
         }
-        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
         lblFullscreenPicture.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblFullscreenPicture.addMouseListener(new MouseAdapter(){
             @Override
@@ -1301,11 +1304,15 @@ public class MainFrame {
                     ex.printStackTrace();
                 }
                 if(OptionsHandler.getFullscreenMode()){
-                    jf.setSize(new Dimension(1981,1080));
-                    jf.setSize(new Dimension(1980,1080));
+                    jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    jf.dispose();
+                    jf.setUndecorated(true);
+                    jf.setVisible(true);
                 }else{
-                    jf.setSize(new Dimension(1025,851));
                     jf.setSize(new Dimension(1024,850));
+                    jf.dispose();
+                    jf.setUndecorated(false);
+                    jf.setVisible(true);
                 }
                 jf.revalidate();
                 jf.repaint();
@@ -1386,11 +1393,15 @@ public class MainFrame {
                     ex.printStackTrace();
                 }
                 if(OptionsHandler.getFullscreenMode()){
-                    jf.setSize(new Dimension(1981,1080));
-                    jf.setSize(new Dimension(1980,1080));
+                    jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    jf.dispose();
+                    jf.setUndecorated(true);
+                    jf.setVisible(true);
                 }else{
-                    jf.setSize(new Dimension(1025,851));
                     jf.setSize(new Dimension(1024,850));
+                    jf.dispose();
+                    jf.setUndecorated(false);
+                    jf.setVisible(true);
                 }
 
 
@@ -1684,11 +1695,15 @@ public class MainFrame {
             ex.printStackTrace();
         }
         if(OptionsHandler.getFullscreenMode()){
-            jf.setSize(new Dimension(1981,1080));
-            jf.setSize(new Dimension(1980,1080));
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            jf.dispose();
+            jf.setUndecorated(true);
+            jf.setVisible(true);
         }else{
-            jf.setSize(new Dimension(1025,851));
             jf.setSize(new Dimension(1024,850));
+            jf.dispose();
+            jf.setUndecorated(false);
+            jf.setVisible(true);
         }
     }
 
