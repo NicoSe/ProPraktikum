@@ -38,6 +38,9 @@ public class MainFrame {
     private JFrame jf;
     private BackgroundPanel backgroundPanel;
     private JPanel pnlButton;
+    private JPanel pnlSingleX;
+    private JPanel pnlSingleY;
+    private JPanel pnlSingleY2;
     private JPanel pnlHostX;
     private JPanel pnlHostY;
     private JPanel pnlHostY2;
@@ -58,10 +61,13 @@ public class MainFrame {
     private JLabel lblStartSingle;
     private JLabel lblHost;
     private JList lstLoad;
+    private JList lstSingleLoad;
     private JScrollPane scrollpane;
     File[] data;
     private JLabel lblStartHostNew;
     private JLabel lblStartHostLoad;
+    private JLabel lblStartSingleNew;
+    private JLabel lblStartSingleLoad;
     private JLabel lblShowIP;
     private JLabel lblJoin;
     private JLabel lblIPAdress;
@@ -133,6 +139,47 @@ public class MainFrame {
         pnlButton.setMinimumSize(new Dimension(1024,850));
         pnlButton.setMaximumSize(new Dimension(1920,1080));
         backgroundPanel.add(pnlButton);
+
+        /// Panel that holds left and right side of Singleplayer selection
+        pnlSingleX = new JPanel();
+        pnlSingleX.setOpaque(false);
+        pnlSingleX.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pnlSingleX.setMinimumSize(new Dimension(1024, 350));
+        pnlSingleX.setMaximumSize((new Dimension(1980, 350)));
+        pnlSingleX.setLayout(new GridBagLayout());
+
+        ///Left Panel of Singleplayer selection
+        pnlSingleY = new JPanel();
+        pnlSingleY.setOpaque(false);
+        pnlSingleY.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        pnlSingleY.setAlignmentY(Component.RIGHT_ALIGNMENT);
+        pnlSingleY.setLayout(new BoxLayout(pnlSingleY, BoxLayout.Y_AXIS));
+        pnlSingleY.setMinimumSize(new Dimension(300, 350));
+        pnlSingleY.setMaximumSize(new Dimension(300,350));
+        pnlSingleY.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        pnlSingleY.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                pnlButton.setVisible(false);
+                pnlButton.remove(lblStartSingleLoad);
+                pnlButton.remove(lblReturnToGameMode);
+                pnlButton.add(lblStartSingleNew);
+                pnlButton.add(lblReturnToGameMode);
+                pnlButton.setVisible(true);
+            }
+
+        });
+
+        ///Right Panel of Singleplayer Selection
+        pnlSingleY2 = new JPanel();
+        pnlSingleY2.setOpaque(false);
+        pnlSingleY2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pnlSingleY2.setAlignmentY(Component.CENTER_ALIGNMENT);
+        pnlSingleY2.setLayout(new BoxLayout(pnlSingleY2, BoxLayout.Y_AXIS));
+        pnlSingleY2.setMinimumSize(new Dimension(300, 350));
+        pnlSingleY2.setMaximumSize((new Dimension(300, 350)));
+        pnlSingleY2.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+
 
         /// Panel that holds left and right side of Host selection
         pnlHostX = new JPanel();
@@ -216,12 +263,9 @@ public class MainFrame {
         /// Combobox for KI difficulty selection
         String[] difficultyOptions = {"Easy", "Medium", "Hard"};
         comboDifficulty = new JComboBox<String>(difficultyOptions);
-        comboDifficulty.setMinimumSize(new Dimension(200,50));
-        comboDifficulty.setMaximumSize(new Dimension(350,50));
+        comboDifficulty.setPreferredSize(new Dimension(10,30));
         comboDifficulty.setOpaque(true);
         comboDifficulty.setSelectedIndex(1);
-        comboDifficulty.setAlignmentY(Component.TOP_ALIGNMENT);
-        comboDifficulty.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -562,7 +606,7 @@ public class MainFrame {
             @Override
             public void mouseClicked(MouseEvent e){
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
-
+                /*
                 pnlButton.setVisible(false);
                 pnlButton.removeAll();
                 pnlButton.add(lblTitle);
@@ -573,6 +617,44 @@ public class MainFrame {
                 pnlButton.add(lblStartSingle);
                 pnlButton.add(lblReturnToGameMode);
                 pnlButton.setVisible(true);
+                */
+
+
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                pnlButton.setVisible(false);
+                pnlButton.removeAll();
+                pnlButton.add(lblTitle);
+
+                GridBagConstraints c = new GridBagConstraints();
+                c.gridheight = 3;
+                c.anchor = GridBagConstraints.LINE_START;
+                c.fill = GridBagConstraints.VERTICAL;
+                c.ipadx = 5;
+                c.ipady = 5;
+                pnlSingleY.add(lblSize);
+                pnlSingleY.add(sldSizeSingle);
+                pnlSingleY.add(lblDifficulty);
+                pnlSingleY.add(comboDifficulty);
+                pnlSingleX.add(pnlSingleY,c);
+
+                c.anchor = GridBagConstraints.CENTER;
+                c.fill = GridBagConstraints.VERTICAL;
+                pnlSingleX.add(lblRect,c);
+
+                c.anchor = GridBagConstraints.LINE_END;
+                c.fill = GridBagConstraints.VERTICAL;
+                c.gridheight = 3;
+                pnlSingleY2.add(lblLoad);
+                scrollpane.setViewportView(lstSingleLoad);
+                pnlSingleY2.add(scrollpane);
+                pnlSingleX.add(pnlSingleY2, c);
+
+                pnlButton.add(pnlSingleX);
+                pnlButton.add(lblStartSingleNew);
+                pnlButton.add(lblReturnToGameMode);
+
+                pnlButton.setVisible(true);
+
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -636,6 +718,7 @@ public class MainFrame {
                     c.fill = GridBagConstraints.VERTICAL;
                     c.gridheight = 3;
                     pnlHostY2.add(lblLoad);
+                    scrollpane.setViewportView(lstLoad);
                     pnlHostY2.add(scrollpane);
                     pnlHostX.add(pnlHostY2, c);
 
@@ -779,11 +862,6 @@ public class MainFrame {
         lblDifficulty.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DifficultyBW.png"))));
         lblDifficulty.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        ///Start Game Button Starts a singleplayer game TODO: seperate to startsinglenew and startsingleLoad
-        lblStartSingle = new JLabel();
-        lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
-        lblStartSingle.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         /// button that returns from Grid back to menu
         lblPlaceReturn.addMouseListener(new MouseAdapter() {
             @Override
@@ -793,7 +871,7 @@ public class MainFrame {
                     Helpers.playSFX("/SFX/firered_0017.wav", 1);
                     lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
                     lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
-                    lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+                    lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
                     pnlDummy.setVisible(false);
                     pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
                     pnlGrid1.removeMouseListener(resizeFoeGridListener);
@@ -979,91 +1057,6 @@ public class MainFrame {
             }
         });
 
-        /// starts the singleplayer game
-        lblStartSingle.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                Helpers.playSFX("/SFX/SA2_142.wav", 1);
-                backgroundPanel.removeAll();
-
-                runSingleplayer(sldSizeSingle.getValue());
-
-                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
-                selfGrid = new Grid2D(sldSizeSingle.getValue());
-                selfGrid.generateRandom();
-                gcS = new GridController(selfGrid, null, pnlGrid1);
-                gcS.init(GridState.PLACE);
-                pnlGrid1.setOpaque(false);
-                pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
-                foeGrid = new Grid2D(sldSizeSingle.getValue());
-                foeGrid.placeFGOeverywhere();
-                gcF = new GridController(foeGrid, net, pnlGrid2);
-                gcF.init(GridState.FORBID);
-
-                foeAliveCount = selfGrid.getShipCount();
-
-                backgroundPanel.add(pnlDummyThicc);
-
-                pnlDummyThicc.removeAll();
-                pnlDummy.removeAll();
-                pnlDummy.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
-                pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
-                pnlDummy.add(pnlGrid1);
-                pnlDummy.add(pnlReady);
-                pnlReady.setVisible(true);
-                pnlDummy.setVisible(true);
-                try {
-                    backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                if(OptionsHandler.getFullscreenMode()){
-                    jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    jf.dispose();
-                    jf.setUndecorated(true);
-                    jf.setVisible(true);
-                }else{
-                    jf.setSize(new Dimension(1024,850));
-                    jf.dispose();
-                    jf.setUndecorated(false);
-                    jf.setVisible(true);
-                }
-                jf.revalidate();
-                jf.repaint();
-            }
-            public void mouseEntered(MouseEvent e) {
-                try {
-                    lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
-                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            public void mouseExited(MouseEvent e){
-                try {
-                    lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            public void mousePressed(MouseEvent e){
-                try {
-                    lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameOnPress.png"))));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            public void mouseReleased(MouseEvent e){
-                try {
-                    lblStartSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-
         ///Fullscreen Button
         lblFullscreen = new JLabel();
         lblFullscreen.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/FullscreenBW.png"))));
@@ -1077,6 +1070,7 @@ public class MainFrame {
         else{
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
         }
+        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
         lblFullscreenPicture.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblFullscreenPicture.addMouseListener(new MouseAdapter(){
             @Override
@@ -1258,6 +1252,131 @@ public class MainFrame {
             }
         });
 
+        ///Start new Singleplayer game
+        lblStartSingleNew = new JLabel();
+        lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
+        lblStartSingleNew.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblStartSingleNew.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                backgroundPanel.removeAll();
+
+                runSingleplayer(sldSizeSingle.getValue());
+
+                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
+                selfGrid = new Grid2D(sldSizeSingle.getValue());
+                selfGrid.generateRandom();
+                gcS = new GridController(selfGrid, null, pnlGrid1);
+                gcS.init(GridState.PLACE);
+                pnlGrid1.setOpaque(false);
+                pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
+                foeGrid = new Grid2D(sldSizeSingle.getValue());
+                foeGrid.placeFGOeverywhere();
+                gcF = new GridController(foeGrid, net, pnlGrid2);
+                gcF.init(GridState.FORBID);
+
+                foeAliveCount = selfGrid.getShipCount();
+
+                backgroundPanel.add(pnlDummyThicc);
+
+                pnlDummyThicc.removeAll();
+                pnlDummy.removeAll();
+                pnlDummy.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
+                pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
+                pnlDummy.add(pnlGrid1);
+                pnlDummy.add(pnlReady);
+                pnlReady.setVisible(true);
+                pnlDummy.setVisible(true);
+                try {
+                    backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                if(OptionsHandler.getFullscreenMode()){
+                    jf.setSize(new Dimension(1981,1080));
+                    jf.setSize(new Dimension(1980,1080));
+                }else{
+                    jf.setSize(new Dimension(1025,851));
+                    jf.setSize(new Dimension(1024,850));
+                }
+                jf.revalidate();
+                jf.repaint();
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameWB.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        /// Start singleplayer game with load file
+        lblStartSingleLoad = new JLabel();
+        lblStartSingleLoad.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/LoadGameBW.png"))));
+        lblStartSingleLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblStartSingleLoad.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+
+
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblStartSingleLoad.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/LoadGameWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblStartSingleLoad.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/LoadGameBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblStartSingleLoad.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/LoadGameOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/LoadGameWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+
         ///Host Start Button
         lblStartHostNew = new JLabel();
         lblStartHostNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
@@ -1304,15 +1423,11 @@ public class MainFrame {
                     ex.printStackTrace();
                 }
                 if(OptionsHandler.getFullscreenMode()){
-                    jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    jf.dispose();
-                    jf.setUndecorated(true);
-                    jf.setVisible(true);
+                    jf.setSize(new Dimension(1981,1080));
+                    jf.setSize(new Dimension(1980,1080));
                 }else{
+                    jf.setSize(new Dimension(1025,851));
                     jf.setSize(new Dimension(1024,850));
-                    jf.dispose();
-                    jf.setUndecorated(false);
-                    jf.setVisible(true);
                 }
                 jf.revalidate();
                 jf.repaint();
@@ -1356,7 +1471,9 @@ public class MainFrame {
         lblStartHostLoad.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
+                /*
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
+
 
                 backgroundPanel.removeAll();
 
@@ -1393,18 +1510,14 @@ public class MainFrame {
                     ex.printStackTrace();
                 }
                 if(OptionsHandler.getFullscreenMode()){
-                    jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    jf.dispose();
-                    jf.setUndecorated(true);
-                    jf.setVisible(true);
+                    jf.setSize(new Dimension(1981,1080));
+                    jf.setSize(new Dimension(1980,1080));
                 }else{
+                    jf.setSize(new Dimension(1025,851));
                     jf.setSize(new Dimension(1024,850));
-                    jf.dispose();
-                    jf.setUndecorated(false);
-                    jf.setVisible(true);
                 }
 
-
+                 */
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -1445,7 +1558,7 @@ public class MainFrame {
         lblShowIP.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblShowIP.setBorder(BorderFactory.createEmptyBorder(50,0,5,jf.getWidth()/2));
 
-        ///Load List
+        ///Load List Host
         lstLoad = new JList();
         lstLoad.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         lstLoad.setOpaque(false);
@@ -1454,6 +1567,16 @@ public class MainFrame {
         lstLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
         lstLoad.setMinimumSize(new Dimension(300,50));
         lstLoad.setMaximumSize(new Dimension(300,150));
+
+        ///Load List Single
+        lstSingleLoad = new JList();
+        lstSingleLoad.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+        lstSingleLoad.setOpaque(false);
+        lstSingleLoad.setBorder(new BasicBorders.FieldBorder(Color.BLACK, Color.gray, Color.BLACK, Color.WHITE));
+        lstSingleLoad.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lstSingleLoad.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lstSingleLoad.setMinimumSize(new Dimension(300,50));
+        lstSingleLoad.setMaximumSize(new Dimension(300,150));
 
         File dir = new File("./SaveGames");
         data = dir.listFiles();
@@ -1473,8 +1596,9 @@ public class MainFrame {
             }
         }
         lstLoad.setListData(filenames);
-
         lstLoad.setVisibleRowCount(filenames.length);
+        lstSingleLoad.setListData(filenames);
+        lstSingleLoad.setVisibleRowCount(filenames.length);
         scrollpane = new JScrollPane();
         scrollpane.setViewportView(lstLoad);
         scrollpane.setOpaque(false);
@@ -1494,6 +1618,38 @@ public class MainFrame {
                 pnlButton.add(lblStartHostLoad);
                 pnlButton.add(lblReturnToGameMode);
                 pnlButton.add(lblShowIP);
+                pnlButton.setVisible(true);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        lstSingleLoad.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pnlButton.setVisible(false);
+                pnlButton.remove(lblStartSingleNew);
+                pnlButton.remove(lblReturnToGameMode);
+                pnlButton.add(lblStartSingleLoad);
+                pnlButton.add(lblReturnToGameMode);
                 pnlButton.setVisible(true);
             }
 
@@ -1695,15 +1851,11 @@ public class MainFrame {
             ex.printStackTrace();
         }
         if(OptionsHandler.getFullscreenMode()){
-            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            jf.dispose();
-            jf.setUndecorated(true);
-            jf.setVisible(true);
+            jf.setSize(new Dimension(1981,1080));
+            jf.setSize(new Dimension(1980,1080));
         }else{
+            jf.setSize(new Dimension(1025,851));
             jf.setSize(new Dimension(1024,850));
-            jf.dispose();
-            jf.setUndecorated(false);
-            jf.setVisible(true);
         }
     }
 
