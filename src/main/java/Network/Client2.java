@@ -5,7 +5,6 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.sql.SQLOutput;
 
 public class Client2 implements Connector {
 

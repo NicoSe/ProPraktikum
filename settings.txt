@@ -3,4 +3,4 @@ Music Value:
 SFX Value:
 75
 Fullscreen:
-false
+true

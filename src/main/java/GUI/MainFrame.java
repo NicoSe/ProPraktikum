@@ -216,9 +216,12 @@ public class MainFrame {
         /// Combobox for KI difficulty selection
         String[] difficultyOptions = {"Easy", "Medium", "Hard"};
         comboDifficulty = new JComboBox<String>(difficultyOptions);
-        comboDifficulty.setPreferredSize(new Dimension(10,10));
+        comboDifficulty.setMinimumSize(new Dimension(200,50));
+        comboDifficulty.setMaximumSize(new Dimension(350,50));
         comboDifficulty.setOpaque(true);
         comboDifficulty.setSelectedIndex(1);
+        comboDifficulty.setAlignmentY(Component.TOP_ALIGNMENT);
+        comboDifficulty.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
