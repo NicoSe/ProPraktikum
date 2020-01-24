@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>GUI</OriginalElement>
+  <nodes>
+    <node x="0.0" y="351.0">GUI.ScaleHelper</node>
+    <node x="176.0" y="79.0">GUI.BackgroundPanel</node>
+    <node x="253.95000000000002" y="198.0">GUI.GamePanel</node>
+    <node x="122.95" y="198.0">GUI.MainFrame</node>
+    <node x="40.0" y="79.0">GUI.Grid</node>
+    <node x="35.5" y="0.0">GUI.ImageHelper</node>
+    <node x="126.70416666666665" y="277.0">GUI.Helpers</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="GUI.GamePanel" target="GUI.BackgroundPanel">
+      <point x="27.75" y="-14.5" />
+      <point x="337.20000000000005" y="178.0" />
+      <point x="313.7" y="178.0" />
+      <point x="61.19999999999999" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="182.5" y="190.0" />
+  <SelectedNodes>
+    <node>GUI.ScaleHelper</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

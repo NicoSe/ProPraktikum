@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Network</OriginalElement>
+  <nodes>
+    <node x="110.0" y="158.0">Network.Client</node>
+    <node x="0.0" y="158.0">Network.Server</node>
+    <node x="44.5" y="79.0">Network.Connector</node>
+    <node x="30.5" y="0.0">Network.ConnectorType</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Network.Client" target="Network.Connector">
+      <point x="-22.5" y="-14.5" />
+      <point x="132.5" y="133.0" />
+      <point x="127.75" y="133.0" />
+      <point x="27.75" y="14.5" />
+    </edge>
+    <edge source="Network.Server" target="Network.Connector">
+      <point x="22.5" y="-14.5" />
+      <point x="67.5" y="133.0" />
+      <point x="72.25" y="133.0" />
+      <point x="-27.75" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="100.0" y="93.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

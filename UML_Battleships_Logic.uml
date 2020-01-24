@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Logic</OriginalElement>
+  <nodes>
+    <node x="296.1386204300935" y="665.0">Logic.SaveManager</node>
+    <node x="666.7047969006817" y="268.0">Logic.HarborShipData</node>
+    <node x="563.7047969006817" y="268.0">Logic.Water</node>
+    <node x="0.0" y="848.0">Logic.OptionsHandler</node>
+    <node x="664.2047969006817" y="357.0">Logic.ShipHarbor</node>
+    <node x="326.11666019196946" y="139.0">Logic.Character</node>
+    <node x="179.96950278303464" y="357.0">Logic.Ship</node>
+    <node x="0.0" y="665.0">Logic.GridController</node>
+    <node x="844.7047969006817" y="665.0">Logic.KIMode</node>
+    <node x="792.7047969006817" y="774.0">Logic.NewKI</node>
+    <node x="888.2047969006817" y="357.0">Logic.Util</node>
+    <node x="985.2047969006818" y="665.0">Logic.PossibleDirection</node>
+    <node x="292.61666019196946" y="0.0">Logic.Rotation</node>
+    <node x="276.9695027830346" y="357.0">Logic.NetGridHelper</node>
+    <node x="416.61666019196946" y="0.0">Logic.ShotResult</node>
+    <node x="337.9477701178612" y="268.0">Logic.FoeGridShootObject</node>
+    <node x="491.94961741411447" y="526.0">Logic.Grid2D</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Logic.Grid2D" target="Logic.FoeGridShootObject">
+      <point x="-15.882352941176464" y="-14.5" />
+      <point x="521.067264472938" y="436.0" />
+      <point x="484.6977701178612" y="436.0" />
+      <point x="484.6977701178612" y="327.0" />
+      <point x="494.5477701178611" y="327.0" />
+      <point x="69.59999999999997" y="14.5" />
+    </edge>
+    <edge source="Logic.Character" target="Logic.Rotation">
+      <point x="-37.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Logic.SaveManager" target="Logic.Water">
+      <point x="23.4375" y="-14.5" />
+      <point x="382.0761204300935" y="605.0" />
+      <point x="460.65549976705563" y="605.0" />
+      <point x="460.65549976705563" y="337.0" />
+      <point x="577.5381302340151" y="337.0" />
+      <point x="-27.66666666666663" y="14.5" />
+    </edge>
+    <edge source="Logic.FoeGridShootObject" target="Logic.Character">
+      <point x="-57.99999999999994" y="-14.5" />
+      <point x="366.9477701178612" y="248.0" />
+      <point x="377.6523744776837" y="248.0" />
+      <point x="-3.9642857142857224" y="14.5" />
+    </edge>
+    <edge source="Logic.NewKI" target="Logic.ShotResult">
+      <point x="30.18181818181813" y="-14.5" />
+      <point x="864.3866150824998" y="744.0" />
+      <point x="974.7047969006818" y="744.0" />
+      <point x="974.7047969006818" y="49.0" />
+      <point x="526.188088763398" y="49.0" />
+      <point x="50.571428571428555" y="14.5" />
+    </edge>
+    <edge source="Logic.NewKI" target="Logic.SaveManager">
+      <point x="-30.18181818181813" y="-14.5" />
+      <point x="804.0229787188636" y="744.0" />
+      <point x="358.6386204300935" y="744.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Logic.Grid2D" target="Logic.Rotation">
+      <point x="5.294117647058783" y="-14.5" />
+      <point x="542.2437350611733" y="436.0" />
+      <point x="553.2047969006817" y="436.0" />
+      <point x="553.2047969006817" y="79.0" />
+      <point x="386.21666019196937" y="79.0" />
+      <point x="41.599999999999966" y="14.5" />
+    </edge>
+    <edge source="Logic.GridController" target="Logic.Ship">
+      <point x="7.300000000000011" y="-14.5" />
+      <point x="80.30000000000001" y="645.0" />
+      <point x="73.37826733482649" y="645.0" />
+      <point x="73.37826733482649" y="476.0" />
+      <point x="185.3980742116061" y="476.0" />
+      <point x="-32.571428571428555" y="14.5" />
+    </edge>
+    <edge source="Logic.GridController" target="Logic.Character">
+      <point x="-21.899999999999977" y="-14.5" />
+      <point x="51.37826733482649" y="327.0" />
+      <point x="208.0868982872075" y="327.0" />
+      <point x="208.0868982872075" y="198.0" />
+      <point x="338.00951733482657" y="198.0" />
+      <point x="-43.60714285714283" y="14.5" />
+    </edge>
+    <edge source="Logic.SaveManager" target="Logic.Ship">
+      <point x="-39.0625" y="-14.5" />
+      <point x="319.5761204300935" y="595.0" />
+      <point x="217.89807421160603" y="595.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Logic.Grid2D" target="Logic.ShotResult">
+      <point x="37.05882352941171" y="-14.5" />
+      <point x="574.0084409435262" y="496.0" />
+      <point x="823.2047969006817" y="496.0" />
+      <point x="823.2047969006817" y="59.0" />
+      <point x="509.3309459062551" y="59.0" />
+      <point x="33.71428571428572" y="14.5" />
+    </edge>
+    <edge source="Logic.SaveManager" target="Logic.Character">
+      <point x="-7.8125" y="-14.5" />
+      <point x="350.8261204300935" y="575.0" />
+      <point x="266.4695027830346" y="575.0" />
+      <point x="266.4695027830346" y="228.0" />
+      <point x="361.7952316205409" y="228.0" />
+      <point x="-19.821428571428555" y="14.5" />
+    </edge>
+    <edge source="Logic.SaveManager" target="Logic.Grid2D">
+      <point x="39.0625" y="-14.5" />
+      <point x="397.7011204300935" y="635.0" />
+      <point x="524.0924745569716" y="635.0" />
+      <point x="-12.85714285714289" y="14.5" />
+    </edge>
+    <edge source="Logic.Grid2D" target="Logic.Ship">
+      <point x="-42.35294117647061" y="-14.5" />
+      <point x="494.59667623764386" y="486.0" />
+      <point x="239.68378849732034" y="486.0" />
+      <point x="21.714285714285694" y="14.5" />
+    </edge>
+    <edge source="Logic.GridController" target="Logic.FoeGridShootObject">
+      <point x="-7.2999999999999545" y="-14.5" />
+      <point x="65.70000000000005" y="645.0" />
+      <point x="62.37826733482649" y="645.0" />
+      <point x="62.37826733482649" y="337.0" />
+      <point x="355.34777011786116" y="337.0" />
+      <point x="-69.59999999999997" y="14.5" />
+    </edge>
+    <edge source="Logic.Ship" target="Logic.Character">
+      <point x="0.0" y="-14.5" />
+      <point x="217.96950278303464" y="327.0" />
+      <point x="223.61443678452784" y="327.0" />
+      <point x="223.61443678452784" y="208.0" />
+      <point x="345.938088763398" y="208.0" />
+      <point x="-35.678571428571445" y="14.5" />
+    </edge>
+    <edge source="Logic.NewKI" target="Logic.Grid2D">
+      <point x="-7.545454545454504" y="-14.5" />
+      <point x="826.6593423552272" y="714.0" />
+      <point x="559.1924783368926" y="714.0" />
+      <point x="559.1924783368926" y="645.0" />
+      <point x="575.521045985543" y="645.0" />
+      <point x="38.571428571428555" y="14.5" />
+    </edge>
+    <edge source="Logic.Water" target="Logic.ShotResult">
+      <point x="27.66666666666663" y="-14.5" />
+      <point x="632.8714635673483" y="248.0" />
+      <point x="619.6835369426695" y="248.0" />
+      <point x="619.6835369426695" y="69.0" />
+      <point x="492.47380304911235" y="69.0" />
+      <point x="16.85714285714289" y="14.5" />
+    </edge>
+    <edge source="Logic.NewKI" target="Logic.KIMode">
+      <point x="15.090909090909122" y="-14.5" />
+      <point x="849.2957059915908" y="724.0" />
+      <point x="912.2047969006817" y="724.0" />
+      <point x="22.5" y="14.5" />
+    </edge>
+    <edge source="Logic.GridController" target="Logic.Rotation">
+      <point x="-65.69999999999993" y="-14.5" />
+      <point x="7.848520350805529" y="79.0" />
+      <point x="303.01666019196944" y="79.0" />
+      <point x="-41.60000000000002" y="14.5" />
+    </edge>
+    <edge source="Logic.Water" target="Logic.Character">
+      <point x="-27.66666666666663" y="-14.5" />
+      <point x="577.5381302340151" y="208.0" />
+      <point x="417.2952316205409" y="208.0" />
+      <point x="35.678571428571445" y="14.5" />
+    </edge>
+    <edge source="Logic.Ship" target="Logic.ShotResult">
+      <point x="-25.333333333333314" y="-14.5" />
+      <point x="192.63616944970133" y="317.0" />
+      <point x="195.4001510702422" y="317.0" />
+      <point x="195.4001510702422" y="109.0" />
+      <point x="441.9023744776837" y="109.0" />
+      <point x="-33.71428571428572" y="14.5" />
+    </edge>
+    <edge source="Logic.GridController" target="Logic.NetGridHelper">
+      <point x="36.5" y="-14.5" />
+      <point x="109.5" y="645.0" />
+      <point x="112.99924976705563" y="645.0" />
+      <point x="112.99924976705563" y="506.0" />
+      <point x="300.13616944970136" y="506.0" />
+      <point x="-46.333333333333314" y="14.5" />
+    </edge>
+    <edge source="Logic.NewKI" target="Logic.Util">
+      <point x="22.636363636363626" y="-14.5" />
+      <point x="856.8411605370453" y="734.0" />
+      <point x="945.2047969006818" y="734.0" />
+      <point x="19.0" y="14.5" />
+    </edge>
+    <edge source="Logic.Grid2D" target="Logic.Util">
+      <point x="42.35294117647061" y="-14.5" />
+      <point x="579.302558590585" y="506.0" />
+      <point x="907.2047969006817" y="506.0" />
+      <point x="-19.0" y="14.5" />
+    </edge>
+    <edge source="Logic.NewKI" target="Logic.Character">
+      <point x="0.0" y="-14.5" />
+      <point x="834.2047969006817" y="188.0" />
+      <point x="433.1523744776837" y="188.0" />
+      <point x="51.53571428571428" y="14.5" />
+    </edge>
+    <edge source="Logic.NetGridHelper" target="Logic.Grid2D">
+      <point x="46.33333333333337" y="14.5" />
+      <point x="392.802836116368" y="456.0" />
+      <point x="510.4790291788203" y="456.0" />
+      <point x="-26.470588235294144" y="-14.5" />
+    </edge>
+    <edge source="Logic.GridController" target="Logic.ShotResult">
+      <point x="-51.099999999999966" y="-14.5" />
+      <point x="21.900000000000034" y="645.0" />
+      <point x="29.37826733482649" y="645.0" />
+      <point x="29.37826733482649" y="99.0" />
+      <point x="425.0452316205409" y="99.0" />
+      <point x="-50.571428571428555" y="14.5" />
+    </edge>
+    <edge source="Logic.NewKI" target="Logic.Ship">
+      <point x="-37.72727272727275" y="-14.5" />
+      <point x="796.4775241734089" y="754.0" />
+      <point x="156.5" y="754.0" />
+      <point x="156.5" y="496.0" />
+      <point x="207.11235992589178" y="496.0" />
+      <point x="-10.857142857142861" y="14.5" />
+    </edge>
+    <edge source="Logic.Grid2D" target="Logic.Water">
+      <point x="10.58823529411768" y="-14.5" />
+      <point x="547.5378527082321" y="446.0" />
+      <point x="615.0378527082321" y="446.0" />
+      <point x="615.0378527082321" y="337.0" />
+      <point x="605.2047969006817" y="337.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Logic.Grid2D" target="Logic.NetGridHelper">
+      <point x="-31.764705882352928" y="-14.5" />
+      <point x="505.18491153176154" y="466.0" />
+      <point x="346.4695027830346" y="466.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Logic.Grid2D" target="Logic.HarborShipData">
+      <point x="31.764705882352928" y="-14.5" />
+      <point x="568.7143232964675" y="486.0" />
+      <point x="792.7047969006817" y="486.0" />
+      <point x="792.7047969006817" y="337.0" />
+      <point x="794.4547969006817" y="337.0" />
+      <point x="54.75" y="14.5" />
+    </edge>
+    <edge source="Logic.NewKI" target="Logic.PossibleDirection">
+      <point x="37.72727272727275" y="-14.5" />
+      <point x="871.9320696279544" y="754.0" />
+      <point x="1068.7047969006817" y="754.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Logic.Character" target="Logic.ShotResult">
+      <point x="37.0" y="-14.5" />
+      <point x="418.61666019196946" y="119.0" />
+      <point x="458.75951733482657" y="119.0" />
+      <point x="-16.857142857142833" y="14.5" />
+    </edge>
+    <edge source="Logic.FoeGridShootObject" target="Logic.ShotResult">
+      <point x="58.00000000000006" y="-14.5" />
+      <point x="482.9477701178612" y="248.0" />
+      <point x="475.61666019196946" y="248.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Logic.NetGridHelper" target="Logic.FoeGridShootObject">
+      <point x="34.75" y="-14.5" />
+      <point x="381.2195027830346" y="337.0" />
+      <point x="390.1477701178611" y="337.0" />
+      <point x="-34.80000000000001" y="14.5" />
+    </edge>
+    <edge source="Logic.Grid2D" target="Logic.ShipHarbor">
+      <point x="26.470588235294144" y="-14.5" />
+      <point x="563.4202056494087" y="476.0" />
+      <point x="752.7047969006817" y="476.0" />
+      <point x="29.5" y="14.5" />
+    </edge>
+    <edge source="Logic.GridController" target="Logic.Grid2D">
+      <point x="51.10000000000001" y="-14.5" />
+      <point x="124.10000000000002" y="615.0" />
+      <point x="498.3781888426859" y="615.0" />
+      <point x="-38.571428571428555" y="14.5" />
+    </edge>
+    <edge source="Logic.Grid2D" target="Logic.Character">
+      <point x="-5.294117647058783" y="-14.5" />
+      <point x="531.6554997670557" y="416.0" />
+      <point x="527.7418877649201" y="416.0" />
+      <point x="527.7418877649201" y="228.0" />
+      <point x="401.438088763398" y="228.0" />
+      <point x="19.821428571428555" y="14.5" />
+    </edge>
+    <edge source="Logic.SaveManager" target="Logic.FoeGridShootObject">
+      <point x="7.8125" y="-14.5" />
+      <point x="366.4511204300935" y="595.0" />
+      <point x="438.6386204300935" y="595.0" />
+      <point x="438.6386204300935" y="337.0" />
+      <point x="424.9477701178612" y="337.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Logic.SaveManager" target="Logic.Rotation">
+      <point x="-54.6875" y="-14.5" />
+      <point x="303.9511204300935" y="605.0" />
+      <point x="169.46950278303467" y="605.0" />
+      <point x="169.46950278303467" y="89.0" />
+      <point x="323.8166601919694" y="89.0" />
+      <point x="-20.80000000000001" y="14.5" />
+    </edge>
+    <edge source="Logic.NetGridHelper" target="Logic.Character">
+      <point x="-34.75" y="-14.5" />
+      <point x="311.7195027830346" y="238.0" />
+      <point x="369.72380304911223" y="238.0" />
+      <point x="-11.892857142857167" y="14.5" />
+    </edge>
+    <edge source="Logic.ShipHarbor" target="Logic.HarborShipData">
+      <point x="39.33333333333337" y="-14.5" />
+      <point x="762.5381302340151" y="337.0" />
+      <point x="757.9547969006817" y="337.0" />
+      <point x="18.25" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7833890746934224" x="576.5" y="438.5" />
+  <SelectedNodes>
+    <node>Logic.SaveManager</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
