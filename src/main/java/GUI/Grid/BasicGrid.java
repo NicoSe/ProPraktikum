@@ -198,6 +198,7 @@ public class BasicGrid extends JPanel {
                             if(ch instanceof Water) {
                                 if(!ch.isAlive()) {
                                     g.drawImage(rocketNoneScaled, 0, 0, this);
+
                                 }
                             } else if(ch instanceof FoeGridShootObject) {
                                 //not shot on, dont paint anything.
@@ -210,6 +211,7 @@ public class BasicGrid extends JPanel {
                                     g.drawImage(rocketNoneScaled, 0, 0, this);
                                 } else if(fgso.getHitStatus() == 1 || fgso.getHitStatus() == 2) {
                                     g.drawImage(normalRocketScaled, 0, 0, this);
+
                                 }
                             }
                             else if(ch instanceof Ship) {
