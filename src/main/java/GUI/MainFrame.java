@@ -1982,6 +1982,7 @@ public class MainFrame {
                     gcF.processShotResult(answer);
                     if(answer == 2 && --foeAliveCount <= 0) {
                         SwingUtilities.invokeLater(() -> {
+                            Helpers.playSFX("/SFX/youwin.wav", 1);
                             JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
                             net.Close();
                             System.exit(0);
@@ -2005,6 +2006,7 @@ public class MainFrame {
                     });
                     if(selfGrid.getShipsAliveCount() <= 0) {
                         SwingUtilities.invokeLater(() -> {
+                            Helpers.playSFX("/SFX/youlooseDramatic.wav", 1);
                             JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
                             net.Close();
                             System.exit(0);
