@@ -4,6 +4,7 @@ import Network.Connector;
 
 import javax.swing.*;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 
@@ -82,9 +83,10 @@ public class NewKI
         grid = new Grid2D(bound);
         grid.generateRandom();
         grid.placeWaterOnEmptyFields();
-        enemyShipsAlive = grid.getShipCount();
+
         enemyGrid = new Grid2D(bound);
         enemyGrid.placeFgoOnEmptyFields();
+        enemyShipsAlive = grid.getShipCount();
         if (mode == KIMode.HARD)
         {
             setChessPattern();//TODO:find better placement?
@@ -110,6 +112,14 @@ public class NewKI
                     }
                     grid = saves[0];
                     enemyGrid = saves[1];
+                    enemyShipsAlive = enemyGrid.getShipCount();
+                    HashSet<Character> set = new HashSet<>();
+                    enemyGrid.forEachCharacter((x, y, ch) -> {
+                        if(ch instanceof Ship && set.add(ch)) {
+                            enemyShipsAlive--;
+                        }
+                        return null;
+                    });
                     shoot();
                     break;
                 case "confirmed":
