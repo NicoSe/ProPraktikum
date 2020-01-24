@@ -58,6 +58,7 @@ public class MainFrame {
     private JLabel lblTitle;
     private JLabel lblPlay;
     private JLabel lblSingle;
+    private JLabel lblMulti;
     private JLabel lblSize;
     private JSlider sldSizeSingle;
     private JSlider sldSizeHost;
@@ -110,6 +111,10 @@ public class MainFrame {
     private JLabel lblLoading;
     private MouseListener resizeFoeGridListener;
     private JComboBox<String> comboDifficulty;
+
+    private JLabel lblKivsKi;
+    private JLabel lblKiHost;
+    private JLabel lblKiJoin;
 
 
     private MainFrame mf;
@@ -326,8 +331,8 @@ public class MainFrame {
                 pnlButton.removeAll();
                 pnlButton.add(lblTitle);
                 pnlButton.add(lblSingle);
-                pnlButton.add(lblHost);
-                pnlButton.add(lblJoin);
+                pnlButton.add(lblMulti);
+                pnlButton.add(lblKivsKi);
                 pnlButton.add(lblReturn);
                 pnlButton.setVisible(true);
             }
@@ -579,13 +584,14 @@ public class MainFrame {
 
                     Helpers.playSFX("/SFX/firered_0017.wav", 1);
                     lblSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleBW.png"))));
+                    lblMulti.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/MultiplayerBW.png"))));
                     lblReturnToGameMode.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ReturnBW.png"))));
                     pnlButton.setVisible(false);
                     pnlButton.removeAll();
                     pnlButton.add(lblTitle);
                     pnlButton.add(lblSingle);
-                    pnlButton.add(lblHost);
-                    pnlButton.add(lblJoin);
+                    pnlButton.add(lblMulti);
+                    pnlButton.add(lblKivsKi);
                     pnlButton.add(lblReturn);
                     pnlButton.setVisible(true);
                     resetNetwork();
@@ -636,20 +642,6 @@ public class MainFrame {
         lblSingle.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                Helpers.playSFX("/SFX/SA2_142.wav", 1);
-                /*
-                pnlButton.setVisible(false);
-                pnlButton.removeAll();
-                pnlButton.add(lblTitle);
-                pnlButton.add(lblSize);
-                pnlButton.add(sldSizeSingle);
-                pnlButton.add(lblDifficulty);
-                pnlButton.add(comboDifficulty);
-                pnlButton.add(lblStartSingle);
-                pnlButton.add(lblReturnToGameMode);
-                pnlButton.setVisible(true);
-                */
-
 
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
                 pnlButton.setVisible(false);
@@ -712,6 +704,53 @@ public class MainFrame {
             public void mouseReleased(MouseEvent e){
                 try {
                     lblSingle.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SingleWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        ///Button that opens the Multiplayer options
+        lblMulti = new JLabel();
+        lblMulti.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/MultiplayerBW.png"))));
+        lblMulti.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblMulti.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                pnlButton.setVisible(false);
+                pnlButton.removeAll();
+                pnlButton.add(lblTitle);
+                pnlButton.add(lblHost);
+                pnlButton.add(lblJoin);
+                pnlButton.add(lblReturnToGameMode);
+                pnlButton.setVisible(true);
+
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblMulti.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/MultiplayerWB.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblMulti.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/MultiplayerBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblMulti.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/MultiplayerOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblMulti.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/MultiplayerWB.png"))));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -847,6 +886,138 @@ public class MainFrame {
             }
         });
 
+        ///KivsKi Button Opens the KivsKi game menu
+        lblKivsKi = new JLabel();
+        lblKivsKi.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KivskiBW.png"))));
+        lblKivsKi.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblKivsKi.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                try {
+                    Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                    pnlButton.setVisible(false);
+                    pnlButton.removeAll();
+                    pnlButton.add(lblTitle);
+                    pnlButton.add(lblKiHost);
+                    pnlButton.add(lblKiJoin);
+                    pnlButton.add(lblReturnToGameMode);
+                    pnlButton.setVisible(true);
+                    lblKivsKi.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KivskiBW.png"))));
+                } catch(IOException el){
+                    el.printStackTrace();
+                }
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblKivsKi.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KivskiWB.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblKivsKi.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KivskiBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblKivsKi.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KivskiOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblKivsKi.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/kivskiWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        ///Button to Host KI server
+        lblKiHost = new JLabel();
+        lblKiHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiHostBW.png"))));
+        lblKiHost.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblKiHost.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblKiHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiHostWB.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblKiHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiHostBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblKiHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiHostOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblKiHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiHostWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        ///button to join as KI
+        lblKiJoin = new JLabel();
+        lblKiJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiJoinBW.png"))));
+        lblKiJoin.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblKiJoin.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblKiJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiJoinWB.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblKiJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiJoinBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblKiJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiJoinOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblKiJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiJoinWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         ///Size Slider and label used to determine grid size on singleplayer
         lblSize =  new JLabel();
         lblSize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SizeBW.png")).getScaledInstance(400,100,Image.SCALE_SMOOTH)));
@@ -862,6 +1033,7 @@ public class MainFrame {
         sldSizeSingle.setPaintTicks(true);
         sldSizeSingle.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         sldSizeSingle.setForeground(Color.BLACK);
+
 
         //Size Slider Host UI used to determine grid size on HostGame
         sldSizeHost = new JSlider(5,30);
