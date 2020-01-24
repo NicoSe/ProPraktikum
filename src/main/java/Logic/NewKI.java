@@ -170,11 +170,12 @@ public class NewKI
                             break;
                         case 2:
                             enemyShipsAlive--;
+
                             if(checkWinCondition()) {
-                                SwingUtilities.invokeLater(() -> {
+                                /*SwingUtilities.invokeLater(() -> {
                                     JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
                                     System.exit(0);
-                                });
+                                });*/
                                 return;
                             }
 
