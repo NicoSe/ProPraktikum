@@ -90,13 +90,13 @@ Herstellern von Soundkarten finden Sie am Ende dieses Dokuments.
 
 EMPFOHLENE KONFIGURATION
 Windows 7/8/10 PC (32 oder 64 Bit)
-Prozessor: Quad-Core-Prozessor von Intel oder AMD
-4 GB RAM
-50 MB freier Festplattenspeicher
-DirectX 9.0c-kompatible NVIDIA oder AMD ATI-Grafikkarte mit 1 GB RAM
-(NVIDIA Ge Force GTX 260 oder besser; ATI Radeon 4890 oder besser).
+Prozessor: Octa-Core-Prozessor von Intel oder AMD
+1 TB RAM
+10 TB freier Festplattenspeicher
+DirectX 9.0c-kompatible NVIDIA oder AMD ATI-Grafikkarte mit 6 GB RAM
+(NVIDIA Ge Force RTX 2080ti oder besser; ATI Radeon 5900XT oder besser).
 DirectX-kompatible Soundkarte
-Internetzugang
+Glasfaser Internetzugang
 Java Version 1.8.0 oder höher
 
 MINIMALE KONFIGURATION
