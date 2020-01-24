@@ -20,7 +20,7 @@ public class Helpers {
         new Thread(() -> {
             try{
                 Clip clip = AudioSystem.getClip();
-                AudioInputStream inputStream = AudioSystem.getAudioInputStream(MainFrame.class.getResourceAsStream(filepath));
+                AudioInputStream inputStream = AudioSystem.getAudioInputStream(MainFrame.class.getResource(filepath));
                 clip.open(inputStream);
 
                 FloatControl volControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -40,7 +40,8 @@ public class Helpers {
                 else return;
                 clip.start();
             }catch(Exception e){
-                System.err.println(e.getMessage());
+                System.out.println("lol");
+                e.printStackTrace();
             }
         }).start();
     }

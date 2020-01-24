@@ -88,6 +88,7 @@ public class NewKI
 
         //check if connector is server, create grid and send size.
         if(this.s instanceof Server) {
+            this.s.connect();
             this.s.sendmsg(String.format("size %d", bounds));
         }
         handleData(this.s);

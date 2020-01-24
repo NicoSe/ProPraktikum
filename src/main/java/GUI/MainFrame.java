@@ -931,7 +931,7 @@ public class MainFrame {
             }
             public void mouseReleased(MouseEvent e){
                 try {
-                    lblKivsKi.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/kivskiWB.png"))));
+                    lblKivsKi.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KivskiWB.png"))));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -2038,13 +2038,58 @@ public class MainFrame {
     private void runMultiplayerServer(String save) {
         handleLoadEvent(save, false);
         resetNetwork();
-        new Thread(() -> {
+        netThread = new Thread(() -> {
             net = new Server();
             net.connect();
 
             net.sendmsg(String.format("load %s", save));
             handleData(net);
-        }).start();
+        });
+        netThread.start();
+    }
+
+    private void runKIServer(int bound) {
+        setTurn(false);
+        resetNetwork();
+
+        kiThread = new Thread(() -> {
+            ki = new NewKI(new Server(), bound, comboDifficulty.getSelectedIndex());
+        });
+        kiThread.start();
+    }
+
+    /*        resetNetwork();
+        handleLoadEvent(save, false);
+
+        netThread = new Thread(() -> {
+            net = new Server();
+            net.connect();
+
+            net.sendmsg(String.format("load %s", save));
+            handleData(net);
+        });
+        netThread.start();
+
+        if(ki != null) {
+            ki.close();
+            ki = null;
+        }
+
+        kiThread = new Thread(() -> {
+            ki = new NewKI(new Client("localhost"), comboDifficulty.getSelectedIndex());
+        });
+        kiThread.start();
+
+     */
+
+    private void runKIClient(String host) {
+        setTurn(false);
+        resetNetwork();
+
+        kiThread = new Thread(() -> {
+            ki = new NewKI(new Client(host), comboDifficulty.getSelectedIndex());
+        });
+        kiThread.start();
     }
 
     private void runMultiplayerServer(int bound) {
