@@ -1,6 +1,7 @@
 package Logic;
 
 import Network.Connector;
+import Network.Server;
 
 import javax.swing.*;
 import java.util.Collections;
@@ -70,8 +71,25 @@ public class NewKI
             this.mode = KIMode.HARD;
         }
 
-        //check if connector is server, create grid and send size.
+        handleData(this.s);
+    }
 
+    public NewKI(Connector s, int bounds, int mode)
+    {
+        this.s = s;
+
+        if (mode == 0) {
+            this.mode = KIMode.STUPID;
+        } else if (mode == 1){
+            this.mode = KIMode.NORMAL;
+        } else {
+            this.mode = KIMode.HARD;
+        }
+
+        //check if connector is server, create grid and send size.
+        if(this.s instanceof Server) {
+            this.s.sendmsg(String.format("size %d", bounds));
+        }
         handleData(this.s);
     }
 
