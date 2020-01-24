@@ -25,6 +25,7 @@ public class MainFrame {
     ///net
     Connector net;
     Connector foe;
+    Thread netThread;
 
     Grid2D selfGrid;
     Grid2D foeGrid;
@@ -1005,7 +1006,12 @@ public class MainFrame {
                     net.Close();
 
                     try {
-                        kiThread.join();
+                        if(kiThread != null) {
+                            kiThread.join();
+                        }
+                        if(netThread != null) {
+                            netThread.join();
+                        }
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
@@ -1705,15 +1711,16 @@ public class MainFrame {
 
     private void runSingleplayer(String save) {
         resetNetwork();
-        handleLoadEvent(save);
+        handleLoadEvent(save, false);
 
-        new Thread(() -> {
+        netThread = new Thread(() -> {
             net = new Server();
             net.connect();
 
             net.sendmsg(String.format("load %s", save));
             handleData(net);
-        }).start();
+        });
+        netThread.start();
 
         if(ki != null) {
             ki.close();
@@ -1728,13 +1735,14 @@ public class MainFrame {
 
     private void runSingleplayer(int bound) {
         resetNetwork();
-        new Thread(() -> {
+        netThread = new Thread(() -> {
             net = new Server();
             net.connect();
 
             net.sendmsg(String.format("size %d", bound));
             handleData(net);
-        }).start();
+        });
+        netThread.start();
 
         if(ki != null) {
             ki.close();
@@ -1770,11 +1778,13 @@ public class MainFrame {
             String[] cmd = res.split(" ");
             switch(cmd[0]) {
                 case "load":
-                    handleLoadEvent(cmd[1]);
+                    handleLoadEvent(cmd[1], true);
                     break;
                 case "save":
                     SaveManager.save(String.format("%s", cmd[1]), selfGrid, foeGrid);
-                    break;
+                    net.Close();
+                    System.exit(0);
+                    return;
                 case "confirmed":
                     SwingUtilities.invokeLater(() -> setTurn(true));
                     break;
@@ -1845,7 +1855,7 @@ public class MainFrame {
     }
 
     private void runMultiplayerServer(String save) {
-        setTurn(false);
+        handleLoadEvent(save, false);
         resetNetwork();
         new Thread(() -> {
             net = new Server();
@@ -1946,7 +1956,7 @@ public class MainFrame {
         pnlDummy.repaint();
     }
 
-    private void handleLoadEvent(String save) {
+    private void handleLoadEvent(String save, boolean turnState) {
         backgroundPanel.removeAll();
 
         Grid2D[] grids = SaveManager.load(save);
@@ -1964,7 +1974,7 @@ public class MainFrame {
 
         SwingUtilities.invokeLater(() -> {
             runAfterGridInit();
-            setTurn(true);
+            setTurn(turnState);
             onGameReady();
         });
     }
