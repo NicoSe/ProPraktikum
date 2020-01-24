@@ -1795,7 +1795,7 @@ public class MainFrame {
                     if(answer == 0) {
                         c.sendmsg("pass");
                         SwingUtilities.invokeLater(() -> {
-                            setTurn(true);
+                            setTurn(false);
                             refreshFoeGrid();
                         });
                     }
