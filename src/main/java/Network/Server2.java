@@ -197,6 +197,7 @@ public class Server2 implements Connector{
                 dis.close();
             }
             if(dos != null) {
+                dos.flush();
                 dos.close();
             }
 

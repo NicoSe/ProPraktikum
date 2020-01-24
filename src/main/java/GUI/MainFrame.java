@@ -95,6 +95,9 @@ public class MainFrame {
     private JLabel lblRandomize;
     private JLabel lblPlaceReturn;
 
+    private JLabel lblSave;
+    private JLabel lblTurn;
+
     private JLabel pnlFoeGrid;
     private boolean foeBigState = false;
     private JLabel lblLoading;
@@ -106,6 +109,20 @@ public class MainFrame {
     public MainFrame() throws IOException {
         Components();
         this.mf = this;
+    }
+
+    private void setReadyPanelStatus(boolean isOnStart) {
+        pnlReady.removeAll();
+        if(isOnStart) {
+            pnlReady.add(lblPlaceReturn);
+            pnlReady.add(lblRandomize);
+            pnlReady.add(lblReady);
+        } else {
+            pnlReady.add(lblSave);
+        }
+        pnlReady.add(lblTurn);
+        pnlReady.revalidate();
+        pnlReady.repaint();
     }
 
     ///Komponenten
@@ -227,7 +244,7 @@ public class MainFrame {
 
         ///panel with Ready,Return and Randomize Button on grid
         pnlReady = new JPanel(new FlowLayout());
-        pnlReady.setPreferredSize(new Dimension(100,220));
+        pnlReady.setPreferredSize(new Dimension(64,64*5));
         pnlReady.setMaximumSize(new Dimension(jf.getWidth(),jf.getHeight()/7));
         pnlReady.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
         pnlReady.setBackground(Color.GREEN);
@@ -239,9 +256,12 @@ public class MainFrame {
         lblRandomize = new JLabel();
         lblRandomize.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/RandomBW.png"))));
 
-        pnlReady.add(lblPlaceReturn);
-        pnlReady.add(lblRandomize);
-        pnlReady.add(lblReady);
+        lblSave = new JLabel();
+        lblSave.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SaveBW.png"))));
+        lblTurn = new JLabel();
+        lblTurn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/EnemyTurn.png"))));
+
+        setReadyPanelStatus(true);
 
         ///Panel that Holds Enemy Grid
         pnlFoeGrid = new JLabel();
@@ -963,6 +983,50 @@ public class MainFrame {
             }
         });
 
+        ///Button that places the ships randomly on the grid
+        lblSave.addMouseListener(new MouseAdapter() {
+            ;
+            public void mouseClicked (MouseEvent e){
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                if(net.turn()) {
+                    long savetime = System.currentTimeMillis();
+                    net.sendmsg(String.format("save %d", savetime));
+                    Save s = new Save(String.format("%d", savetime), selfGrid, foeGrid);
+                    net.Close();
+                }
+            }
+
+            public void mouseEntered (MouseEvent e){
+                try {
+                    lblSave.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SaveWB.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited (MouseEvent e){
+                try {
+                    lblSave.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SaveBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed (MouseEvent e){
+                try {
+                    lblSave.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SaveOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased (MouseEvent e){
+                try {
+                    lblSave.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/SaveWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         /// button that confirms that you´re done placing your ships and ready to play
         lblReady.addMouseListener(new MouseAdapter() {
             @Override
@@ -970,6 +1034,7 @@ public class MainFrame {
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
                 if(net.turn()) {
                     gcS.onFinalizePlace();
+                    setTurn(false);
                     net.sendmsg("confirmed");
                     gcS.setInteractionState(GridState.FORBID);
                     pnlFoeGrid.add(pnlGrid1);
@@ -1016,6 +1081,8 @@ public class MainFrame {
 
 
                     pnlDummy.add(pnlGrid2);
+                    setReadyPanelStatus(false);
+                    pnlDummy.add(pnlReady);
                     backgroundPanel.add(pnlFoeGrid, BorderLayout.SOUTH);
 
                     //pnlDummy.add(pnlFoeGrid);
@@ -1287,6 +1354,7 @@ public class MainFrame {
                 pnlDummy.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
                 pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
                 pnlDummy.add(pnlGrid1);
+                setReadyPanelStatus(true);
                 pnlDummy.add(pnlReady);
                 pnlReady.setVisible(true);
                 pnlDummy.setVisible(true);
@@ -1414,6 +1482,7 @@ public class MainFrame {
                 pnlDummy.setOpaque(false);
                 pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
                 pnlDummy.add(pnlGrid1);
+                setReadyPanelStatus(true);
                 pnlDummy.add(pnlReady);
                 pnlReady.setVisible(true);
                 pnlDummy.setVisible(true);
@@ -1724,6 +1793,18 @@ public class MainFrame {
         client.Close();
     }
 
+    private void setTurn(boolean isSelfTurn) {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                lblTurn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource(String.format("/Sprites/%s", isSelfTurn ? "YourTurn.png" : "EnemyTurn.png")))));
+                lblTurn.revalidate();
+                lblTurn.repaint();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     private void handleData(Connector c) {
         while (true) {
             if(!c.isConnected()) {
@@ -1738,9 +1819,11 @@ public class MainFrame {
                     Save s = new Save(String.format("%s", cmd[1]), selfGrid, foeGrid);
                     break;
                 case "confirmed":
+                    setTurn(true);
                     break;
                 case "size":
                     this.handleSizeEvent(Integer.parseInt(cmd[1]));
+                    setTurn(true);
                     refreshFoeGrid();
                     break;
                 case "pass":
@@ -1757,12 +1840,15 @@ public class MainFrame {
                     }
                     if(answer == 0) {
                         c.sendmsg("pass");
+                        setTurn(false);
                         refreshFoeGrid();
                     }
                     break;
                 case "shot":
                     ShotResult result = selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
                     c.sendmsg(String.format("answer %d", result.ordinal()));
+                    //its the players turn, when the result says he hit nothing.
+                    setTurn(result.ordinal() == 0);
                     refreshFoeGrid();
                     if(selfGrid.getShipsAliveCount() <= 0) {
                         SwingUtilities.invokeLater(() -> {
@@ -1799,6 +1885,7 @@ public class MainFrame {
     }
 
     private void runMultiplayerServer(int bound) {
+        setTurn(false);
         resetNetwork();
         new Thread(() -> {
             net = new Server2();
@@ -1844,6 +1931,7 @@ public class MainFrame {
         pnlDummy.setOpaque(false);
         pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
         pnlDummy.add(pnlGrid1);
+        setReadyPanelStatus(true);
         pnlDummy.add(pnlReady);
         try {
             backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));

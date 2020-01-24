@@ -59,7 +59,6 @@ public class Load {
         }
     }
 
-
     public static Grid2D create_owngrid(String[] owngrid, int bound) {
         Grid2D own_grid = new Grid2D(bound);
         try {
