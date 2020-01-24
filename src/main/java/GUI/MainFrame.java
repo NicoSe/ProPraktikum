@@ -21,7 +21,7 @@ import Misc.GridState;
 import Network.*;
 
 public class MainFrame {
-
+    private JLabel lblComrade;
     ///net
     Connector net;
     Connector foe;
@@ -311,6 +311,10 @@ public class MainFrame {
         lblTitle.setIcon(new ImageIcon(getClass().getResource("/Sprites/Title_v11.gif")));
         lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         pnlButton.add(lblTitle);
+
+        //soviet
+        lblComrade = new JLabel();
+        lblComrade.setIcon(new ImageIcon(getClass().getResource("/Sprites/sovietflag.gif")));
 
         //Loading animation
         lblLoading =  new JLabel();
@@ -1982,6 +1986,9 @@ public class MainFrame {
                     if(answer == 2 && --foeAliveCount <= 0) {
                         SwingUtilities.invokeLater(() -> {
                             Helpers.playSFX("/SFX/youwincomrad.wav", 1);
+                            pnlFoeGrid.setVisible(false);
+                            pnlFoeGrid.add(lblComrade);
+                            pnlFoeGrid.setVisible(true);
                             JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
                             net.Close();
                             System.exit(0);
