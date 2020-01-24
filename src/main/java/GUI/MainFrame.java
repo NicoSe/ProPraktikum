@@ -1549,7 +1549,7 @@ public class MainFrame {
         lblShowIP.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         lblShowIP.setText("IP ADDRESS: "+ inetAddress.getHostAddress());
         lblShowIP.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblShowIP.setBorder(BorderFactory.createEmptyBorder(50,0,5,jf.getWidth()/2));
+        lblShowIP.setBorder(BorderFactory.createEmptyBorder(0,0,5,jf.getWidth()/2));
 
         ///Load List Host
         lstLoad = new JList();
