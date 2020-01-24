@@ -56,7 +56,7 @@ public class Konsolenanwendung {
                     C_analyse(C_socket.listenToNetwork());
                 } else if (split[0].equals("save")) {
                     String savename = String.valueOf(System.currentTimeMillis());
-                    new Save(savename, a, b);
+                    SaveManager.save(savename, a, b);
                     C_socket.sendmsg(split[0] + " " + savename);
                     C_analyse(C_socket.listenToNetwork());
                 } else if (split[0].equals("load")) {
@@ -119,7 +119,7 @@ public class Konsolenanwendung {
                     S_analyse(S_socket.listenToNetwork());
                 } else if (split[0].equals("save")) {
                     String savename = String.valueOf(System.currentTimeMillis());
-                    new Save(savename, a, b);
+                    SaveManager.save(savename, a, b);
                     S_socket.sendmsg(split[0] + " " + savename);
                     S_analyse(S_socket.listenToNetwork());
                 } else if (split[0].equals("load")) {
@@ -175,11 +175,11 @@ public class Konsolenanwendung {
             case "pass":
                 break;
             case "save":
-                new Save(words[1], a, b);
+                SaveManager.save(words[1], a, b);
                 S_socket.Close();
                 break;
             case "load":
-                Load.load(words[1]);
+                SaveManager.load(words[1]);
                 break;
         }
     }
@@ -227,7 +227,7 @@ public class Konsolenanwendung {
             case "pass":
                 break;
             case "save":
-                new Save(words[1], a, b);
+                SaveManager.save(words[1], a, b);
                 C_socket.Close();
                 break;
             case "load":

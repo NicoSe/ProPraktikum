@@ -252,16 +252,11 @@ public class GridController {
     }
 
     public void onFinalizePlace() {
-        for(int i = 0; i < model.getBound(); ++i) {
-            for(int j = 0; j < model.getBound(); ++j) {
-                Character c = model.put(i, j, new Water(false));
-                if(c != null) {
-                    try {
-                        c2c.put(view.addPiece(c.getImage(), c.getX(), c.getY(), c.getSize(), c.isVertical()), c);
-                    } catch(IOException e) {
-
-                    }
-                }
+        ArrayList<Character> waterFields = model.placeWaterOnEmptyFields();
+        for(Character c : waterFields) {
+            try {
+                c2c.put(view.addPiece(c.getImage(), c.getX(), c.getY(), c.getSize(), c.isVertical()), c);
+            } catch(IOException e) {
             }
         }
     }

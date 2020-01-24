@@ -81,9 +81,10 @@ public class NewKI
     private void init(int bound) {
         grid = new Grid2D(bound);
         grid.generateRandom();
+        grid.placeWaterOnEmptyFields();
         enemyShipsAlive = grid.getShipCount();
         enemyGrid = new Grid2D(bound);
-        enemyGrid.placeFGOeverywhere();
+        enemyGrid.placeFgoOnEmptyFields();
         if (mode == KIMode.HARD)
         {
             setChessPattern();//TODO:find better placement?
@@ -98,6 +99,19 @@ public class NewKI
             String res = c.listenToNetwork();
             String[] cmd = res.split(" ");
             switch(cmd[0]) {
+                case "save":
+                    SaveManager.save(String.format("ai_%s", cmd[1]), grid, enemyGrid);
+                    return;
+                case "load":
+                    Grid2D[] saves = SaveManager.load(String.format("ai_%s", cmd[1]));
+                    if(saves == null) {
+                        System.out.println("couldnt load save!");
+                        return;
+                    }
+                    grid = saves[0];
+                    enemyGrid = saves[1];
+                    shoot();
+                    break;
                 case "confirmed":
                 case "pass":
                     shoot();

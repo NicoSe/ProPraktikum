@@ -66,7 +66,7 @@ public class Grid2D {
         int timeout = 0;
         clear();
 
-        shipsAlive = harbor.getTotalShipCount(bound);
+        shipsAlive = 0;
         List<HarborShipData> ships = harbor.getCopyOfHarborData(bound);
         int placeCount = harbor.getTotalShipCount(bound);
         while(placeCount > 0) {
@@ -179,6 +179,10 @@ public class Grid2D {
     }
 
     public Character put(int x, int y, Character inst) {
+        return put(x,y,inst,false);
+    }
+
+    public Character put(int x, int y, Character inst, boolean force) {
         int size = inst.getSize();
         int height = inst.isVertical() ? size : 1;
         int width = inst.isVertical() ? 1 : size;
@@ -189,7 +193,7 @@ public class Grid2D {
         }
 
         /// make sure there is no collision between ships
-        if(!(inst instanceof Water) && !(inst instanceof FoeGridShootObject)) {
+        if(!force && !(inst instanceof Water) && !(inst instanceof FoeGridShootObject)) {
             if (!isValidAt(x, y, width, height)) {
                 return null;
             }
@@ -201,6 +205,11 @@ public class Grid2D {
         }
 
         inst.setPosition(x, y);
+
+        if(inst instanceof Ship) {
+            shipsAlive++;
+        }
+
         return inst;
     }
 
@@ -350,16 +359,21 @@ public class Grid2D {
     }
 
     ///Place water everywhere after placing your ships
-    public void placeWatereverywhere(){
-        for(int i=0;i<bound;i++){
-            for(int j=0;j<bound;j++){
-                put(i,j,new Water(false));
+    public ArrayList<Character> placeWaterOnEmptyFields(){
+        ArrayList<Character> ret = new ArrayList<Character>();
+        for(int i = 0; i < getBound(); ++i) {
+            for(int j = 0; j < getBound(); ++j) {
+                Character c = put(i, j, new Water(false));
+                if(c != null) {
+                    ret.add(c);
+                }
             }
         }
+        return ret;
     }
 
     ///Place FoeGridObject everywhere after placing your ships
-    public void placeFGOeverywhere(){
+    public void placeFgoOnEmptyFields(){
         for(int i=0;i<bound;i++){
             for(int j=0;j<bound;j++){
                 put(i,j,new FoeGridShootObject(-1));

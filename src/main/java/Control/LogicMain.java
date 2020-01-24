@@ -1,12 +1,10 @@
 package Control;
 
 import Logic.Grid2D;
-import Logic.Ship;
-import Logic.ShipHarbor;
 import Logic.ShotResult;
-import Network.Client2;
+import Network.Client;
 import Network.Connector;
-import Network.Server2;
+import Network.Server;
 
 import java.util.Scanner;
 
@@ -37,7 +35,7 @@ public class LogicMain {
             }
         }
 
-        Connector con = isServer ? new Server2() : new Client2("127.0.0.1");
+        Connector con = isServer ? new Server() : new Client("127.0.0.1");
 
         while(s.hasNextLine()) {
             try {

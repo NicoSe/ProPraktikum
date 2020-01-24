@@ -25,8 +25,8 @@ public class Main {
         Character c3 = new Ship(4);
         own_grid.put(4, 0, c3);
         ///System.out.println(own_grid);
-        own_grid.placeWatereverywhere();
-        foe_grid.placeFGOeverywhere();
+        own_grid.placeWaterOnEmptyFields();
+        foe_grid.placeFgoOnEmptyFields();
 
 
         ///new Save("270652385276",own_grid,foe_grid);
