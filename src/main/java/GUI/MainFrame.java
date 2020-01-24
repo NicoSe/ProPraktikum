@@ -370,6 +370,7 @@ public class MainFrame {
             }
         });
 
+
         ///Options Button moves to option selection
         lblOptions = new JLabel();
         lblOptions.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/OptionsBW.png"))));
