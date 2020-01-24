@@ -1327,6 +1327,7 @@ public class MainFrame {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+                /*
                 if(OptionsHandler.getFullscreenMode()){
                     jf.setSize(new Dimension(1981,1080));
                     jf.setSize(new Dimension(1980,1080));
@@ -1334,6 +1335,8 @@ public class MainFrame {
                     jf.setSize(new Dimension(1025,851));
                     jf.setSize(new Dimension(1024,850));
                 }
+
+                 */
                 jf.revalidate();
                 jf.repaint();
             }
@@ -1455,6 +1458,7 @@ public class MainFrame {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+                /*
                 if(OptionsHandler.getFullscreenMode()){
                     jf.setSize(new Dimension(1981,1080));
                     jf.setSize(new Dimension(1980,1080));
@@ -1462,9 +1466,10 @@ public class MainFrame {
                     jf.setSize(new Dimension(1025,851));
                     jf.setSize(new Dimension(1024,850));
                 }
+
+                 */
                 jf.revalidate();
                 jf.repaint();
-
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -1939,7 +1944,6 @@ public class MainFrame {
         gcF.setInteractionState(GridState.SHOOT);
         pnlDummy.revalidate();
         pnlDummy.repaint();
-        jf.pack();
     }
 
     private void handleLoadEvent(String save) {
@@ -1969,8 +1973,8 @@ public class MainFrame {
         backgroundPanel.removeAll();
         gcS = new GridController(selfGrid, null, pnlGrid1);
         gcS.init(GridState.PLACE);
-        //pnlGrid1.setOpaque(false);
-        //pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        pnlGrid1.setOpaque(false);
+        pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         gcF = new GridController(foeGrid, net, pnlGrid2);
         gcF.init(GridState.FORBID);
@@ -1990,6 +1994,7 @@ public class MainFrame {
             ex.printStackTrace();
         }
 
+        /*
         if(OptionsHandler.getFullscreenMode()){
             jf.setSize(new Dimension(1981,1080));
             jf.setSize(new Dimension(1980,1080));
@@ -1997,6 +2002,10 @@ public class MainFrame {
             jf.setSize(new Dimension(1025,851));
             jf.setSize(new Dimension(1024,850));
         }
+
+         */
+        jf.revalidate();
+        jf.repaint();
     }
 
     private void runKIvsKI() {
