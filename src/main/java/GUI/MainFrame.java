@@ -1982,7 +1982,7 @@ public class MainFrame {
                     gcF.processShotResult(answer);
                     if(answer == 2 && --foeAliveCount <= 0) {
                         SwingUtilities.invokeLater(() -> {
-                            Helpers.playSFX("/SFX/youwin.wav", 1);
+                            Helpers.playSFX("/SFX/youwincomrad.wav", 1);
                             JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
                             net.Close();
                             System.exit(0);
