@@ -202,7 +202,7 @@ public class GridController {
                     s.setRotation((markedPos.getLast()[0] - markedPos.getFirst()[0]) == 0 ? Rotation.VERTICAL : Rotation.HORIZONTAL);
                     model.markSurrounding(s.getX(), s.getY());
                 }
-                Helpers.playSFX("/SFX/shipSunk.wav", 1);
+                Helpers.playSFX("/SFX/shipSunk2.wav", 1);
                 break;
         }
 
