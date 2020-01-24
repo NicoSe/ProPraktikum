@@ -1033,6 +1033,12 @@ public class MainFrame {
         sldSizeSingle.setPaintTicks(true);
         sldSizeSingle.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
         sldSizeSingle.setForeground(Color.BLACK);
+        sldSizeSingle.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+
+            }
+        });
 
 
         //Size Slider Host UI used to determine grid size on HostGame
@@ -1373,6 +1379,7 @@ public class MainFrame {
             public void stateChanged(ChangeEvent e) {
                 OptionsHandler.changeSFXVolume(sldSFXSlider.getValue());
             }
+
         });
 
         ///IPAdress Label and Text Field
