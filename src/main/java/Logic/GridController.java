@@ -3,6 +3,7 @@ package Logic;
 import GUI.Grid.BasicGrid;
 import GUI.Grid.PlacementMEventHandler;
 import GUI.Grid.ShootMEventHandler;
+import GUI.Helpers;
 import GUI.ScaleHelper;
 import Misc.GridState;
 import Network.Connector;
@@ -181,9 +182,11 @@ public class GridController {
         switch (r) {
             case NONE:
                 c.shoot(0); // 0 -> wasser
+                Helpers.playSFX("/SFX/firered_00E2.wav", 1);
                 break;
             case HIT:
                 c.shoot(1); // 1 -> ship
+                Helpers.playSFX("/SFX/firered_00CF.wav", 1);
                 break;
             case SUNK:
                 c.shoot(2); // 2 -> sunk
@@ -199,6 +202,7 @@ public class GridController {
                     s.setRotation((markedPos.getLast()[0] - markedPos.getFirst()[0]) == 0 ? Rotation.VERTICAL : Rotation.HORIZONTAL);
                     model.markSurrounding(s.getX(), s.getY());
                 }
+                Helpers.playSFX("/SFX/shipSunk2.wav", 1);
                 break;
         }
 
