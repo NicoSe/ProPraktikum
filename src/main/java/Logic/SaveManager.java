@@ -74,7 +74,7 @@ public class SaveManager {
     public static Grid2D create_owngrid(String[] owngrid, int bound) {
         Grid2D own_grid = new Grid2D(bound);
         try {
-            boolean[] ids = new boolean[64];
+            boolean[] ids = new boolean[bound*bound];
 
             //Grid2D own_grid = new Grid2D(bound);
             Ship.resetCounter();
@@ -118,6 +118,7 @@ public class SaveManager {
                 currentRow++;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
         return own_grid;
@@ -125,7 +126,7 @@ public class SaveManager {
 
     public static Grid2D create_foegrid(String[] foegrid, int bound) {
         Grid2D foe_grid = new Grid2D(bound);
-        boolean[] ids = new boolean[64];
+        boolean[] ids = new boolean[bound*bound];
         try {
             int currentRow = 0;
             while (currentRow < foegrid.length) {                                   ///Schleife über jede Zeile der Datei
