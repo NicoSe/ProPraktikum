@@ -61,8 +61,7 @@ http://www.nvidia.com (International)		http://www.ati.com (International)
 2.2. Installation der Soundtreiber
 
 Wenn Sie Sound-Probleme feststellen sollten, dann installieren Sie bitte die
-aktuellsten verfügbaren Treiber für Ihre Soundkarte. Links zu den bekanntesten
-Herstellern von Soundkarten finden Sie am Ende dieses Dokuments.
+aktuellsten verfügbaren Treiber für Ihre Soundkarte.
 
 --------------------------------------------------------------------------------
 2.3. Bugs und Kommentare

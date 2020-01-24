@@ -147,7 +147,6 @@ public class MainFrame {
         jf.setLocationRelativeTo(null);
         jf.setVisible(true);
         jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //jf.setLayout(new BorderLayout());
 
         if (OptionsHandler.getFullscreenMode()){
             jf.setExtendedState(JFrame.MAXIMIZED_BOTH);

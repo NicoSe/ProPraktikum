@@ -11,8 +11,8 @@ public class OptionsHandler {
         BufferedReader in = null;
         File file = new File("./settings.txt");
         if (!file.exists() || !file.canRead()) {
-            musicVolume = 40;
-            SFXVolume = 40;
+            musicVolume = 100;
+            SFXVolume = 100;
             fullscreenMode = false;
             saveSettings();
             return;
