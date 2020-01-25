@@ -1,6 +1,6 @@
 Music Value:
-100
+62
 SFX Value:
-100
+60
 Fullscreen:
 false

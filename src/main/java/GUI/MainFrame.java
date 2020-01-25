@@ -117,7 +117,9 @@ public class MainFrame {
 
     private JLabel lblKivsKi;
     private JLabel lblKiHost;
+    private JLabel lblKiHostGame;
     private JLabel lblKiJoin;
+    private JLabel lblKiConnect;
 
 
     private MainFrame mf;
@@ -956,6 +958,23 @@ public class MainFrame {
             @Override
             public void mouseClicked(MouseEvent e){
 
+                pnlButton.setVisible(false);
+                pnlButton.removeAll();
+                pnlButton.add(lblTitle);
+                pnlButton.add(lblSize);
+                pnlButton.add(sldSizeSingle);
+                pnlButton.add(lblDifficulty);
+                pnlButton.add(comboDifficulty);
+                pnlButton.add(lblKiHostGame);
+                pnlButton.add(lblReturnToGameMode);
+                pnlButton.add(lblShowIP);
+                pnlButton.setVisible(true);
+                try {
+                    lblKiHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiHostBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -988,6 +1007,47 @@ public class MainFrame {
             }
         });
 
+        ///button to host a game as KI
+        lblKiHostGame = new JLabel();
+        lblKiHostGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+        lblKiHostGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblKiHostGame.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
+
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblKiHostGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblKiHostGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblKiHostGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblKiHostGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/StartGameWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         ///button to join as KI
         lblKiJoin = new JLabel();
         lblKiJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiJoinBW.png"))));
@@ -995,7 +1055,20 @@ public class MainFrame {
         lblKiJoin.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-
+                try {
+                    Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                    pnlButton.setVisible(false);
+                    pnlButton.removeAll();
+                    pnlButton.add(lblTitle);
+                    pnlButton.add(lblIPAdress);
+                    pnlButton.add(txfIPAdress);
+                    pnlButton.add(lblKiConnect);
+                    pnlButton.add(lblReturnToGameMode);
+                    pnlButton.setVisible(true);
+                    lblKiJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiJoinBW.png"))));
+                } catch(IOException el){
+                    el.printStackTrace();
+                }
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -1022,6 +1095,46 @@ public class MainFrame {
             public void mouseReleased(MouseEvent e){
                 try {
                     lblKiJoin.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiJoinWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        ///button to connect to a Server as KI
+        lblKiConnect = new JLabel();
+        lblKiConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectBW.png"))));
+        lblKiConnect.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblKiConnect.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblKiConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectWB.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblKiConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblKiConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblKiConnect.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ConnectWB.png"))));
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
