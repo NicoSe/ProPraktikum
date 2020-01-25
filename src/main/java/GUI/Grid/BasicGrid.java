@@ -1,7 +1,6 @@
 package GUI.Grid;
 
 import GUI.ImageHelper;
-import GUI.ScaleHelper;
 import Logic.*;
 import Logic.Character;
 import Misc.GridState;
@@ -122,9 +121,9 @@ public class BasicGrid extends JPanel {
     private Rectangle highlightedCell;
     private GridController controller = null;
     BufferedImage rocketNone;
-    BufferedImage normalRocket;
+    BufferedImage rocketNormal;
     BufferedImage rocketNoneScaled;
-    BufferedImage normalRocketScaled;
+    BufferedImage rocketNormalScaled;
 
     public BasicGrid(int bound, GridState state) {
         setLayout(new CustomLayoutManager(bound));
@@ -144,9 +143,9 @@ public class BasicGrid extends JPanel {
 
         try {
             rocketNone = ImageIO.read(getClass().getResource("/Sprites/RocketMiss2.png"));
-            normalRocket = ImageIO.read(getClass().getResource("/Sprites/RocketHit2.png"));
+            rocketNormal = ImageIO.read(getClass().getResource("/Sprites/RocketHit2.png"));
             rocketNoneScaled = rocketNone;
-            normalRocketScaled = normalRocket;
+            rocketNormalScaled = rocketNormal;
 
             Image ocean = ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png"));
             for(int i = 0; i < bound; ++i) {
@@ -210,7 +209,7 @@ public class BasicGrid extends JPanel {
                                 if(fgso.getHitStatus() == 0) {
                                     g.drawImage(rocketNoneScaled, 0, 0, this);
                                 } else if(fgso.getHitStatus() == 1 || fgso.getHitStatus() == 2) {
-                                    g.drawImage(normalRocketScaled, 0, 0, this);
+                                    g.drawImage(rocketNormalScaled, 0, 0, this);
 
                                 }
                             }
@@ -221,7 +220,7 @@ public class BasicGrid extends JPanel {
                                     if(hitbox[i]) {
                                         continue;
                                     }
-                                    g.drawImage(normalRocketScaled, !s.isVertical() ? i*getScaledTileSize() : 0, s.isVertical() ? i*getScaledTileSize() : 0, this);
+                                    g.drawImage(rocketNormalScaled, !s.isVertical() ? i*getScaledTileSize() : 0, s.isVertical() ? i*getScaledTileSize() : 0, this);
                                 }
                             }
                         }
@@ -254,7 +253,7 @@ public class BasicGrid extends JPanel {
             if (getParent() != null) {
                 bgImg = ImageHelper.scale(baseImg, currentSize, currentSize);
                 rocketNoneScaled = ImageHelper.scale(rocketNone, tileSize, tileSize);
-                normalRocketScaled = ImageHelper.scale(normalRocket, tileSize, tileSize);
+                rocketNormalScaled = ImageHelper.scale(rocketNormal, tileSize, tileSize);
             }
             this.setPreferredSize(new Dimension(currentSize, currentSize));
             scaledSize = currentSize;
