@@ -64,9 +64,7 @@ public class MainFrame {
     private JLabel lblMulti;
     private JLabel lblSize;
     private JSlider sldSizeSingle;
-    private JSlider sldSizeHost;
     private JLabel lblDifficulty;
-    private JLabel lblStartSingle;
     private JLabel lblHost;
     private JList lstLoad;
     private JList lstSingleLoad;
@@ -1062,6 +1060,7 @@ public class MainFrame {
                     pnlButton.add(lblTitle);
                     pnlButton.add(lblIPAdress);
                     pnlButton.add(txfIPAdress);
+                    pnlButton.add(comboDifficulty);
                     pnlButton.add(lblKiConnect);
                     pnlButton.add(lblReturnToGameMode);
                     pnlButton.setVisible(true);
@@ -1160,32 +1159,6 @@ public class MainFrame {
             @Override
             public void stateChanged(ChangeEvent e) {
 
-            }
-        });
-
-
-        //Size Slider Host UI used to determine grid size on HostGame
-        sldSizeHost = new JSlider(5,30);
-        sldSizeHost.setOpaque(false);
-        sldSizeHost.setMinimumSize(new Dimension(300,50));
-        sldSizeHost.setMaximumSize(new Dimension(300,50));
-        sldSizeHost.setMajorTickSpacing(5);
-        sldSizeHost.setMinorTickSpacing(1);
-        sldSizeHost.setPaintLabels(true);
-        sldSizeHost.setPaintTicks(true);
-        sldSizeHost.setValue(10);
-        sldSizeHost.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-        sldSizeHost.setForeground(Color.BLACK);
-        sldSizeHost.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                try {
-                    lblStartHostNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                lstLoad.clearSelection();
-                lstLoad.setSelectedIndex(-1);
             }
         });
 
