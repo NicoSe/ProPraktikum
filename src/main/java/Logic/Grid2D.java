@@ -18,6 +18,7 @@ public class Grid2D implements Cloneable {
         this.characters = new Character[bound][bound];
         this.harbor = new ShipHarbor();
         this.harbor.load();
+        shipsAlive = harbor.getTotalShipCount(bound);
     }
 
     private Grid2D(int bound, Character[][] c, int shipsAlive) {
@@ -82,7 +83,6 @@ public class Grid2D implements Cloneable {
         int timeout = 0;
         clear();
 
-        shipsAlive = 0;
         List<HarborShipData> ships = harbor.getCopyOfHarborData(bound);
         int placeCount = harbor.getTotalShipCount(bound);
         while(placeCount > 0) {
@@ -221,10 +221,6 @@ public class Grid2D implements Cloneable {
         }
 
         inst.setPosition(x, y);
-
-        if(inst instanceof Ship) {
-            shipsAlive++;
-        }
 
         return inst;
     }
