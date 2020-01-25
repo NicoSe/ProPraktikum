@@ -1,6 +1,5 @@
 package GUI.Grid;
 
-import GUI.ScaleHelper;
 import Logic.GridController;
 
 import javax.swing.*;
