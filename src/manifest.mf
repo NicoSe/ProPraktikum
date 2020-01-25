@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Main-Class: Control.Main
+Class-Path: main/java/ main/resources/
+
+

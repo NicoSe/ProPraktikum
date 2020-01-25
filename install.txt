@@ -1,0 +1,6 @@
+Install:
+
+1) Navigate to /src folder
+2) javac everything with: javac -sourcepath main/java main/java/Control/Main.java
+3) execute the command:  jar cvfm battleships.jar manifest.mf -C main/ .
+4) run battleships.jar
