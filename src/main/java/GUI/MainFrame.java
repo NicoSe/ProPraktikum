@@ -2077,7 +2077,7 @@ public class MainFrame {
         gcF.shoot(x, y);
     }
 
-    //handle "shot" event that got forwarded from KI
+    ///handle "shot" event that got forwarded from KI
     public boolean handleOnKIShot(int x, int y) {
         ShotResult result = selfGrid.shoot(x, y);
         //its the players turn, when the result says he hit nothing.
@@ -2431,15 +2431,10 @@ public class MainFrame {
     }
 
     public void showHomeMenue(){
-        pnlButton.removeAll();
-        pnlDummy.removeAll();
-        pnlDummy.setVisible(false);
-        pnlDummyThicc.removeAll();
-        pnlDummyThicc.setVisible(false);
         pnlFoeGrid.removeAll();
         pnlFoeGrid.setVisible(false);
-        pnlReady.removeAll();
-        pnlReady.setVisible(false);
+        pnlDummyThicc.removeAll();
+        pnlDummyThicc.setVisible(false);
 
         pnlButton.setVisible(false);
         pnlButton.removeAll();
@@ -2452,6 +2447,7 @@ public class MainFrame {
         backgroundPanel.add(pnlButton);
 
         refreshLoadOptions();
+
     }
 
     public void refreshLoadOptions(){
