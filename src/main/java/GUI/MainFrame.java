@@ -1290,7 +1290,8 @@ public class MainFrame {
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
-                    System.exit(0);
+                    ///System.exit(0);
+                    showHomeMenue();
                 }
             }
 
@@ -2090,8 +2091,9 @@ public class MainFrame {
                     mainTheme.stop();
                 }
                 Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
-                JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
-                System.exit(0);
+                ///JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                ///System.exit(0);
+                showHomeMenue();
             });
             return false;
         }
@@ -2109,8 +2111,9 @@ public class MainFrame {
                 pnlFoeGrid.setVisible(false);
                 pnlFoeGrid.add(lblComrade);
                 pnlFoeGrid.setVisible(true);
-                JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
-                System.exit(0);
+                ///JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                ///System.exit(0);
+                showHomeMenue();
             });
             return false;
         }
@@ -2134,7 +2137,8 @@ public class MainFrame {
                 case "save":
                     SaveManager.save(String.format("%s", cmd[1]), selfGrid, foeGrid);
                     net.close();
-                    System.exit(0);
+                    ///System.exit(0);
+                    showHomeMenue();
                     return;
                 case "confirmed":
                     SwingUtilities.invokeLater(() -> setTurn(true));
@@ -2161,9 +2165,10 @@ public class MainFrame {
                             pnlFoeGrid.setVisible(false);
                             pnlFoeGrid.add(lblComrade);
                             pnlFoeGrid.setVisible(true);
-                            JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                            ///JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
                             c.close();
-                            System.exit(0);
+                            ///System.exit(0);
+                            showHomeMenue();
                         });
                         return;
                     }
@@ -2189,9 +2194,10 @@ public class MainFrame {
                                 mainTheme.stop();
                             }
                             Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
-                            JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                            ///JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
                             net.close();
-                            System.exit(0);
+                            ///System.exit(0);
+                            showHomeMenue();
                         });
                         return;
                     }
@@ -2421,6 +2427,30 @@ public class MainFrame {
     }
 
     private void runKIvsKI() {
+
+    }
+
+    public void showHomeMenue(){
+        pnlButton.removeAll();
+        pnlDummy.removeAll();
+        pnlDummy.setVisible(false);
+        pnlDummyThicc.removeAll();
+        pnlDummyThicc.setVisible(false);
+        pnlFoeGrid.removeAll();
+        pnlFoeGrid.setVisible(false);
+        pnlReady.removeAll();
+        pnlReady.setVisible(false);
+
+        pnlButton.setVisible(false);
+        pnlButton.removeAll();
+        pnlButton.add(lblTitle);
+        pnlButton.add(lblSingle);
+        pnlButton.add(lblMulti);
+        pnlButton.add(lblKivsKi);
+        pnlButton.add(lblReturn);
+        pnlButton.setVisible(true);
+        backgroundPanel.add(pnlButton);
+
 
     }
 }
