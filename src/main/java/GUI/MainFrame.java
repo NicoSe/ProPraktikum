@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -37,6 +38,8 @@ public class MainFrame {
     //AI ai;
     NewKI ki;
     Thread kiThread;
+
+    Clip mainTheme;
 
     ///Variablen
     private JFrame jf;
@@ -147,6 +150,9 @@ public class MainFrame {
         jf.setLocationRelativeTo(null);
         jf.setVisible(true);
         jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        mainTheme = Helpers.playSFX("/Music/pirate.wav", 0);
+        mainTheme.loop(Clip.LOOP_CONTINUOUSLY);
 
         if (OptionsHandler.getFullscreenMode()){
             jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -1364,6 +1370,9 @@ public class MainFrame {
             @Override
             public void stateChanged(ChangeEvent e) {
                 optionsHandler.changeMusicVolume(sldMusicSlider.getValue());
+                if(mainTheme != null) {
+                    Helpers.fixVolume(mainTheme, 0);
+                }
             }
         });
 
@@ -1986,7 +1995,10 @@ public class MainFrame {
                     gcF.processShotResult(answer);
                     if(answer == 2 && --foeAliveCount <= 0) {
                         SwingUtilities.invokeLater(() -> {
-                            Helpers.playSFX("/SFX/youwincomrad.wav", 1);
+                            if(mainTheme != null) {
+                                mainTheme.stop();
+                            }
+                            Helpers.playSFX("/SFX/youwincomrad.wav", 0);
                             pnlFoeGrid.setVisible(false);
                             pnlFoeGrid.add(lblComrade);
                             pnlFoeGrid.setVisible(true);
@@ -2013,7 +2025,10 @@ public class MainFrame {
                     });
                     if(selfGrid.getShipsAliveCount() <= 0) {
                         SwingUtilities.invokeLater(() -> {
-                            Helpers.playSFX("/SFX/youlooseDramatic.wav", 1);
+                            if(mainTheme != null) {
+                                mainTheme.stop();
+                            }
+                            Helpers.playSFX("/SFX/youlooseDramatic.wav", 0);
                             JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
                             net.Close();
                             System.exit(0);
