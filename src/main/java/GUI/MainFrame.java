@@ -967,6 +967,7 @@ public class MainFrame {
                 pnlButton.add(comboDifficulty);
                 pnlButton.add(lblKiHostGame);
                 pnlButton.add(lblReturnToGameMode);
+                pnlButton.add(lblShowIP);
                 pnlButton.setVisible(true);
                 try {
                     lblKiHost.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/KiHostBW.png"))));
