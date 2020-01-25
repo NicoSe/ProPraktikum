@@ -3,7 +3,7 @@ package Logic;
 import java.util.*;
 import java.util.function.Function;
 
-public class Grid2D {
+public class Grid2D implements Cloneable {
     private int bound;
     private Character[][] characters;
     private ShipHarbor harbor;
@@ -18,6 +18,22 @@ public class Grid2D {
         this.characters = new Character[bound][bound];
         this.harbor = new ShipHarbor();
         this.harbor.load();
+    }
+
+    private Grid2D(int bound, Character[][] c, int shipsAlive) {
+        this(bound);
+        this.characters = c;
+        this.shipsAlive = shipsAlive;
+    }
+
+    @Override
+    public Grid2D clone() {
+        Character[][] c = new Character[getBound()][];
+        for(int i = 0; i < getBound(); i++) {
+            c[i] = characters[i].clone();
+        }
+        Grid2D g2d = new Grid2D(getBound(), c, getShipsAliveCount());
+        return g2d;
     }
 
     @FunctionalInterface

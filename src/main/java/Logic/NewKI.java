@@ -1,5 +1,6 @@
 package Logic;
 
+import GUI.MainFrame;
 import Network.Connector;
 import Network.Server;
 
@@ -50,6 +51,8 @@ public class NewKI
 
     private FoundShip ship;
 
+    private MainFrame mf;
+
     /**
      * Easy Mode: Just fires in a random pattern at the enemy.
      * Normal Mode: Shoots in a random pattern at the enemy. If its manages to hit a ship, it will try to find out its direction and shoot in this direction.
@@ -58,9 +61,10 @@ public class NewKI
      *            and knows his initial hit of the ship.
      */
 
-    public NewKI(Connector s, int mode)
+    public NewKI(Connector s, MainFrame mf, int mode)
     {
         this.s = s;
+        this.mf = mf;
 
         if (mode == 0) {
             this.mode = KIMode.STUPID;
@@ -73,9 +77,10 @@ public class NewKI
         handleData(this.s);
     }
 
-    public NewKI(Connector s, int bounds, int mode)
+    public NewKI(Connector s, MainFrame mf, int bounds, int mode)
     {
         this.s = s;
+        this.mf = mf;
 
         if (mode == 0) {
             this.mode = KIMode.STUPID;
@@ -84,6 +89,8 @@ public class NewKI
         } else {
             this.mode = KIMode.HARD;
         }
+
+        init(bounds);
 
         //check if connector is server, create grid and send size.
         if(this.s instanceof Server) {
@@ -105,6 +112,11 @@ public class NewKI
         enemyGrid = new Grid2D(bound);
         enemyGrid.placeFgoOnEmptyFields();
         enemyShipsAlive = grid.getShipCount();
+
+        if(mf != null) {
+            mf.setGridFromKI(grid.clone(), enemyGrid.clone());
+        }
+
         if (mode == KIMode.HARD)
         {
             setChessPattern();//TODO:find better placement?
@@ -141,6 +153,12 @@ public class NewKI
                     shoot();
                     break;
                 case "confirmed":
+                    if(s instanceof Server) {
+                        c.sendMessage("confirmed");
+                    } else {
+                        shoot();
+                    }
+                    break;
                 case "pass":
                     shoot();
                     break;
@@ -150,7 +168,12 @@ public class NewKI
                     break;
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
-                    int x,y;
+
+                    //invokeLater maybe?
+                    if(mf != null) {
+                        mf.handleKIAnswer(answer);
+                    }
+
                     switch(answer) {
                         case 0:
                             enemyGrid.shoot(ship.validXPos.removeLast(), ship.validYPos.removeLast(), answer);
@@ -172,10 +195,7 @@ public class NewKI
                             enemyShipsAlive--;
 
                             if(checkWinCondition()) {
-                                /*SwingUtilities.invokeLater(() -> {
-                                    JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
-                                    System.exit(0);
-                                });*/
+                                System.out.printf("%s won! \n", s instanceof Server ? "ServerKI" : "ClientKI");
                                 s.close();
                                 return;
                             }
@@ -188,8 +208,18 @@ public class NewKI
                     }
                     break;
                 case "shot":
-                    ShotResult sr = grid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
+                    int x = Integer.parseInt(cmd[1]);
+                    int y = Integer.parseInt(cmd[2]);
+                    if(mf != null) {
+                        mf.handleOnKIShot(x, y);
+                    }
+                    ShotResult sr = grid.shoot(x, y);
                     c.sendMessage(String.format("answer %d", sr.ordinal()));
+                    if(grid.getShipsAliveCount() <= 0) {
+                        System.out.printf("%s lost. \n", s instanceof Server ? "ServerKI" : "ClientKI");
+                        s.close();
+                        return;
+                    }
                     break;
                 default:
                     System.out.println("Invalid command.");
@@ -288,6 +318,9 @@ public class NewKI
 
         ship.validXPos.addLast(x);
         ship.validYPos.addLast(y);
+        if(mf != null) {
+            mf.handleKIShoot(x, y);
+        }
         s.sendMessage(String.format("shot %d %d", x, y));
         //enemyGrid[x][y] = true;
 

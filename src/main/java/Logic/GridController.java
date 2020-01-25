@@ -169,6 +169,16 @@ public class GridController {
         // TODO: modify view/ship panel according to shot result.
     }
 
+    public void shoot(int x, int y) {
+        lastx = x;
+        lasty = y;
+
+        ShotResult res = model.shoot(x, y);
+        if(res == ShotResult.SUNK) {
+            model.markSurrounding(x, y);
+        }
+    }
+
     public void processShotResult(int shotResult) {
         ShotResult r = ShotResult.values()[shotResult];
         Character c = model.getCharacter(lastx, lasty);

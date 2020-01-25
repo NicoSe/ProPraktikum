@@ -6,6 +6,5 @@ public interface Connector {
     String listenToNetwork();
     boolean turn();
     boolean isConnected();
-    ConnectorType getConnectorType();
     boolean close();
 }

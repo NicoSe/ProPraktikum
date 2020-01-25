@@ -144,11 +144,6 @@ public class Client implements Connector {
         return turn;
     }
 
-    @Override
-    public ConnectorType getConnectorType() {
-        return ConnectorType.CLIENT;
-    }
-
 //______________________________________________________________________________________________________________________
     /**
      * Analysiert Nachichten vom Server und fuehrt je nach dem Spielbefehle aus:

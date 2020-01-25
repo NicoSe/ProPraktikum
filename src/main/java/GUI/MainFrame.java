@@ -2034,7 +2034,7 @@ public class MainFrame {
         }
 
         kiThread = new Thread(() -> {
-            ki = new NewKI(new Client("localhost"), comboDifficulty.getSelectedIndex());
+            ki = new NewKI(new Client("localhost"), null, comboDifficulty.getSelectedIndex());
         });
         kiThread.start();
     }
@@ -2056,7 +2056,7 @@ public class MainFrame {
         }
 
         kiThread = new Thread(() -> {
-            ki = new NewKI(new Client("localhost"), comboDifficulty.getSelectedIndex());
+            ki = new NewKI(new Client("localhost"), null, comboDifficulty.getSelectedIndex());
         });
         kiThread.start();
     }
@@ -2073,6 +2073,81 @@ public class MainFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setGridFromKI(Grid2D self, Grid2D foe) {
+        selfGrid = self;
+        foeGrid = foe;
+
+        pnlGrid1 = new BasicGrid(selfGrid.getBound(), GridState.FORBID);
+        pnlGrid2 = new BasicGrid(foeGrid.getBound(), GridState.FORBID);
+
+        gcS = new GridController(selfGrid, null, pnlGrid1);
+        gcS.init(GridState.FORBID);
+        pnlGrid1.setOpaque(false);
+        pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        gcF = new GridController(foeGrid, null, pnlGrid2);
+        gcF.init(GridState.FORBID);
+
+        SwingUtilities.invokeLater(() -> {
+            runAfterGridInit(true);
+            setTurn(false); // ???
+            onGameReady();
+            gcS.setInteractionState(GridState.FORBID);
+            gcF.setInteractionState(GridState.FORBID);
+        });
+    }
+
+    public void handleKIShoot(int x, int y) {
+        gcF.shoot(x, y);
+    }
+
+    //handle "shot" event that got forwarded from KI
+    public boolean handleOnKIShot(int x, int y) {
+        ShotResult result = selfGrid.shoot(x, y);
+        //its the players turn, when the result says he hit nothing.
+        SwingUtilities.invokeLater(() -> {
+            setTurn(result.ordinal() == 0);
+            refreshFoeGrid();
+        });
+        if (selfGrid.getShipsAliveCount() <= 0) {
+            SwingUtilities.invokeLater(() -> {
+                if (mainTheme != null) {
+                    mainTheme.stop();
+                }
+                Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
+                JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                System.exit(0);
+            });
+            return false;
+        }
+        return true;
+    }
+
+    public boolean handleKIAnswer(int answer) {
+        gcF.processShotResult(answer);
+        if (foeAliveCount <= 0 || (answer == 2 && --foeAliveCount <= 0)) {
+            SwingUtilities.invokeLater(() -> {
+                if (mainTheme != null) {
+                    mainTheme.stop();
+                }
+                Helpers.playSFX("/SFX/youwincomrad.wav", 0);
+                pnlFoeGrid.setVisible(false);
+                pnlFoeGrid.add(lblComrade);
+                pnlFoeGrid.setVisible(true);
+                JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                System.exit(0);
+            });
+            return false;
+        }
+        if (answer == 0) {
+            SwingUtilities.invokeLater(() -> {
+                setTurn(false);
+                refreshFoeGrid();
+            });
+        }
+        return true;
     }
 
     private void handleData(Connector c) {
@@ -2189,23 +2264,20 @@ public class MainFrame {
         setTurn(false);
         resetNetwork();
 
+        if(ki != null) {
+            ki.close();
+            ki = null;
+        }
+
         kiThread = new Thread(() -> {
-            ki = new NewKI(new Server(), bound, difficulty);
+            ki = new NewKI(new Server(), this, bound, difficulty);
         });
         kiThread.start();
     }
 
-    /*        resetNetwork();
-        handleLoadEvent(save, false);
-
-        netThread = new Thread(() -> {
-            net = new Server();
-            net.connect();
-
-            net.sendmsg(String.format("load %s", save));
-            handleData(net);
-        });
-        netThread.start();
+    private void runKIClient(String host, int difficulty) {
+        setTurn(false);
+        resetNetwork();
 
         if(ki != null) {
             ki.close();
@@ -2213,18 +2285,7 @@ public class MainFrame {
         }
 
         kiThread = new Thread(() -> {
-            ki = new NewKI(new Client("localhost"), comboDifficulty.getSelectedIndex());
-        });
-        kiThread.start();
-
-     */
-
-    private void runKIClient(String host, int difficulty) {
-        setTurn(false);
-        resetNetwork();
-
-        kiThread = new Thread(() -> {
-            ki = new NewKI(new Client(host), difficulty);
+            ki = new NewKI(new Client(host), this, difficulty);
         });
         kiThread.start();
     }
@@ -2260,7 +2321,9 @@ public class MainFrame {
         foeGrid = new Grid2D(size);
         foeGrid.placeFgoOnEmptyFields();
 
-        SwingUtilities.invokeLater(this::runAfterGridInit);
+        SwingUtilities.invokeLater(() -> {
+            runAfterGridInit(false);
+        });
     }
 
     private void onGameReady() {
@@ -2336,21 +2399,24 @@ public class MainFrame {
         foeGrid = grids[1];
 
         SwingUtilities.invokeLater(() -> {
-            runAfterGridInit();
+            runAfterGridInit(false);
             setTurn(turnState);
             onGameReady();
         });
     }
 
-    private void runAfterGridInit() {
+    private void runAfterGridInit(boolean isAlreadyInitalized) {
         backgroundPanel.removeAll();
-        gcS = new GridController(selfGrid, null, pnlGrid1);
-        gcS.init(GridState.PLACE);
-        pnlGrid1.setOpaque(false);
-        pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        gcF = new GridController(foeGrid, net, pnlGrid2);
-        gcF.init(GridState.FORBID);
+        if(!isAlreadyInitalized) {
+            gcS = new GridController(selfGrid, null, pnlGrid1);
+            gcS.init(GridState.PLACE);
+            pnlGrid1.setOpaque(false);
+            pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            gcF = new GridController(foeGrid, net, pnlGrid2);
+            gcF.init(GridState.FORBID);
+        }
 
         foeAliveCount = selfGrid.getShipCount();
 
