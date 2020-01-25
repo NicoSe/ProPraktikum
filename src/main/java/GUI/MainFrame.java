@@ -386,6 +386,7 @@ public class MainFrame {
             @Override
             public void mouseClicked(MouseEvent e){
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                Helpers.run.stopMusic();
                 pnlButton.setVisible(false);
                 pnlButton.removeAll();
                 pnlButton.add(lblTitle);
