@@ -2451,6 +2451,54 @@ public class MainFrame {
         pnlButton.setVisible(true);
         backgroundPanel.add(pnlButton);
 
+        refreshLoadOptions();
+    }
 
+    public void refreshLoadOptions(){
+
+        File dir = new File("./SaveGames");
+        File[] data = dir.listFiles();
+        if(data == null) {
+            dir.mkdirs();
+            data = dir.listFiles();
+        }
+
+        ArrayList<String> fn = new ArrayList<>();
+        ArrayList<String> fd = new ArrayList<>();
+        BufferedReader in = null;
+        File file;
+
+        for(int i=0;i<data.length;i++){
+            if(data[i].isFile() && data[i].canRead()){
+                file = data[i];
+
+                String name = file.getName();
+                int pos = name.lastIndexOf(".");
+                if (pos > 0) {
+                    name = name.substring(0, pos);
+                }
+
+                if(name.startsWith("ai")) {
+                    continue;
+                }
+
+                fn.add(name);
+
+
+                try {
+                    in = new BufferedReader(new FileReader(file));
+                    fd.add(in.readLine());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        filenames = fn.stream().toArray(String[]::new);
+        filedesc = fd.stream().toArray(String[]::new);
+
+        lstLoad.setListData(filedesc);
+        lstLoad.setVisibleRowCount(filedesc.length);
+        lstSingleLoad.setListData(filedesc);
+        lstSingleLoad.setVisibleRowCount(filedesc.length);
     }
 }
