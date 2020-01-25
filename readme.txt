@@ -12,7 +12,7 @@
 ========================================================================================
 
 Bitte lies vor der Installation von "Battleships" zunächst dieses Dokument durch.
-
+Für Anweisungen zum Kompilieren die compile.txt durchlesen!
 
 ----------------------------------------------------------------------------------------
 Inhalt
