@@ -16,7 +16,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class GridController {
-    HashMap<Component, Character> c2c = new HashMap<>();
+    HashMap<Component, Character> co2ch = new HashMap<>();
+    HashMap<Character, ArrayList<Component>> ch2co = new HashMap<>();
     private Connector connector;
     private boolean isInitialized = false;
     private Connector con;
@@ -34,7 +35,7 @@ public class GridController {
     }
 
     public Character getCharacterOfComponent(Component c) {
-        return c2c.get(c);
+        return co2ch.get(c);
     }
 
     public void init(GridState state) {
@@ -45,7 +46,13 @@ public class GridController {
 
         model.forEachCharacter((Integer x, Integer y, Character c) -> {
             try {
-                c2c.put(view.addPiece(c.getImage(), x, y, c.getSize(), c.isVertical()), c);
+                Component comp = view.addPiece(c.getImage(), x, y, c.getSize(), c.isVertical());
+                co2ch.put(comp, c);
+                ArrayList<Component> compList = ch2co.getOrDefault(c, new ArrayList<>());
+                if(compList.isEmpty()) {
+                    ch2co.put(c, compList);
+                }
+                compList.add(comp);
             } catch(IOException e) {
                 System.out.printf("couldn't load character image. %s\n", e.getMessage());
             }
@@ -66,17 +73,23 @@ public class GridController {
     }
 
     public void randomize() {
-        c2c.forEach((k,v) -> {
+        co2ch.forEach((k, v) -> {
             view.remove(k);
         });
 
-        c2c.clear();
+        co2ch.clear();
         model.clear();
         model.generateRandom();
 
         model.forEachCharacter((Integer x, Integer y, Character c) -> {
             try {
-                c2c.put(view.addPiece(c.getImage(), x, y, c.getSize(), c.isVertical()), c);
+                Component comp = view.addPiece(c.getImage(), x, y, c.getSize(), c.isVertical());
+                co2ch.put(comp, c);
+                ArrayList<Component> compList = ch2co.getOrDefault(c, new ArrayList<>());
+                if(compList.isEmpty()) {
+                    ch2co.put(c, compList);
+                }
+                compList.add(comp);
             } catch(IOException e) {
                 System.out.printf("couldn't load character image. %s\n", e.getMessage());
             }
@@ -87,17 +100,21 @@ public class GridController {
     }
 
     public void rotatePiece(Component comp) {
-        Character c = c2c.get(comp);
+        Character c = co2ch.get(comp);
         if(c == null) {
             return;
         }
 
         if(model.rotate(c.getX(), c.getY())) {
             view.remove(comp);
-            c2c.remove(comp);
+            co2ch.remove(comp);
+            ch2co.remove(c);
 
             try {
-                c2c.put(view.addPiece(c.getImage(), c.getX(), c.getY(), c.getSize(), c.isVertical()), c);
+                Component compNew = view.addPiece(c.getImage(), c.getX(), c.getY(), c.getSize(), c.isVertical());
+                co2ch.put(compNew, c);
+                ArrayList<Component> chList = ch2co.getOrDefault(c, new ArrayList<>());
+                chList.add(compNew);
                 view.revalidate();
                 view.repaint();
             } catch (IOException e) {
@@ -107,7 +124,7 @@ public class GridController {
     }
 
     public void changePiecePos(Component comp, Point newPos) {
-        Character c = c2c.get(comp);
+        Character c = co2ch.get(comp);
         if(c == null) {
             return;
         }
@@ -132,7 +149,7 @@ public class GridController {
             return;
         }
 
-        Character c = c2c.get(comp);
+        Character c = co2ch.get(comp);
         if(c == null) {
             return;
         }
@@ -202,6 +219,16 @@ public class GridController {
                     s = new Ship(shipSize, true);
                     Ship finalS = s;
                     markedPos.forEach((Integer[] xy) -> {
+                        Character tmpCh = model.getCharacter(xy[0], xy[1]);
+                        SwingUtilities.invokeLater(() -> {
+                            ArrayList<Component> comps = ch2co.remove(tmpCh);
+                            if(comps != null) {
+                                for (Component compOld : comps) {
+                                    co2ch.remove(compOld);
+                                    view.remove(compOld);
+                                }
+                            }
+                        });
                         model.replaceThrough(xy[0], xy[1], finalS);
                     });
                     s.setPosition(markedPos.getFirst()[0], markedPos.getFirst()[1]);
@@ -216,7 +243,11 @@ public class GridController {
         SwingUtilities.invokeLater(() -> {
             if(finalS1 != null) {
                 try {
-                    c2c.put(view.addPiece(finalS1.getImage(), finalS1.getX(), finalS1.getY(), finalS1.getSize(), finalS1.isVertical()), finalS1);
+                    Component comp = view.addPiece(finalS1.getImage(), finalS1.getX(), finalS1.getY(), finalS1.getSize(), finalS1.isVertical());
+                    co2ch.put(comp, finalS1);
+                    ArrayList<Component> comps = new ArrayList<>();
+                    comps.add(comp);
+                    ch2co.put(finalS1, comps);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -227,7 +258,7 @@ public class GridController {
     }
 
     public void highlightCell(Component c) {
-        Character ch = c2c.get(c);
+        Character ch = co2ch.get(c);
         if(ch == null || !ch.isAlive()) {
             view.highlightCell(null);
             return;
@@ -265,7 +296,11 @@ public class GridController {
         ArrayList<Character> waterFields = model.placeWaterOnEmptyFields();
         for(Character c : waterFields) {
             try {
-                c2c.put(view.addPiece(c.getImage(), c.getX(), c.getY(), c.getSize(), c.isVertical()), c);
+                ArrayList<Component> comps = new ArrayList<>();
+                Component comp = view.addPiece(c.getImage(), c.getX(), c.getY(), c.getSize(), c.isVertical());
+                comps.add(comp);
+                ch2co.put(c, comps);
+                co2ch.put(comp, c);
             } catch(IOException e) {
             }
         }
