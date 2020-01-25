@@ -24,17 +24,22 @@ public class Helpers {
 
             FloatControl volControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             if(musicType == 0){
-                float vol = (float) OptionsHandler.getMusicVolume()/100;
-                vol = 80 * vol;
-                vol = -80 + vol;
-                volControl.setValue((float) vol);
+                if(OptionsHandler.getMusicVolume() == 0) volControl.setValue((float) -80);
+                else {
+                    float vol = (float) OptionsHandler.getMusicVolume() / 100;
+                    vol = 50 * vol;
+                    vol = -50 + vol;
+                    volControl.setValue((float) vol);
+                }
             }
             else if(musicType == 1){
-
-                float vol = (float) OptionsHandler.getSFXVolume()/100;
-                vol = 80 * vol;
-                vol = -80 + vol;
-                volControl.setValue(vol);
+                if(OptionsHandler.getSFXVolume() == 0) volControl.setValue((float) -80);
+                else {
+                    float vol = (float) OptionsHandler.getSFXVolume() / 100;
+                    vol = 60 * vol;
+                    vol = -60 + vol;
+                    volControl.setValue(vol);
+                }
             }
             else return null;
             clip.start();
@@ -49,17 +54,22 @@ public class Helpers {
     public static void fixVolume(Clip clip, int musicType) {
         FloatControl volControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         if(musicType == 0){
-            float vol = (float) OptionsHandler.getMusicVolume()/100;
-            vol = 80 * vol;
-            vol = -80 + vol;
-            volControl.setValue((float) vol);
+            if(OptionsHandler.getMusicVolume() == 0) volControl.setValue((float) -80);
+            else {
+                float vol = (float) OptionsHandler.getMusicVolume() / 100;
+                vol = 50 * vol;
+                vol = -50 + vol;
+                volControl.setValue((float) vol);
+            }
         }
         else if(musicType == 1){
-
-            float vol = (float) OptionsHandler.getSFXVolume()/100;
-            vol = 80 * vol;
-            vol = -80 + vol;
-            volControl.setValue(vol);
+            if(OptionsHandler.getSFXVolume() == 0) volControl.setValue((float) -80);
+            else {
+                float vol = (float) OptionsHandler.getSFXVolume() / 100;
+                vol = 60 * vol;
+                vol = -60 + vol;
+                volControl.setValue(vol);
+            }
         }
     }
 
