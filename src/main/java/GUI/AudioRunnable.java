@@ -6,7 +6,7 @@ public class AudioRunnable implements Runnable {
 
     }
 
-    public void stop(){
+    public void stopMusic(){
 
     }
 }

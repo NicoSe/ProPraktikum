@@ -15,9 +15,10 @@ public class Helpers {
     */
 
     private static Clip clip;
+    public static AudioRunnable run;
 
     public static void playSFX(String filepath, int musicType) {
-        AudioRunnable run = new AudioRunnable(){};
+        run = new AudioRunnable(){};
         new Thread(run) {
             @Override
             public void run() {
@@ -47,10 +48,10 @@ public class Helpers {
                     e.printStackTrace();
                 }
             }
-            @Override
-            public void stop(){
+
+            public void stopMusic(){
                 clip.stop();
             }
-        }).start();
+        }.start();
     }
 }
