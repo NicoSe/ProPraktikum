@@ -12,14 +12,10 @@ public class Server implements Connector{
     private int port = 50000;
     private ServerSocket Server_Socket;
     private Socket Client_Socket;
-    BufferedReader usr;
 
     ///mulithreading support.
     DataInputStream dis;
     DataOutputStream dos;
-
-    ///Speichert die Addresse des Servers so ist ein eventuelles Wiederverbinden leichter.
-    private InetSocketAddress address;
 
     ///Abbruchvariable für die listenToNetwork()-Funktion
     public boolean Close_Socket = false;
