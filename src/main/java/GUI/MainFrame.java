@@ -1990,7 +1990,7 @@ public class MainFrame {
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
                     gcF.processShotResult(answer);
-                    if (answer == 2 && --foeAliveCount <= 0) {
+                    if (foeAliveCount <= 0 || (answer == 2 && --foeAliveCount <= 0)) {
                         SwingUtilities.invokeLater(() -> {
                             if (mainTheme != null) {
                                 mainTheme.stop();
@@ -2026,7 +2026,7 @@ public class MainFrame {
                             if (mainTheme != null) {
                                 mainTheme.stop();
                             }
-                            Helpers.playSFX("/SFX/youlooseDramatic.wav", 0);
+                            Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
                             JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
                             net.close();
                             System.exit(0);
