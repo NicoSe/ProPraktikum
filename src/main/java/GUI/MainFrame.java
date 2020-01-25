@@ -2176,7 +2176,7 @@ public class MainFrame {
                     }
                     break;
                 case "shot":
-                    ShotResult result = selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
+                    ShotResult result = selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])); //bp here.
                     c.sendMessage(String.format("answer %d", result.ordinal()));
                     //its the players turn, when the result says he hit nothing.
                     SwingUtilities.invokeLater(() -> {
