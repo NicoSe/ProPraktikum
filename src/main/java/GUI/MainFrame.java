@@ -1015,7 +1015,7 @@ public class MainFrame {
             @Override
             public void mouseClicked(MouseEvent e){
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
-
+                runKIServer(sldSizeSingle.getValue(), comboDifficulty.getSelectedIndex());
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -1109,6 +1109,7 @@ public class MainFrame {
             @Override
             public void mouseClicked(MouseEvent e){
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                runKIClient(txfIPAdress.getText(), comboDifficulty.getSelectedIndex());
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -2184,12 +2185,12 @@ public class MainFrame {
         netThread.start();
     }
 
-    private void runKIServer(int bound) {
+    private void runKIServer(int bound, int difficulty) {
         setTurn(false);
         resetNetwork();
 
         kiThread = new Thread(() -> {
-            ki = new NewKI(new Server(), bound, comboDifficulty.getSelectedIndex());
+            ki = new NewKI(new Server(), bound, difficulty);
         });
         kiThread.start();
     }
@@ -2218,12 +2219,12 @@ public class MainFrame {
 
      */
 
-    private void runKIClient(String host) {
+    private void runKIClient(String host, int difficulty) {
         setTurn(false);
         resetNetwork();
 
         kiThread = new Thread(() -> {
-            ki = new NewKI(new Client(host), comboDifficulty.getSelectedIndex());
+            ki = new NewKI(new Client(host), difficulty);
         });
         kiThread.start();
     }
