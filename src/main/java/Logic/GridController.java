@@ -4,17 +4,13 @@ import GUI.Grid.BasicGrid;
 import GUI.Grid.PlacementMEventHandler;
 import GUI.Grid.ShootMEventHandler;
 import GUI.Helpers;
-import GUI.ScaleHelper;
 import Misc.GridState;
 import Network.Connector;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -161,7 +157,7 @@ public class GridController {
             ///get network here and sendmsg("shoot x y") then in MainFrame loop on result 0/1/2. handle accordingly!
             lastx = c.getX() + shipPosOffsetX;
             lasty = c.getY() + shipPosOffsetY;
-            connector.sendmsg(String.format("shot %d %d", lastx, lasty));
+            connector.sendMessage(String.format("shot %d %d", lastx, lasty));
         }
 
         ShotResult res = model.shoot(c.getX() + shipPosOffsetX, c.getY() + shipPosOffsetY);

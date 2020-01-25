@@ -2,10 +2,10 @@ package Network;
 
 public interface Connector {
     void connect();
-    void sendmsg(String msg);
+    void sendMessage(String msg);
     String listenToNetwork();
     boolean turn();
     boolean isConnected();
     ConnectorType getConnectorType();
-    boolean Close();
+    boolean close();
 }

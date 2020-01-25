@@ -73,28 +73,28 @@ public class Server implements Connector{
      *     Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
      *     Es muss ausschlieslich eine Nachricht in die Funktion uebergeben werden.
      */
-    public void sendmsg(String msg){
+    public void sendMessage(String msg){
         try{
             dos.writeUTF(msg);
             turn = false;
         }catch(SocketException e) {
             System.out.println("<S>Can´t find Server!");
             e.printStackTrace();
-            Close();
+            close();
             connect();
-            sendmsg(msg);
+            sendMessage(msg);
         }catch(IOException e){
             System.out.println("<S>Message can´t be send!");
             e.printStackTrace();
-            Close();
+            close();
             connect();
-            sendmsg(msg);
+            sendMessage(msg);
         }catch(NullPointerException e){
             System.out.println("<S>NullPointException");
             e.printStackTrace();
-            Close();
+            close();
             connect();
-            sendmsg(msg);
+            sendMessage(msg);
         }
     }
 
@@ -121,16 +121,16 @@ public class Server implements Connector{
                 }
             } catch(EOFException e) {
                 System.out.println("<S>Can´t read from socket.");
-                Close();
+                close();
             }catch(SocketException e){
                 System.out.println("<S>Can´t find client!");
                 e.printStackTrace();
-                Close();
+                close();
                 //connect();
             } catch (IOException e) {
                 System.out.println("<S>Can´t read message from client or don´t get one!");
                 e.printStackTrace();
-                Close();
+                close();
                 //connect();
             } finally {
                 if (Close_Socket){
@@ -190,7 +190,7 @@ public class Server implements Connector{
      *     Beenden des Serverockets, bei Erfolg true, ansonsten false. Beendet zudem
      *     auch die listenToNetwork() Funktion durch Closed_Socket=true.
      */
-    public boolean Close(){
+    public boolean close(){
         try {
             Close_Socket = true;
             if(dis != null) {

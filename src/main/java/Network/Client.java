@@ -54,16 +54,16 @@ public class Client implements Connector {
             System.out.println("<C>Connect to server at " + address + " via " + client.getLocalPort());
         } catch (ConnectException e) {
             System.out.println("Couldn't connect. retrying...");
-            Close();
+            close();
             //connect();
         } catch (SocketException e) {
             System.out.println("<C>Can´t create Socket!");
             e.printStackTrace();
-            Close();
+            close();
         } catch (IOException e) {
             System.out.println("<C>Can´t find server at " + address);
             e.printStackTrace();
-            Close();
+            close();
         }
     }
 
@@ -72,16 +72,16 @@ public class Client implements Connector {
     /**Sendet eine Nachicht zum Server, diese muss dem Protokoll entsprechen.
      *  Es muss ausschlieslich eine Nachicht in die Funktion uebergeben werden.
      */
-    public void sendmsg(String msg) {
+    public void sendMessage(String msg) {
         try {
             dos.writeUTF(msg);
             turn = false;
         } catch (IOException e) {
             System.out.println("<C>Can´t send message!");
             e.printStackTrace();
-            Close();
+            close();
             connect();
-            sendmsg(msg);
+            sendMessage(msg);
         }
     }
 
@@ -116,20 +116,20 @@ public class Client implements Connector {
                 }
             } catch(EOFException e) {
                 System.out.println("<C>Can´t read from socket.");
-                Close();
+                close();
             } catch (SocketException e) {
                 System.out.println("<C>Can´t find Server!");
                 e.printStackTrace();
-                Close();
+                close();
                 //connect();
             } catch (IOException e) {
                 System.out.println("<C>Can´t read message from client or donÂ´t get one!");
                 e.printStackTrace();
-                Close();
+                close();
                 //connect();
             } catch (NullPointerException e){
                 System.out.println("<C>Es wurde kein Client erzeugt!");
-                Close();
+                close();
             } finally {
                 if (Close_Socket){
                     break;
@@ -188,7 +188,7 @@ public class Client implements Connector {
      *     Beenden des Clientsockets, bei Erfolg true, ansonsten false. Beendet zudem
      *     auch die listenToNetwork() Funktion durch Closed_Socket=true.
      */
-    public boolean Close(){
+    public boolean close(){
         try {
             Close_Socket = true;
             if(dis != null) {

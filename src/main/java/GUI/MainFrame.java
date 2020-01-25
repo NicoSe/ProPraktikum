@@ -1189,9 +1189,9 @@ public class MainFrame {
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
                 if(net.turn()) {
                     long savetime = System.currentTimeMillis();
-                    net.sendmsg(String.format("save %d", savetime));
+                    net.sendMessage(String.format("save %d", savetime));
                     SaveManager.save(String.format("%d", savetime), selfGrid, foeGrid);
-                    net.Close();
+                    net.close();
 
                     try {
                         if(kiThread != null) {
@@ -1246,7 +1246,7 @@ public class MainFrame {
                 if(net.turn()) {
                     gcS.onFinalizePlace();
                     setTurn(false);
-                    net.sendmsg("confirmed");
+                    net.sendMessage("confirmed");
                     onGameReady();
                 }
             }
@@ -1909,7 +1909,7 @@ public class MainFrame {
             net = new Server();
             net.connect();
 
-            net.sendmsg(String.format("load %s", save));
+            net.sendMessage(String.format("load %s", save));
             handleData(net);
         });
         netThread.start();
@@ -1931,7 +1931,7 @@ public class MainFrame {
             net = new Server();
             net.connect();
 
-            net.sendmsg(String.format("size %d", bound));
+            net.sendMessage(String.format("size %d", bound));
             handleData(net);
         });
         netThread.start();
@@ -1948,7 +1948,7 @@ public class MainFrame {
     }
 
     private void closeSinglePlayerConnection(Client client){
-        client.Close();
+        client.close();
     }
 
     private void setTurn(boolean isSelfTurn) {
@@ -1962,19 +1962,16 @@ public class MainFrame {
     }
 
     private void handleData(Connector c) {
-        while (true) {
-            if(!c.isConnected()) {
-                break;
-            }
+        while (c.isConnected()) {
             String res = c.listenToNetwork();
             String[] cmd = res.split(" ");
-            switch(cmd[0]) {
+            switch (cmd[0]) {
                 case "load":
                     handleLoadEvent(cmd[1], true);
                     break;
                 case "save":
                     SaveManager.save(String.format("%s", cmd[1]), selfGrid, foeGrid);
-                    net.Close();
+                    net.close();
                     System.exit(0);
                     return;
                 case "confirmed":
@@ -1993,9 +1990,9 @@ public class MainFrame {
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
                     gcF.processShotResult(answer);
-                    if(answer == 2 && --foeAliveCount <= 0) {
+                    if (answer == 2 && --foeAliveCount <= 0) {
                         SwingUtilities.invokeLater(() -> {
-                            if(mainTheme != null) {
+                            if (mainTheme != null) {
                                 mainTheme.stop();
                             }
                             Helpers.playSFX("/SFX/youwincomrad.wav", 0);
@@ -2003,12 +2000,13 @@ public class MainFrame {
                             pnlFoeGrid.add(lblComrade);
                             pnlFoeGrid.setVisible(true);
                             JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
-                            net.Close();
+                            c.close();
                             System.exit(0);
                         });
+                        return;
                     }
-                    if(answer == 0) {
-                        c.sendmsg("pass");
+                    if (answer == 0) {
+                        c.sendMessage("pass");
                         SwingUtilities.invokeLater(() -> {
                             setTurn(false);
                             refreshFoeGrid();
@@ -2017,22 +2015,23 @@ public class MainFrame {
                     break;
                 case "shot":
                     ShotResult result = selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
-                    c.sendmsg(String.format("answer %d", result.ordinal()));
+                    c.sendMessage(String.format("answer %d", result.ordinal()));
                     //its the players turn, when the result says he hit nothing.
                     SwingUtilities.invokeLater(() -> {
                         setTurn(result.ordinal() == 0);
                         refreshFoeGrid();
                     });
-                    if(selfGrid.getShipsAliveCount() <= 0) {
+                    if (selfGrid.getShipsAliveCount() <= 0) {
                         SwingUtilities.invokeLater(() -> {
-                            if(mainTheme != null) {
+                            if (mainTheme != null) {
                                 mainTheme.stop();
                             }
                             Helpers.playSFX("/SFX/youlooseDramatic.wav", 0);
                             JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
-                            net.Close();
+                            net.close();
                             System.exit(0);
                         });
+                        return;
                     }
                     break;
                 default:
@@ -2050,10 +2049,10 @@ public class MainFrame {
 
     private void resetNetwork() {
         if(net != null) {
-            net.Close();
+            net.close();
         }
         if(foe != null) {
-            foe.Close();
+            foe.close();
         }
         net = null;
         foe = null;
@@ -2066,7 +2065,7 @@ public class MainFrame {
             net = new Server();
             net.connect();
 
-            net.sendmsg(String.format("load %s", save));
+            net.sendMessage(String.format("load %s", save));
             handleData(net);
         });
         netThread.start();
@@ -2123,7 +2122,7 @@ public class MainFrame {
             net = new Server();
             net.connect();
 
-            net.sendmsg(String.format("size %d", bound));
+            net.sendMessage(String.format("size %d", bound));
             handleData(net);
         }).start();
     }

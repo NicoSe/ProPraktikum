@@ -3,7 +3,6 @@ package Logic;
 import Network.Connector;
 import Network.Server;
 
-import javax.swing.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -89,13 +88,13 @@ public class NewKI
         //check if connector is server, create grid and send size.
         if(this.s instanceof Server) {
             this.s.connect();
-            this.s.sendmsg(String.format("size %d", bounds));
+            this.s.sendMessage(String.format("size %d", bounds));
         }
         handleData(this.s);
     }
 
     public void close() {
-        s.Close();
+        s.close();
     }
 
     private void init(int bound) {
@@ -147,7 +146,7 @@ public class NewKI
                     break;
                 case "size":
                     init(Integer.parseInt(cmd[1]));
-                    c.sendmsg("confirmed");
+                    c.sendMessage("confirmed");
                     break;
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
@@ -161,7 +160,7 @@ public class NewKI
                                 ship = null;
                             }
 
-                            c.sendmsg("pass");
+                            c.sendMessage("pass");
                             break;
                         case 1:
                             enemyGrid.shoot(ship.validXPos.peekLast(), ship.validYPos.peekLast(), answer);
@@ -177,6 +176,7 @@ public class NewKI
                                     JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
                                     System.exit(0);
                                 });*/
+                                s.close();
                                 return;
                             }
 
@@ -189,7 +189,7 @@ public class NewKI
                     break;
                 case "shot":
                     ShotResult sr = grid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
-                    c.sendmsg(String.format("answer %d", sr.ordinal()));
+                    c.sendMessage(String.format("answer %d", sr.ordinal()));
                     break;
                 default:
                     System.out.println("Invalid command.");
@@ -288,7 +288,7 @@ public class NewKI
 
         ship.validXPos.addLast(x);
         ship.validYPos.addLast(y);
-        s.sendmsg(String.format("shot %d %d", x, y));
+        s.sendMessage(String.format("shot %d %d", x, y));
         //enemyGrid[x][y] = true;
 
         return true;
