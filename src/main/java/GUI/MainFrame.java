@@ -1290,8 +1290,7 @@ public class MainFrame {
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
-                    ///System.exit(0);
-                    showHomeMenue();
+                    System.exit(0);
                 }
             }
 
@@ -2091,9 +2090,8 @@ public class MainFrame {
                     mainTheme.stop();
                 }
                 Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
-                ///JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
-                ///System.exit(0);
-                showHomeMenue();
+                JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                System.exit(0);
             });
             return false;
         }
@@ -2111,9 +2109,8 @@ public class MainFrame {
                 pnlFoeGrid.setVisible(false);
                 pnlFoeGrid.add(lblComrade);
                 pnlFoeGrid.setVisible(true);
-                ///JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
-                ///System.exit(0);
-                showHomeMenue();
+                JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                System.exit(0);
             });
             return false;
         }
@@ -2137,8 +2134,7 @@ public class MainFrame {
                 case "save":
                     SaveManager.save(String.format("%s", cmd[1]), selfGrid, foeGrid);
                     net.close();
-                    ///System.exit(0);
-                    showHomeMenue();
+                    System.exit(0);
                     return;
                 case "confirmed":
                     SwingUtilities.invokeLater(() -> setTurn(true));
@@ -2165,10 +2161,9 @@ public class MainFrame {
                             pnlFoeGrid.setVisible(false);
                             pnlFoeGrid.add(lblComrade);
                             pnlFoeGrid.setVisible(true);
-                            ///JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                            JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
                             c.close();
-                            ///System.exit(0);
-                            showHomeMenue();
+                            System.exit(0);
                         });
                         return;
                     }
@@ -2194,10 +2189,9 @@ public class MainFrame {
                                 mainTheme.stop();
                             }
                             Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
-                            ///JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                            JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
                             net.close();
-                            ///System.exit(0);
-                            showHomeMenue();
+                            System.exit(0);
                         });
                         return;
                     }
@@ -2428,73 +2422,5 @@ public class MainFrame {
 
     private void runKIvsKI() {
 
-    }
-
-    public void showHomeMenue(){
-        pnlFoeGrid.removeAll();
-        pnlFoeGrid.setVisible(false);
-        pnlDummyThicc.removeAll();
-        pnlDummyThicc.setVisible(false);
-
-        pnlButton.setVisible(false);
-        pnlButton.removeAll();
-        pnlButton.add(lblTitle);
-        pnlButton.add(lblSingle);
-        pnlButton.add(lblMulti);
-        pnlButton.add(lblKivsKi);
-        pnlButton.add(lblReturn);
-        pnlButton.setVisible(true);
-        backgroundPanel.add(pnlButton);
-
-        refreshLoadOptions();
-
-    }
-
-    public void refreshLoadOptions(){
-
-        File dir = new File("./SaveGames");
-        File[] data = dir.listFiles();
-        if(data == null) {
-            dir.mkdirs();
-            data = dir.listFiles();
-        }
-
-        ArrayList<String> fn = new ArrayList<>();
-        ArrayList<String> fd = new ArrayList<>();
-        BufferedReader in = null;
-        File file;
-
-        for(int i=0;i<data.length;i++){
-            if(data[i].isFile() && data[i].canRead()){
-                file = data[i];
-
-                String name = file.getName();
-                int pos = name.lastIndexOf(".");
-                if (pos > 0) {
-                    name = name.substring(0, pos);
-                }
-
-                if(name.startsWith("ai")) {
-                    continue;
-                }
-
-                fn.add(name);
-
-
-                try {
-                    in = new BufferedReader(new FileReader(file));
-                    fd.add(in.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        filenames = fn.stream().toArray(String[]::new);
-        filedesc = fd.stream().toArray(String[]::new);
-
-        lstLoad.setListData(filedesc);
-        lstLoad.setVisibleRowCount(filedesc.length);
-        lstSingleLoad.setListData(filedesc);
-        lstSingleLoad.setVisibleRowCount(filedesc.length);
     }
 }
