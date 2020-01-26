@@ -2076,7 +2076,7 @@ public class MainFrame {
         gcF.shoot(x, y);
     }
 
-    //handle "shot" event that got forwarded from KI
+    ///handle "shot" event that got forwarded from KI
     public boolean handleOnKIShot(int x, int y) {
         ShotResult result = selfGrid.shoot(x, y);
         //its the players turn, when the result says he hit nothing.
