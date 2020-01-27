@@ -128,3 +128,6 @@ Neue Spielstände werden im Installationsverzeichnis in "SaveGames/" gespeichert
     3. Im Installationsverzeichnis oder wenn die Sie den Tipp von 2. befolgt haben
        am Desktop, finden sie eine Datei Battleships.exe.
     4. Zum Spielen führen Sie die Datei "Battleships.exe" aus!
+
+    Hinweis : Informationen zum Compilieren einer .jar Datei lesen Sie sich die
+              compile.txt durch.
