@@ -53,8 +53,8 @@ public class MainFrame {
     private JLabel lblLoad;
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
-    private JPanel pnlDummyThicc;
-    private JPanel pnlDummy;
+    private JPanel pnlField;
+    private JPanel pnlGridWrapper;
 
 
     private JLabel lblTitle;
@@ -293,12 +293,12 @@ public class MainFrame {
 
 
         ///panel DUmmythicc contains the Main Gridpanel
-        pnlDummyThicc =  new JPanel(new BorderLayout());
-        pnlDummyThicc.setBackground(Color.RED);
-        pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
+        pnlField =  new JPanel(new BorderLayout());
+        pnlField.setBackground(Color.RED);
+        pnlField.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
 
-        pnlDummy =  new JPanel();
-        pnlDummy.setBackground(Color.GREEN);
+        pnlGridWrapper =  new JPanel();
+        pnlGridWrapper.setBackground(Color.GREEN);
 
         /// Combobox for KI difficulty selection
         String[] difficultyOptions = {"Easy", "Medium", "Hard"};
@@ -1177,8 +1177,8 @@ public class MainFrame {
                     lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
                     lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
                     lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
-                    pnlDummy.setVisible(false);
-                    pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
+                    pnlGridWrapper.setVisible(false);
+                    pnlField.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
                     pnlGrid1.removeMouseListener(resizeFoeGridListener);
                     pnlButton.removeAll();
                     pnlButton.setVisible(false);
@@ -1593,17 +1593,17 @@ public class MainFrame {
                 gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
-                backgroundPanel.add(pnlDummyThicc);
+                backgroundPanel.add(pnlField);
 
-                pnlDummyThicc.removeAll();
-                pnlDummy.removeAll();
-                pnlDummy.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
-                pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
-                pnlDummy.add(pnlGrid1);
+                pnlField.removeAll();
+                pnlGridWrapper.removeAll();
+                pnlGridWrapper.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
+                pnlField.add(pnlGridWrapper, BorderLayout.CENTER);
+                pnlGridWrapper.add(pnlGrid1);
                 setReadyPanelStatus(true);
-                pnlDummy.add(pnlReady);
+                pnlGridWrapper.add(pnlReady);
                 pnlReady.setVisible(true);
-                pnlDummy.setVisible(true);
+                pnlGridWrapper.setVisible(true);
                 try {
                     backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
                 } catch (IOException ex) {
@@ -1721,17 +1721,17 @@ public class MainFrame {
                 gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
-                backgroundPanel.add(pnlDummyThicc);
+                backgroundPanel.add(pnlField);
 
-                pnlDummyThicc.removeAll();
-                pnlDummy.removeAll();
-                pnlDummy.setOpaque(false);
-                pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
-                pnlDummy.add(pnlGrid1);
+                pnlField.removeAll();
+                pnlGridWrapper.removeAll();
+                pnlGridWrapper.setOpaque(false);
+                pnlField.add(pnlGridWrapper, BorderLayout.CENTER);
+                pnlGridWrapper.add(pnlGrid1);
                 setReadyPanelStatus(true);
-                pnlDummy.add(pnlReady);
+                pnlGridWrapper.add(pnlReady);
                 pnlReady.setVisible(true);
-                pnlDummy.setVisible(true);
+                pnlGridWrapper.setVisible(true);
                 try {
                     backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
                 } catch (IOException ex) {
@@ -2348,21 +2348,21 @@ public class MainFrame {
         pnlGrid1.addMouseListener(resizeFoeGridListener);
 
 
-        pnlDummyThicc.setBorder(null);
+        pnlField.setBorder(null);
 
-        pnlDummy.remove(pnlReady);
-        pnlDummy.remove(pnlGrid1);
+        pnlGridWrapper.remove(pnlReady);
+        pnlGridWrapper.remove(pnlGrid1);
 
 
-        pnlDummy.add(pnlGrid2);
+        pnlGridWrapper.add(pnlGrid2);
         setReadyPanelStatus(false);
-        pnlDummy.add(pnlReady);
+        pnlGridWrapper.add(pnlReady);
         backgroundPanel.add(pnlFoeGrid, BorderLayout.SOUTH);
 
         //pnlDummy.add(pnlFoeGrid);
         gcF.setInteractionState(GridState.SHOOT);
-        pnlDummy.revalidate();
-        pnlDummy.repaint();
+        pnlGridWrapper.revalidate();
+        pnlGridWrapper.repaint();
     }
 
     private void handleLoadEvent(String save, boolean turnState) {
@@ -2401,13 +2401,13 @@ public class MainFrame {
             gcF.init(GridState.FORBID);
         }
 
-        backgroundPanel.add(pnlDummyThicc);
+        backgroundPanel.add(pnlField);
 
-        pnlDummy.setOpaque(false);
-        pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
-        pnlDummy.add(pnlGrid1);
+        pnlGridWrapper.setOpaque(false);
+        pnlField.add(pnlGridWrapper, BorderLayout.CENTER);
+        pnlGridWrapper.add(pnlGrid1);
         setReadyPanelStatus(true);
-        pnlDummy.add(pnlReady);
+        pnlGridWrapper.add(pnlReady);
         try {
             backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
         } catch (IOException ex) {
