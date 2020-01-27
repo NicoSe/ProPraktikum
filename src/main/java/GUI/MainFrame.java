@@ -1382,7 +1382,6 @@ public class MainFrame {
         else{
             lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
         }
-        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
         lblFullscreenPicture.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblFullscreenPicture.addMouseListener(new MouseAdapter(){
             @Override
