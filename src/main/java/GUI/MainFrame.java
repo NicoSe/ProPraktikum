@@ -2090,7 +2090,11 @@ public class MainFrame {
                     mainTheme.stop();
                 }
                 Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
-                JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                Object[] options = {"Exit"};
+                JLabel lblInformation = new JLabel("YOU LOOSE!");
+                lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+                JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
                 System.exit(0);
             });
             return false;
@@ -2109,7 +2113,11 @@ public class MainFrame {
                 pnlFoeGrid.setVisible(false);
                 pnlFoeGrid.add(lblComrade);
                 pnlFoeGrid.setVisible(true);
-                JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                Object[] options = {"Exit"};
+                JLabel lblInformation = new JLabel("YOU WON!");
+                lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+                JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
                 System.exit(0);
             });
             return false;
@@ -2161,7 +2169,11 @@ public class MainFrame {
                             pnlFoeGrid.setVisible(false);
                             pnlFoeGrid.add(lblComrade);
                             pnlFoeGrid.setVisible(true);
-                            JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                            Object[] options = {"Exit"};
+                            JLabel lblInformation = new JLabel("YOU WON!");
+                            lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+                            JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
+                                    JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
                             c.close();
                             System.exit(0);
                         });
@@ -2189,7 +2201,11 @@ public class MainFrame {
                                 mainTheme.stop();
                             }
                             Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
-                            JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                            Object[] options = {"Exit"};
+                            JLabel lblInformation = new JLabel("YOU LOOSE!");
+                            lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+                            JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
+                                    JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
                             net.close();
                             System.exit(0);
                         });
