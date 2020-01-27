@@ -2110,6 +2110,11 @@ public class MainFrame {
                 pnlFoeGrid.add(lblComrade);
                 pnlFoeGrid.setVisible(true);
                 JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                try {
+                    Runtime.getRuntime().exec("java -jar myApp.jar");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 System.exit(0);
             });
             return false;
@@ -2192,6 +2197,7 @@ public class MainFrame {
                             JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
                             net.close();
                             System.exit(0);
+
                         });
                         return;
                     }
@@ -2423,4 +2429,6 @@ public class MainFrame {
     private void runKIvsKI() {
 
     }
+
+
 }
