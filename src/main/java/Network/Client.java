@@ -8,7 +8,6 @@ import java.net.SocketException;
 
 public class Client implements Connector {
 
-    private int port = 50000;
     Socket client;
     BufferedReader usr;
 
@@ -44,6 +43,7 @@ public class Client implements Connector {
     public void connect(){
         try {
             Close_Socket = false;
+            int port = 50000;
             address = new InetSocketAddress(host, port);
             System.out.println("<C>Searching for Server");
 

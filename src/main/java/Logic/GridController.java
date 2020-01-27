@@ -175,7 +175,6 @@ public class GridController {
         }
         view.revalidate();
         view.repaint();
-        // TODO: modify view/ship panel according to shot result.
     }
 
     public void shoot(int x, int y) {

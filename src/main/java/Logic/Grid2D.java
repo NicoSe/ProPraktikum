@@ -33,13 +33,12 @@ public class Grid2D implements Cloneable {
         for(int i = 0; i < getBound(); i++) {
             c[i] = characters[i].clone();
         }
-        Grid2D g2d = new Grid2D(getBound(), c, getShipsAliveCount());
-        return g2d;
+        return new Grid2D(getBound(), c, getShipsAliveCount());
     }
 
     @FunctionalInterface
     public interface CharFunc<T1, T2, T3, R1> {
-        public R1 apply(T1 t1, T2 t2, T3 t3);
+        R1 apply(T1 t1, T2 t2, T3 t3);
     }
 
     public void forEachCharacter(CharFunc<Integer, Integer, Character, Void> f) {

@@ -30,7 +30,7 @@ public class FoeGridShootObject extends Character {
     }
 
     @Override
-    public BufferedImage getImage() throws IOException {
+    public BufferedImage getImage() {
         return null;
     }
 

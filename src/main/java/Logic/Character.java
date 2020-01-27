@@ -55,12 +55,7 @@ public abstract class Character {
     }
 
     public boolean isVertical() {
-        switch(rot) {
-            case VERTICAL:
-                return true;
-            default:
-                return false;
-        }
+        return rot == Rotation.VERTICAL;
     }
 
     public abstract boolean isAlive();

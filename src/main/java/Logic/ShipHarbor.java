@@ -63,7 +63,7 @@ public class ShipHarbor {
                 int rowVolume = 0;
 
 
-                ArrayList<HarborShipData> currentBoundShipData = new ArrayList();
+                ArrayList<HarborShipData> currentBoundShipData = new ArrayList<>();
                 int gridBounds = Integer.parseInt(split[split.length-1]);
                 for(int i = 0; i < split.length-1; ++i) {
                     int shipCountOfCurrentType = Integer.parseInt(split[i]);

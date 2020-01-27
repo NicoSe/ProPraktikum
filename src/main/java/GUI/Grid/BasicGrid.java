@@ -129,7 +129,6 @@ public class BasicGrid extends JPanel {
         int defaultSize = TILE_BASE_SIZE * bound;
         scaledSize = 0;
 
-        /// TODO: maybe calculate offset?, resize this on window size change?
         gridRect = new Rectangle(getX(), getY(), defaultSize, defaultSize);
 
         baseImg = new BufferedImage(defaultSize, defaultSize, BufferedImage.TYPE_INT_RGB);

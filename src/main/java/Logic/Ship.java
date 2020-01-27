@@ -93,7 +93,7 @@ public class Ship extends Character {
     public String toString(){
         String output = getId() + "," + getSize() + "," + getRotation(); //Status über Schiffsteil fehlt
         for(int i=0; i<hitbox.length; i++){
-            if(hitbox[i] == true){output = output + ",1";}
+            if(hitbox[i]){output = output + ",1";}
             else{output = output + ",0";}
         }
         return output;

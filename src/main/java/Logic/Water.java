@@ -33,9 +33,8 @@ public class Water extends Character {
     }
 
     @Override
-    public BufferedImage getImage() throws IOException {
+    public BufferedImage getImage() {
         return null;
-        //return ImageIO.read(getClass().getResource("/Sprites/transparent.png"));
     }
 
     @Override

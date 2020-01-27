@@ -9,7 +9,6 @@ import java.net.SocketException;
 
 public class Server implements Connector{
 
-    private int port = 50000;
     private ServerSocket Server_Socket;
     private Socket Client_Socket;
 
@@ -35,6 +34,7 @@ public class Server implements Connector{
         try {
             Close_Socket = false;
             System.out.println("<S>Starting Server...");
+            int port = 50000;
             Server_Socket = new ServerSocket(port);       //create Server
             Server_Socket.setReuseAddress(true);
             System.out.printf("<S>Wait for connection at Port: %d (%s)\n", Server_Socket.getLocalPort(), Server_Socket);

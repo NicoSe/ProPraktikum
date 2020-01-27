@@ -135,19 +135,16 @@ public class NewKI
      * @param c Server or Client.
      */
     private void handleData(Connector c) {
-        while (true) {
-            if(!c.isConnected()) {
-                break;
-            }
+        while (c.isConnected()) {
             String res = c.listenToNetwork();
             String[] cmd = res.split(" ");
-            switch(cmd[0]) {
+            switch (cmd[0]) {
                 case "save":
                     SaveManager.save(String.format("ai_%s", cmd[1]), grid, enemyGrid);
                     return;
                 case "load":
                     Grid2D[] saves = SaveManager.load(String.format("ai_%s", cmd[1]));
-                    if(saves == null) {
+                    if (saves == null) {
                         System.out.println("couldnt load save!");
                         return;
                     }
@@ -156,7 +153,7 @@ public class NewKI
                     enemyShipsAlive = enemyGrid.getShipCount();
                     HashSet<Character> set = new HashSet<>();
                     enemyGrid.forEachCharacter((x, y, ch) -> {
-                        if(ch instanceof Ship && set.add(ch)) {
+                        if (ch instanceof Ship && set.add(ch)) {
                             enemyShipsAlive--;
                         }
                         return null;
@@ -164,7 +161,7 @@ public class NewKI
                     shoot();
                     break;
                 case "confirmed":
-                    if(s instanceof Server) {
+                    if (s instanceof Server) {
                         c.sendMessage("confirmed");
                     } else {
                         shoot();
@@ -181,14 +178,14 @@ public class NewKI
                     int answer = Integer.parseInt(cmd[1]);
 
                     //invokeLater maybe?
-                    if(mf != null) {
+                    if (mf != null) {
                         mf.handleKIAnswer(answer);
                     }
 
-                    switch(answer) {
+                    switch (answer) {
                         case 0:
                             enemyGrid.shoot(ship.validXPos.removeLast(), ship.validYPos.removeLast(), answer);
-                            if(ship.lastDir != null) {
+                            if (ship.lastDir != null) {
                                 ship.lastDir = null;
                             } else {
                                 ship = null;
@@ -205,7 +202,7 @@ public class NewKI
                         case 2:
                             enemyShipsAlive--;
 
-                            if(checkWinCondition()) {
+                            if (checkWinCondition()) {
                                 System.out.printf("%s won! \n", s instanceof Server ? "ServerKI" : "ClientKI");
                                 s.close();
                                 return;
@@ -221,12 +218,12 @@ public class NewKI
                 case "shot":
                     int x = Integer.parseInt(cmd[1]);
                     int y = Integer.parseInt(cmd[2]);
-                    if(mf != null) {
+                    if (mf != null) {
                         mf.handleOnKIShot(x, y);
                     }
                     ShotResult sr = grid.shoot(x, y);
                     c.sendMessage(String.format("answer %d", sr.ordinal()));
-                    if(grid.getShipsAliveCount() <= 0) {
+                    if (grid.getShipsAliveCount() <= 0) {
                         System.out.printf("%s lost. \n", s instanceof Server ? "ServerKI" : "ClientKI");
                         s.close();
                         return;
