@@ -51,7 +51,6 @@ public class BasicGrid extends JPanel {
 
         @Override
         public Dimension maximumLayoutSize(Container target) {
-            // TODO: make this scalable.
             return new Dimension(TILE_BASE_SIZE * gridBounds, TILE_BASE_SIZE * gridBounds);
         }
 
@@ -96,10 +95,9 @@ public class BasicGrid extends JPanel {
         @Override
         public void layoutContainer(Container parent) {
             Component[] comps = parent.getComponents();
-            for(int i = 0; i < comps.length; ++i) {
-                Component comp = comps[i];
+            for (Component comp : comps) {
                 Rectangle rect = compGrid.get(comp);
-                if(rect == null) {
+                if (rect == null) {
                     ///
                     continue;
                 }
@@ -120,12 +118,12 @@ public class BasicGrid extends JPanel {
     private Rectangle gridRect;
     private Rectangle highlightedCell;
     private GridController controller = null;
-    BufferedImage rocketNone;
-    BufferedImage rocketNormal;
-    BufferedImage rocketNoneScaled;
-    BufferedImage rocketNormalScaled;
+    private BufferedImage rocketNone;
+    private BufferedImage rocketNormal;
+    private BufferedImage rocketNoneScaled;
+    private BufferedImage rocketNormalScaled;
 
-    public BasicGrid(int bound, GridState state) {
+    public BasicGrid(int bound) {
         setLayout(new CustomLayoutManager(bound));
         this.bound = bound;
         int defaultSize = TILE_BASE_SIZE * bound;

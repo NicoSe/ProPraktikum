@@ -25,14 +25,17 @@ enum PossibleDirection {
 
 public class NewKI
 {
+    /**
+     * Internal helper class that manages the state of a found ship.
+     */
     public static class FoundShip {
-        public int x;
-        public int y;
-        public int shotCount;
-        public LinkedList<Integer> validXPos = new LinkedList<Integer>();
-        public LinkedList<Integer> validYPos = new LinkedList<Integer>();
-        public PossibleDirection lastDir = null;
-        public LinkedList<PossibleDirection> possibleDirections = new LinkedList<PossibleDirection>() {{
+        int x;
+        int y;
+        int shotCount;
+        LinkedList<Integer> validXPos = new LinkedList<>();
+        LinkedList<Integer> validYPos = new LinkedList<>();
+        PossibleDirection lastDir = null;
+        LinkedList<PossibleDirection> possibleDirections = new LinkedList<PossibleDirection>() {{
             add(PossibleDirection.NORTH);
             add(PossibleDirection.EAST);
             add(PossibleDirection.SOUTH);
@@ -104,6 +107,10 @@ public class NewKI
         s.close();
     }
 
+    /**
+     * Initializes KI by passing bound received from UI or 'load' command.
+     * @param bound
+     */
     private void init(int bound) {
         grid = new Grid2D(bound);
         grid.generateRandom();
@@ -123,6 +130,10 @@ public class NewKI
         }
     }
 
+    /**
+     * Takes care of Data and calls processing functions depending on the received command
+     * @param c Server or Client.
+     */
     private void handleData(Connector c) {
         while (true) {
             if(!c.isConnected()) {

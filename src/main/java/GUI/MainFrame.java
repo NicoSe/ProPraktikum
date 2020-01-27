@@ -1578,7 +1578,7 @@ public class MainFrame {
 
                 runSingleplayer(sldSizeSingle.getValue());
 
-                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
+                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue());
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
                 gcS = new GridController(selfGrid, null, pnlGrid1);
@@ -1586,7 +1586,7 @@ public class MainFrame {
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
+                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue());
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
                 foeGrid.placeFgoOnEmptyFields();
                 gcF = new GridController(foeGrid, net, pnlGrid2);
@@ -1706,7 +1706,7 @@ public class MainFrame {
                 backgroundPanel.removeAll();
 
 
-                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
+                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue());
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
                 gcS = new GridController(selfGrid, null, pnlGrid1);
@@ -1714,7 +1714,7 @@ public class MainFrame {
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
+                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue());
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
                 foeGrid.placeFgoOnEmptyFields();
                 gcF = new GridController(foeGrid, net, pnlGrid2);
@@ -2045,8 +2045,8 @@ public class MainFrame {
         selfGrid = self;
         foeGrid = foe;
 
-        pnlGrid1 = new BasicGrid(selfGrid.getBound(), GridState.FORBID);
-        pnlGrid2 = new BasicGrid(foeGrid.getBound(), GridState.FORBID);
+        pnlGrid1 = new BasicGrid(selfGrid.getBound());
+        pnlGrid2 = new BasicGrid(foeGrid.getBound());
 
         gcS = new GridController(selfGrid, null, pnlGrid1);
         gcS.init(GridState.FORBID);
@@ -2295,11 +2295,11 @@ public class MainFrame {
     private void handleSizeEvent(int size) {
         backgroundPanel.removeAll();
 
-        pnlGrid1 = new BasicGrid(size, GridState.PLACE);
+        pnlGrid1 = new BasicGrid(size);
         selfGrid = new Grid2D(size);
         selfGrid.generateRandom();
 
-        pnlGrid2 = new BasicGrid(size, GridState.FORBID);
+        pnlGrid2 = new BasicGrid(size);
         foeGrid = new Grid2D(size);
         foeGrid.placeFgoOnEmptyFields();
 
@@ -2374,10 +2374,10 @@ public class MainFrame {
         }
         int bound = grids[0].getBound();
 
-        pnlGrid1 = new BasicGrid(bound, GridState.PLACE);
+        pnlGrid1 = new BasicGrid(bound);
         selfGrid = grids[0];
 
-        pnlGrid2 = new BasicGrid(bound, GridState.FORBID);
+        pnlGrid2 = new BasicGrid(bound);
         foeGrid = grids[1];
 
         SwingUtilities.invokeLater(() -> {
