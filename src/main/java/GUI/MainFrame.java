@@ -1454,6 +1454,7 @@ public class MainFrame {
         lblDeleteSaveGame.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
                 File dir = new File("./SaveGames");
                 File[] data = dir.listFiles();
@@ -1468,7 +1469,7 @@ public class MainFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
-                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSavesOnPress.png"))));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1477,7 +1478,7 @@ public class MainFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 try {
-                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSaves.png"))));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1486,7 +1487,7 @@ public class MainFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 try {
-                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSavesWB.png"))));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1495,7 +1496,7 @@ public class MainFrame {
             @Override
             public void mouseExited(MouseEvent e) {
                 try {
-                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSavesBW.png"))));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
