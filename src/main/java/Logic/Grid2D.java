@@ -56,6 +56,16 @@ public class Grid2D implements Cloneable {
         }
     }
 
+    public void recalculateAliveShips() {
+        shipsAlive = getShipCount();
+        forEachCharacter((x, y, c) -> {
+            if(c instanceof Ship && !c.isAlive()) {
+                shipsAlive--;
+            }
+            return null;
+        });
+    }
+
     public Character getCharacter(int x, int y) {
         if(x < 0 || y < 0 || x >= bound || y >= bound) {
             return null;

@@ -33,7 +33,6 @@ public class MainFrame {
 
     GridController gcS;
     GridController gcF;
-    int foeAliveCount;
 
     //AI ai;
     NewKI ki;
@@ -1594,8 +1593,6 @@ public class MainFrame {
                 gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
-                foeAliveCount = selfGrid.getShipCount();
-
                 backgroundPanel.add(pnlDummyThicc);
 
                 pnlDummyThicc.removeAll();
@@ -1723,9 +1720,6 @@ public class MainFrame {
                 foeGrid.placeFgoOnEmptyFields();
                 gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
-
-                foeAliveCount = selfGrid.getShipCount();
-
 
                 backgroundPanel.add(pnlDummyThicc);
 
@@ -2104,7 +2098,7 @@ public class MainFrame {
 
     public boolean handleKIAnswer(int answer) {
         gcF.processShotResult(answer);
-        if (foeAliveCount <= 0 || (answer == 2 && --foeAliveCount <= 0)) {
+        if (foeGrid.getShipsAliveCount() <= 0) {
             SwingUtilities.invokeLater(() -> {
                 if (mainTheme != null) {
                     mainTheme.stop();
@@ -2160,7 +2154,7 @@ public class MainFrame {
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
                     gcF.processShotResult(answer);
-                    if (foeAliveCount <= 0 || (answer == 2 && --foeAliveCount <= 0)) {
+                    if (foeGrid.getShipsAliveCount() <= 0) {
                         SwingUtilities.invokeLater(() -> {
                             if (mainTheme != null) {
                                 mainTheme.stop();
@@ -2406,8 +2400,6 @@ public class MainFrame {
             gcF = new GridController(foeGrid, net, pnlGrid2);
             gcF.init(GridState.FORBID);
         }
-
-        foeAliveCount = selfGrid.getShipCount();
 
         backgroundPanel.add(pnlDummyThicc);
 

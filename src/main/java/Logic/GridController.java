@@ -224,6 +224,7 @@ public class GridController {
                     s.setPosition(markedPos.getFirst()[0], markedPos.getFirst()[1]);
                     s.setRotation((markedPos.getLast()[0] - markedPos.getFirst()[0]) == 0 ? Rotation.VERTICAL : Rotation.HORIZONTAL);
                     model.markSurrounding(s.getX(), s.getY());
+                    model.recalculateAliveShips();
                 }
                 Helpers.playSFX("/SFX/shipSunk2.wav", 1);
                 break;
