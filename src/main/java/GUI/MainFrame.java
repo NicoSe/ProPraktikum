@@ -85,6 +85,7 @@ public class MainFrame {
     private JLabel lblOptions;
     private JLabel lblFullscreen;
     private JLabel lblFullscreenPicture;
+    private JLabel lblDeleteSaveGame;
     private JLabel lblMusic;
     private JSlider sldMusicSlider;
     private JLabel lblSFX;
@@ -388,8 +389,26 @@ public class MainFrame {
                 pnlButton.setVisible(false);
                 pnlButton.removeAll();
                 pnlButton.add(lblTitle);
-                pnlButton.add(lblFullscreen);
-                pnlButton.add(lblFullscreenPicture);
+
+                JPanel pnlOptionX = new JPanel();
+                pnlOptionX.setOpaque(false);
+                pnlOptionX.setAlignmentX(Component.CENTER_ALIGNMENT);
+                pnlOptionX.setMinimumSize(new Dimension(1024, 100));
+                pnlOptionX.setMaximumSize((new Dimension(1980, 100)));
+                pnlOptionX.setLayout(new GridBagLayout());
+
+                GridBagConstraints c = new GridBagConstraints();
+                c.gridheight = 1;
+                c.anchor = GridBagConstraints.FIRST_LINE_START;
+                c.ipadx = 5;
+                c.fill = GridBagConstraints.VERTICAL;
+
+                pnlOptionX.add(lblFullscreen, c);
+                c.anchor = GridBagConstraints.FIRST_LINE_END;
+                pnlOptionX.add(lblFullscreenPicture, c);
+
+                pnlButton.add(pnlOptionX);
+                pnlButton.add(lblDeleteSaveGame);
                 pnlButton.add(lblMusic);
                 pnlButton.add(sldMusicSlider);
                 pnlButton.add(lblSFX);
@@ -1376,10 +1395,10 @@ public class MainFrame {
         ///Fullscreen Checkbox Picture
         lblFullscreenPicture = new JLabel();
         if (OptionsHandler.getFullscreenMode()){
-            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(45,45,Image.SCALE_SMOOTH)));
         }
         else{
-            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(45,45,Image.SCALE_SMOOTH)));
         }
         lblFullscreenPicture.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblFullscreenPicture.addMouseListener(new MouseAdapter(){
@@ -1391,7 +1410,7 @@ public class MainFrame {
                     int prev_window_y = 0;
                     if (OptionsHandler.getFullscreenMode()){
                         OptionsHandler.changeFullscreenMode(false);
-                        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+                        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(45,45,Image.SCALE_SMOOTH)));
 
                         if(prev_window_x != 0){
                             jf.setSize(prev_window_x,prev_window_y);
@@ -1409,7 +1428,7 @@ public class MainFrame {
                         OptionsHandler.changeFullscreenMode(true);
                         prev_window_x = jf.getWidth();
                         prev_window_y = jf.getHeight();
-                        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+                        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(45,45,Image.SCALE_SMOOTH)));
                         jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
                         jf.dispose();
                         jf.setUndecorated(true);
@@ -1426,6 +1445,60 @@ public class MainFrame {
             public void mousePressed(MouseEvent e){
             }
             public void mouseReleased(MouseEvent e){
+            }
+        });
+
+        lblDeleteSaveGame = new JLabel();
+        lblDeleteSaveGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+        lblDeleteSaveGame.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                File dir = new File("./SaveGames");
+                File[] data = dir.listFiles();
+                if(data != null) {
+                    for(int i=0;i<data.length;i++){
+                        File f = data[i];
+                        f.delete();
+                    }
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                try {
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                try {
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                try {
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
