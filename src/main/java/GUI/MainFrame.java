@@ -1464,6 +1464,42 @@ public class MainFrame {
                         f.delete();
                     }
                 }
+                ArrayList<String> fn = new ArrayList<>();
+                ArrayList<String> fd = new ArrayList<>();
+                BufferedReader in = null;
+                File file;
+
+                for(int i=0;i<data.length;i++){
+                    if(data[i].isFile() && data[i].canRead()){
+                        file = data[i];
+
+                        String name = file.getName();
+                        int pos = name.lastIndexOf(".");
+                        if (pos > 0) {
+                            name = name.substring(0, pos);
+                        }
+
+                        if(name.startsWith("ai")) {
+                            continue;
+                        }
+
+                        fn.add(name);
+
+                        try {
+                            in = new BufferedReader(new FileReader(file));
+                            fd.add(in.readLine());
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+                filenames = fn.stream().toArray(String[]::new);
+                filedesc = fd.stream().toArray(String[]::new);
+
+                lstLoad.setListData(filedesc);
+                lstLoad.setVisibleRowCount(filedesc.length);
+                lstSingleLoad.setListData(filedesc);
+                lstSingleLoad.setVisibleRowCount(filedesc.length);
             }
 
             @Override
@@ -1478,7 +1514,7 @@ public class MainFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 try {
-                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSaves.png"))));
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSavesWB.png"))));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
