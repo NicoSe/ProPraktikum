@@ -33,7 +33,6 @@ public class MainFrame {
 
     GridController gcS;
     GridController gcF;
-    int foeAliveCount;
 
     //AI ai;
     NewKI ki;
@@ -54,8 +53,8 @@ public class MainFrame {
     private JLabel lblLoad;
     private BasicGrid pnlGrid1;
     private BasicGrid pnlGrid2;
-    private JPanel pnlDummyThicc;
-    private JPanel pnlDummy;
+    private JPanel pnlField;
+    private JPanel pnlGridWrapper;
 
 
     private JLabel lblTitle;
@@ -86,6 +85,7 @@ public class MainFrame {
     private JLabel lblOptions;
     private JLabel lblFullscreen;
     private JLabel lblFullscreenPicture;
+    private JLabel lblDeleteSaveGame;
     private JLabel lblMusic;
     private JSlider sldMusicSlider;
     private JLabel lblSFX;
@@ -294,12 +294,12 @@ public class MainFrame {
 
 
         ///panel DUmmythicc contains the Main Gridpanel
-        pnlDummyThicc =  new JPanel(new BorderLayout());
-        pnlDummyThicc.setBackground(Color.RED);
-        pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
+        pnlField =  new JPanel(new BorderLayout());
+        pnlField.setBackground(Color.RED);
+        pnlField.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
 
-        pnlDummy =  new JPanel();
-        pnlDummy.setBackground(Color.GREEN);
+        pnlGridWrapper =  new JPanel();
+        pnlGridWrapper.setBackground(Color.GREEN);
 
         /// Combobox for KI difficulty selection
         String[] difficultyOptions = {"Easy", "Medium", "Hard"};
@@ -389,8 +389,26 @@ public class MainFrame {
                 pnlButton.setVisible(false);
                 pnlButton.removeAll();
                 pnlButton.add(lblTitle);
-                pnlButton.add(lblFullscreen);
-                pnlButton.add(lblFullscreenPicture);
+
+                JPanel pnlOptionX = new JPanel();
+                pnlOptionX.setOpaque(false);
+                pnlOptionX.setAlignmentX(Component.CENTER_ALIGNMENT);
+                pnlOptionX.setMinimumSize(new Dimension(1024, 100));
+                pnlOptionX.setMaximumSize((new Dimension(1980, 100)));
+                pnlOptionX.setLayout(new GridBagLayout());
+
+                GridBagConstraints c = new GridBagConstraints();
+                c.gridheight = 1;
+                c.anchor = GridBagConstraints.FIRST_LINE_START;
+                c.ipadx = 5;
+                c.fill = GridBagConstraints.VERTICAL;
+
+                pnlOptionX.add(lblFullscreen, c);
+                c.anchor = GridBagConstraints.FIRST_LINE_END;
+                pnlOptionX.add(lblFullscreenPicture, c);
+
+                pnlButton.add(pnlOptionX);
+                pnlButton.add(lblDeleteSaveGame);
                 pnlButton.add(lblMusic);
                 pnlButton.add(sldMusicSlider);
                 pnlButton.add(lblSFX);
@@ -1178,8 +1196,8 @@ public class MainFrame {
                     lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
                     lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
                     lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
-                    pnlDummy.setVisible(false);
-                    pnlDummyThicc.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
+                    pnlGridWrapper.setVisible(false);
+                    pnlField.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
                     pnlGrid1.removeMouseListener(resizeFoeGridListener);
                     pnlButton.removeAll();
                     pnlButton.setVisible(false);
@@ -1290,8 +1308,7 @@ public class MainFrame {
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
-                    ///System.exit(0);
-                    showHomeMenue();
+                    System.exit(0);
                 }
             }
 
@@ -1378,12 +1395,11 @@ public class MainFrame {
         ///Fullscreen Checkbox Picture
         lblFullscreenPicture = new JLabel();
         if (OptionsHandler.getFullscreenMode()){
-            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(45,45,Image.SCALE_SMOOTH)));
         }
         else{
-            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+            lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(45,45,Image.SCALE_SMOOTH)));
         }
-        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
         lblFullscreenPicture.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblFullscreenPicture.addMouseListener(new MouseAdapter(){
             @Override
@@ -1394,7 +1410,7 @@ public class MainFrame {
                     int prev_window_y = 0;
                     if (OptionsHandler.getFullscreenMode()){
                         OptionsHandler.changeFullscreenMode(false);
-                        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+                        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_clear.png")).getScaledInstance(45,45,Image.SCALE_SMOOTH)));
 
                         if(prev_window_x != 0){
                             jf.setSize(prev_window_x,prev_window_y);
@@ -1412,7 +1428,7 @@ public class MainFrame {
                         OptionsHandler.changeFullscreenMode(true);
                         prev_window_x = jf.getWidth();
                         prev_window_y = jf.getHeight();
-                        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(40,40,Image.SCALE_SMOOTH)));
+                        lblFullscreenPicture.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/Checkbox_ticked.png")).getScaledInstance(45,45,Image.SCALE_SMOOTH)));
                         jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
                         jf.dispose();
                         jf.setUndecorated(true);
@@ -1429,6 +1445,61 @@ public class MainFrame {
             public void mousePressed(MouseEvent e){
             }
             public void mouseReleased(MouseEvent e){
+            }
+        });
+
+        lblDeleteSaveGame = new JLabel();
+        lblDeleteSaveGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+        lblDeleteSaveGame.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                File dir = new File("./SaveGames");
+                File[] data = dir.listFiles();
+                if(data != null) {
+                    for(int i=0;i<data.length;i++){
+                        File f = data[i];
+                        f.delete();
+                    }
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                try {
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSavesOnPress.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                try {
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSaves.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSavesWB.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                try {
+                    lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSavesBW.png"))));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -1581,7 +1652,7 @@ public class MainFrame {
 
                 runSingleplayer(sldSizeSingle.getValue());
 
-                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
+                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue());
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
                 gcS = new GridController(selfGrid, null, pnlGrid1);
@@ -1589,25 +1660,23 @@ public class MainFrame {
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
+                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue());
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
                 foeGrid.placeFgoOnEmptyFields();
                 gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
-                foeAliveCount = selfGrid.getShipCount();
+                backgroundPanel.add(pnlField);
 
-                backgroundPanel.add(pnlDummyThicc);
-
-                pnlDummyThicc.removeAll();
-                pnlDummy.removeAll();
-                pnlDummy.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
-                pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
-                pnlDummy.add(pnlGrid1);
+                pnlField.removeAll();
+                pnlGridWrapper.removeAll();
+                pnlGridWrapper.setOpaque(false); //CHANGE THIS BACK FOR TRANNSPA
+                pnlField.add(pnlGridWrapper, BorderLayout.CENTER);
+                pnlGridWrapper.add(pnlGrid1);
                 setReadyPanelStatus(true);
-                pnlDummy.add(pnlReady);
+                pnlGridWrapper.add(pnlReady);
                 pnlReady.setVisible(true);
-                pnlDummy.setVisible(true);
+                pnlGridWrapper.setVisible(true);
                 try {
                     backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
                 } catch (IOException ex) {
@@ -1711,7 +1780,7 @@ public class MainFrame {
                 backgroundPanel.removeAll();
 
 
-                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue(), GridState.PLACE);
+                pnlGrid1 = new BasicGrid(sldSizeSingle.getValue());
                 selfGrid = new Grid2D(sldSizeSingle.getValue());
                 selfGrid.generateRandom();
                 gcS = new GridController(selfGrid, null, pnlGrid1);
@@ -1719,26 +1788,23 @@ public class MainFrame {
                 pnlGrid1.setOpaque(false);
                 pnlGrid1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue(), GridState.FORBID);
+                pnlGrid2 = new BasicGrid(sldSizeSingle.getValue());
                 foeGrid = new Grid2D(sldSizeSingle.getValue());
                 foeGrid.placeFgoOnEmptyFields();
                 gcF = new GridController(foeGrid, net, pnlGrid2);
                 gcF.init(GridState.FORBID);
 
-                foeAliveCount = selfGrid.getShipCount();
+                backgroundPanel.add(pnlField);
 
-
-                backgroundPanel.add(pnlDummyThicc);
-
-                pnlDummyThicc.removeAll();
-                pnlDummy.removeAll();
-                pnlDummy.setOpaque(false);
-                pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
-                pnlDummy.add(pnlGrid1);
+                pnlField.removeAll();
+                pnlGridWrapper.removeAll();
+                pnlGridWrapper.setOpaque(false);
+                pnlField.add(pnlGridWrapper, BorderLayout.CENTER);
+                pnlGridWrapper.add(pnlGrid1);
                 setReadyPanelStatus(true);
-                pnlDummy.add(pnlReady);
+                pnlGridWrapper.add(pnlReady);
                 pnlReady.setVisible(true);
-                pnlDummy.setVisible(true);
+                pnlGridWrapper.setVisible(true);
                 try {
                     backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
                 } catch (IOException ex) {
@@ -2053,8 +2119,8 @@ public class MainFrame {
         selfGrid = self;
         foeGrid = foe;
 
-        pnlGrid1 = new BasicGrid(selfGrid.getBound(), GridState.FORBID);
-        pnlGrid2 = new BasicGrid(foeGrid.getBound(), GridState.FORBID);
+        pnlGrid1 = new BasicGrid(selfGrid.getBound());
+        pnlGrid2 = new BasicGrid(foeGrid.getBound());
 
         gcS = new GridController(selfGrid, null, pnlGrid1);
         gcS.init(GridState.FORBID);
@@ -2091,9 +2157,12 @@ public class MainFrame {
                     mainTheme.stop();
                 }
                 Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
-                ///JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
-                ///System.exit(0);
-                showHomeMenue();
+                Object[] options = {"Exit"};
+                JLabel lblInformation = new JLabel("YOU LOOSE!");
+                lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+                JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
+                System.exit(0);
             });
             return false;
         }
@@ -2102,7 +2171,7 @@ public class MainFrame {
 
     public boolean handleKIAnswer(int answer) {
         gcF.processShotResult(answer);
-        if (foeAliveCount <= 0 || (answer == 2 && --foeAliveCount <= 0)) {
+        if (foeGrid.getShipsAliveCount() <= 0) {
             SwingUtilities.invokeLater(() -> {
                 if (mainTheme != null) {
                     mainTheme.stop();
@@ -2111,9 +2180,12 @@ public class MainFrame {
                 pnlFoeGrid.setVisible(false);
                 pnlFoeGrid.add(lblComrade);
                 pnlFoeGrid.setVisible(true);
-                ///JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
-                ///System.exit(0);
-                showHomeMenue();
+                Object[] options = {"Exit"};
+                JLabel lblInformation = new JLabel("YOU WON!");
+                lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+                JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
+                System.exit(0);
             });
             return false;
         }
@@ -2137,8 +2209,7 @@ public class MainFrame {
                 case "save":
                     SaveManager.save(String.format("%s", cmd[1]), selfGrid, foeGrid);
                     net.close();
-                    ///System.exit(0);
-                    showHomeMenue();
+                    System.exit(0);
                     return;
                 case "confirmed":
                     SwingUtilities.invokeLater(() -> setTurn(true));
@@ -2156,7 +2227,7 @@ public class MainFrame {
                 case "answer":
                     int answer = Integer.parseInt(cmd[1]);
                     gcF.processShotResult(answer);
-                    if (foeAliveCount <= 0 || (answer == 2 && --foeAliveCount <= 0)) {
+                    if (foeGrid.getShipsAliveCount() <= 0) {
                         SwingUtilities.invokeLater(() -> {
                             if (mainTheme != null) {
                                 mainTheme.stop();
@@ -2165,10 +2236,13 @@ public class MainFrame {
                             pnlFoeGrid.setVisible(false);
                             pnlFoeGrid.add(lblComrade);
                             pnlFoeGrid.setVisible(true);
-                            ///JOptionPane.showMessageDialog(null, "meh, you won... Ok, exits the game.");
+                            Object[] options = {"Exit"};
+                            JLabel lblInformation = new JLabel("YOU WON!");
+                            lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+                            JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
+                                    JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
                             c.close();
-                            ///System.exit(0);
-                            showHomeMenue();
+                            System.exit(0);
                         });
                         return;
                     }
@@ -2181,7 +2255,7 @@ public class MainFrame {
                     }
                     break;
                 case "shot":
-                    ShotResult result = selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
+                    ShotResult result = selfGrid.shoot(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2])); //bp here.
                     c.sendMessage(String.format("answer %d", result.ordinal()));
                     //its the players turn, when the result says he hit nothing.
                     SwingUtilities.invokeLater(() -> {
@@ -2194,10 +2268,13 @@ public class MainFrame {
                                 mainTheme.stop();
                             }
                             Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
-                            ///JOptionPane.showMessageDialog(null, "You lost, noob. Ok, exits the game.");
+                            Object[] options = {"Exit"};
+                            JLabel lblInformation = new JLabel("YOU LOOSE!");
+                            lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
+                            JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
+                                    JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
                             net.close();
-                            ///System.exit(0);
-                            showHomeMenue();
+                            System.exit(0);
                         });
                         return;
                     }
@@ -2292,11 +2369,11 @@ public class MainFrame {
     private void handleSizeEvent(int size) {
         backgroundPanel.removeAll();
 
-        pnlGrid1 = new BasicGrid(size, GridState.PLACE);
+        pnlGrid1 = new BasicGrid(size);
         selfGrid = new Grid2D(size);
         selfGrid.generateRandom();
 
-        pnlGrid2 = new BasicGrid(size, GridState.FORBID);
+        pnlGrid2 = new BasicGrid(size);
         foeGrid = new Grid2D(size);
         foeGrid.placeFgoOnEmptyFields();
 
@@ -2344,21 +2421,21 @@ public class MainFrame {
         pnlGrid1.addMouseListener(resizeFoeGridListener);
 
 
-        pnlDummyThicc.setBorder(null);
+        pnlField.setBorder(null);
 
-        pnlDummy.remove(pnlReady);
-        pnlDummy.remove(pnlGrid1);
+        pnlGridWrapper.remove(pnlReady);
+        pnlGridWrapper.remove(pnlGrid1);
 
 
-        pnlDummy.add(pnlGrid2);
+        pnlGridWrapper.add(pnlGrid2);
         setReadyPanelStatus(false);
-        pnlDummy.add(pnlReady);
+        pnlGridWrapper.add(pnlReady);
         backgroundPanel.add(pnlFoeGrid, BorderLayout.SOUTH);
 
         //pnlDummy.add(pnlFoeGrid);
         gcF.setInteractionState(GridState.SHOOT);
-        pnlDummy.revalidate();
-        pnlDummy.repaint();
+        pnlGridWrapper.revalidate();
+        pnlGridWrapper.repaint();
     }
 
     private void handleLoadEvent(String save, boolean turnState) {
@@ -2371,10 +2448,10 @@ public class MainFrame {
         }
         int bound = grids[0].getBound();
 
-        pnlGrid1 = new BasicGrid(bound, GridState.PLACE);
+        pnlGrid1 = new BasicGrid(bound);
         selfGrid = grids[0];
 
-        pnlGrid2 = new BasicGrid(bound, GridState.FORBID);
+        pnlGrid2 = new BasicGrid(bound);
         foeGrid = grids[1];
 
         SwingUtilities.invokeLater(() -> {
@@ -2397,15 +2474,13 @@ public class MainFrame {
             gcF.init(GridState.FORBID);
         }
 
-        foeAliveCount = selfGrid.getShipCount();
+        backgroundPanel.add(pnlField);
 
-        backgroundPanel.add(pnlDummyThicc);
-
-        pnlDummy.setOpaque(false);
-        pnlDummyThicc.add(pnlDummy, BorderLayout.CENTER);
-        pnlDummy.add(pnlGrid1);
+        pnlGridWrapper.setOpaque(false);
+        pnlField.add(pnlGridWrapper, BorderLayout.CENTER);
+        pnlGridWrapper.add(pnlGrid1);
         setReadyPanelStatus(true);
-        pnlDummy.add(pnlReady);
+        pnlGridWrapper.add(pnlReady);
         try {
             backgroundPanel.setImage(ImageIO.read(getClass().getResource("/Sprites/Waltertile2_64.png")));
         } catch (IOException ex) {
@@ -2428,73 +2503,5 @@ public class MainFrame {
 
     private void runKIvsKI() {
 
-    }
-
-    public void showHomeMenue(){
-        pnlFoeGrid.removeAll();
-        pnlFoeGrid.setVisible(false);
-        pnlDummyThicc.removeAll();
-        pnlDummyThicc.setVisible(false);
-
-        pnlButton.setVisible(false);
-        pnlButton.removeAll();
-        pnlButton.add(lblTitle);
-        pnlButton.add(lblSingle);
-        pnlButton.add(lblMulti);
-        pnlButton.add(lblKivsKi);
-        pnlButton.add(lblReturn);
-        pnlButton.setVisible(true);
-        backgroundPanel.add(pnlButton);
-
-        refreshLoadOptions();
-
-    }
-
-    public void refreshLoadOptions(){
-
-        File dir = new File("./SaveGames");
-        File[] data = dir.listFiles();
-        if(data == null) {
-            dir.mkdirs();
-            data = dir.listFiles();
-        }
-
-        ArrayList<String> fn = new ArrayList<>();
-        ArrayList<String> fd = new ArrayList<>();
-        BufferedReader in = null;
-        File file;
-
-        for(int i=0;i<data.length;i++){
-            if(data[i].isFile() && data[i].canRead()){
-                file = data[i];
-
-                String name = file.getName();
-                int pos = name.lastIndexOf(".");
-                if (pos > 0) {
-                    name = name.substring(0, pos);
-                }
-
-                if(name.startsWith("ai")) {
-                    continue;
-                }
-
-                fn.add(name);
-
-
-                try {
-                    in = new BufferedReader(new FileReader(file));
-                    fd.add(in.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        filenames = fn.stream().toArray(String[]::new);
-        filedesc = fd.stream().toArray(String[]::new);
-
-        lstLoad.setListData(filedesc);
-        lstLoad.setVisibleRowCount(filedesc.length);
-        lstSingleLoad.setListData(filedesc);
-        lstSingleLoad.setVisibleRowCount(filedesc.length);
     }
 }

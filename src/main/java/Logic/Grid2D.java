@@ -18,6 +18,7 @@ public class Grid2D implements Cloneable {
         this.characters = new Character[bound][bound];
         this.harbor = new ShipHarbor();
         this.harbor.load();
+        shipsAlive = harbor.getTotalShipCount(bound);
     }
 
     private Grid2D(int bound, Character[][] c, int shipsAlive) {
@@ -32,13 +33,12 @@ public class Grid2D implements Cloneable {
         for(int i = 0; i < getBound(); i++) {
             c[i] = characters[i].clone();
         }
-        Grid2D g2d = new Grid2D(getBound(), c, getShipsAliveCount());
-        return g2d;
+        return new Grid2D(getBound(), c, getShipsAliveCount());
     }
 
     @FunctionalInterface
     public interface CharFunc<T1, T2, T3, R1> {
-        public R1 apply(T1 t1, T2 t2, T3 t3);
+        R1 apply(T1 t1, T2 t2, T3 t3);
     }
 
     public void forEachCharacter(CharFunc<Integer, Integer, Character, Void> f) {
@@ -53,6 +53,16 @@ public class Grid2D implements Cloneable {
                 already.add(c);
             }
         }
+    }
+
+    public void recalculateAliveShips() {
+        shipsAlive = getShipCount();
+        forEachCharacter((x, y, c) -> {
+            if(c instanceof Ship && !c.isAlive()) {
+                shipsAlive--;
+            }
+            return null;
+        });
     }
 
     public Character getCharacter(int x, int y) {
@@ -82,7 +92,6 @@ public class Grid2D implements Cloneable {
         int timeout = 0;
         clear();
 
-        shipsAlive = 0;
         List<HarborShipData> ships = harbor.getCopyOfHarborData(bound);
         int placeCount = harbor.getTotalShipCount(bound);
         while(placeCount > 0) {
@@ -221,10 +230,6 @@ public class Grid2D implements Cloneable {
         }
 
         inst.setPosition(x, y);
-
-        if(inst instanceof Ship) {
-            shipsAlive++;
-        }
 
         return inst;
     }

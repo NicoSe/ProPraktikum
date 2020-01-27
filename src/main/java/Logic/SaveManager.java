@@ -117,6 +117,7 @@ public class SaveManager {
                 }
                 currentRow++;
             }
+            own_grid.recalculateAliveShips();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -184,6 +185,7 @@ public class SaveManager {
                 }
                 currentRow++;
             }
+            foe_grid.recalculateAliveShips();
         } catch (Exception e) {
             return null;
         }
