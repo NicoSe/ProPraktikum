@@ -304,8 +304,7 @@ public class MainFrame {
         /// Combobox for KI difficulty selection
         String[] difficultyOptions = {"Easy", "Medium", "Hard"};
         comboDifficulty = new JComboBox<String>(difficultyOptions);
-        comboDifficulty.setPreferredSize(new Dimension(10,30));
-        comboDifficulty.setOpaque(true);
+        comboDifficulty.setMaximumSize(new Dimension(200,50));
         comboDifficulty.setSelectedIndex(1);
 
 
@@ -1450,7 +1449,8 @@ public class MainFrame {
 
         lblDeleteSaveGame = new JLabel();
         lblDeleteSaveGame.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/JoinBW.png"))));
+        lblDeleteSaveGame.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/DeleteSavesBW.png"))));
+        lblDeleteSaveGame.setSize(new Dimension(400,80));
         lblDeleteSaveGame.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -1541,12 +1541,12 @@ public class MainFrame {
 
         ///Music Label
         lblMusic = new JLabel();
-        lblMusic.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/musicVolumeBW.png"))));
+        lblMusic.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/musicVolumeBW.png")).getScaledInstance(400,80,Image.SCALE_SMOOTH)));
         lblMusic.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         ///SFX Label
         lblSFX = new JLabel();
-        lblSFX.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/sfxVolumeBW.png"))));
+        lblSFX.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/sfxVolumeBW.png")).getScaledInstance(400,80,Image.SCALE_SMOOTH)));
         lblSFX.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         ///Music Slider
