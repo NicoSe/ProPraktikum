@@ -318,9 +318,10 @@ public class MainFrame {
         pnlButton.add(lblTitle);
 
         //soviet
+        /*
         lblComrade = new JLabel();
         lblComrade.setIcon(new ImageIcon(getClass().getResource("/Sprites/sovietflag.gif")));
-
+        */
         //Loading animation
         lblLoading =  new JLabel();
         lblLoading.setIcon(new ImageIcon(getClass().getResource("/Sprites/Loadinanimation.gif")));
@@ -2214,7 +2215,7 @@ public class MainFrame {
                 }
                 Helpers.playSFX("/SFX/youwincomrad.wav", 0);
                 pnlFoeGrid.setVisible(false);
-                pnlFoeGrid.add(lblComrade);
+                //pnlFoeGrid.add(lblComrade);
                 pnlFoeGrid.setVisible(true);
                 Object[] options = {"Exit"};
                 JLabel lblInformation = new JLabel("YOU WON!");
@@ -2270,7 +2271,7 @@ public class MainFrame {
                             }
                             Helpers.playSFX("/SFX/youwincomrad.wav", 0);
                             pnlFoeGrid.setVisible(false);
-                            pnlFoeGrid.add(lblComrade);
+                            //pnlFoeGrid.add(lblComrade);
                             pnlFoeGrid.setVisible(true);
                             Object[] options = {"Exit"};
                             JLabel lblInformation = new JLabel("YOU WON!");
