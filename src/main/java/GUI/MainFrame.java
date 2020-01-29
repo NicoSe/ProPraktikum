@@ -1296,8 +1296,9 @@ public class MainFrame {
                     long savetime = System.currentTimeMillis();
                     net.sendMessage(String.format("save %d", savetime));
                     SaveManager.save(String.format("%d", savetime), selfGrid, foeGrid);
-                    net.close();
 
+                    /*
+                    net.close();
                     try {
                         if(kiThread != null) {
                             kiThread.join();
@@ -1309,6 +1310,7 @@ public class MainFrame {
                         ex.printStackTrace();
                     }
                     System.exit(0);
+                    */
                 }
             }
 
@@ -2245,9 +2247,12 @@ public class MainFrame {
                     break;
                 case "save":
                     SaveManager.save(String.format("%s", cmd[1]), selfGrid, foeGrid);
-                    net.close();
-                    System.exit(0);
-                    return;
+                    //net.close();
+                    //System.exit(0);
+                    //return;
+
+                    c.sendMessage("pass");
+                    break;
                 case "confirmed":
                     SwingUtilities.invokeLater(() -> setTurn(true));
                     break;

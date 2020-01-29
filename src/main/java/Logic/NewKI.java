@@ -141,7 +141,9 @@ public class NewKI
             switch (cmd[0]) {
                 case "save":
                     SaveManager.save(String.format("ai_%s", cmd[1]), grid, enemyGrid);
-                    return;
+                    //return;
+                    c.sendMessage("pass");
+                    break;
                 case "load":
                     Grid2D[] saves = SaveManager.load(String.format("ai_%s", cmd[1]));
                     if (saves == null) {

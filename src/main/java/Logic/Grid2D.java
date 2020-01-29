@@ -172,7 +172,6 @@ public class Grid2D implements Cloneable {
             return false;
         }
 
-        //TODO:
         //things to do for corner hinting...
         //check if we are in bounds...
         //true: if we are, check if the position is empty.
