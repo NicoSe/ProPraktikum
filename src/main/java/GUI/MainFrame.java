@@ -2197,7 +2197,7 @@ public class MainFrame {
                 }
                 Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
                 Object[] options = {"Exit"};
-                JLabel lblInformation = new JLabel("YOU LOOSE!");
+                JLabel lblInformation = new JLabel("YOU LOST!");
                 lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
                 JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
@@ -2311,7 +2311,7 @@ public class MainFrame {
                             }
                             Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
                             Object[] options = {"Exit"};
-                            JLabel lblInformation = new JLabel("YOU LOOSE!");
+                            JLabel lblInformation = new JLabel("YOU LOST!");
                             lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
                             JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
                                     JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
