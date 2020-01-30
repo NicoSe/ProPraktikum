@@ -1675,19 +1675,7 @@ public class MainFrame {
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
 
                 runMuliplayerClient(txfIPAdress.getText());
-                pnlButton.setVisible(false);
-                pnlButton.add(lblLoading);
-                pnlButton.setVisible(true);
-                /*
-                Client c = new Client(txfIPAdress.getText());
-                if (c.isconnected()){
-                    pnlButton.setVisible(false);
-                    pnlButton.removeAll();
-                    System.out.println("Starte Spiel");
-                    //play game
-                    pnlButton.setVisible(true);
-                }
-                 */
+
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -2394,6 +2382,9 @@ public class MainFrame {
 
     private void runKIServer(int bound, int difficulty) {
         setTurn(false);
+        pnlGridWrapper.removeAll();
+        pnlReady.setVisible(true);
+        pnlGridWrapper.setVisible(true);
         resetNetwork();
 
         if(ki != null) {
@@ -2410,7 +2401,9 @@ public class MainFrame {
     private void runKIClient(String host, int difficulty) {
         setTurn(false);
         resetNetwork();
-
+        pnlGridWrapper.removeAll();
+        pnlReady.setVisible(true);
+        pnlGridWrapper.setVisible(true);
         if(ki != null) {
             ki.close();
             ki = null;
@@ -2425,6 +2418,9 @@ public class MainFrame {
     private void runMultiplayerServer(int bound) {
         setTurn(false);
         resetNetwork();
+        pnlGridWrapper.removeAll();
+        pnlReady.setVisible(true);
+        pnlGridWrapper.setVisible(true);
         new Thread(() -> {
             net = new Server();
             net.connect();
@@ -2436,6 +2432,9 @@ public class MainFrame {
 
     private void runMuliplayerClient(String host) {
         resetNetwork();
+        pnlGridWrapper.removeAll();
+        pnlReady.setVisible(true);
+        pnlGridWrapper.setVisible(true);
         new Thread(() -> {
             net = new Client(host);
             handleData(net);
