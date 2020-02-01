@@ -2159,7 +2159,7 @@ public class MainFrame {
                 Object[] options = {"Exit"};
                 JLabel lblInformation = new JLabel("YOU LOST!");
                 lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-                Loose();
+                OnLoose();
             });
             return false;
         }
@@ -2180,7 +2180,7 @@ public class MainFrame {
                 Object[] options = {"Exit"};
                 JLabel lblInformation = new JLabel("YOU WON!");
                 lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-                Win();
+                OnWin();
             });
             return false;
         }
@@ -2233,7 +2233,7 @@ public class MainFrame {
                             Object[] options = {"Exit"};
                             JLabel lblInformation = new JLabel("YOU WON!");
                             lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-                            Win();
+                            OnWin();
                         });
                         return;
                     }
@@ -2262,7 +2262,7 @@ public class MainFrame {
                             Object[] options = {"Exit"};
                             JLabel lblInformation = new JLabel("YOU LOST!");
                             lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-                            Loose();
+                            OnLoose();
                         });
                         return;
                     }
@@ -2270,6 +2270,7 @@ public class MainFrame {
                 default:
                     System.out.println("Invalid command.");
                     System.out.println(res);
+                    SwingUtilities.invokeLater(this::OnDisconnect);
                     break;
             }
         }
@@ -2478,7 +2479,7 @@ public class MainFrame {
         jf.repaint();
     }
 
-    private void Win(){
+    private void OnWin(){
         try {
             pnlReady.setVisible(false);
             lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
@@ -2502,7 +2503,7 @@ public class MainFrame {
         }
     }
 
-    private void Loose(){
+    private void OnLoose(){
         try {
             pnlReady.setVisible(false);
             lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
@@ -2518,6 +2519,33 @@ public class MainFrame {
             pnlButton.add(lblTitle);
             pnlButton.add(lblYouLost);
             pnlButton.add(lblContinue);
+            pnlButton.setVisible(true);
+            backgroundPanel.add(pnlButton);
+            resetNetwork();
+        } catch(IOException el){
+            el.printStackTrace();
+        }
+    }
+
+    private void OnDisconnect() {
+        try {
+            pnlReady.setVisible(false);
+            Helpers.playSFX("/SFX/firered_0017.wav", 1);
+            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
+            lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
+            lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
+            pnlGridWrapper.setVisible(false);
+            pnlField.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
+            pnlGrid1.removeMouseListener(resizeFoeGridListener);
+            pnlFoeGrid.setVisible(false);
+            pnlFoeGrid.removeAll();
+            pnlButton.setVisible(false);
+            pnlButton.removeAll();
+            pnlButton.add(lblTitle);
+            pnlButton.add(lblPlay);
+            pnlButton.add(lblOptions);
+            pnlButton.add(lblCredits);
+            pnlButton.add(lblExit);
             pnlButton.setVisible(true);
             backgroundPanel.add(pnlButton);
             resetNetwork();
@@ -2581,6 +2609,5 @@ public class MainFrame {
         lstLoad.setVisibleRowCount(filedesc.length);
         lstSingleLoad.setListData(filedescSingle);
         lstSingleLoad.setVisibleRowCount(filedescSingle.length);
-
     }
 }
