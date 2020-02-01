@@ -72,6 +72,9 @@ public class MainFrame {
     private String[] filenames;
     private String[] filedesc;
 
+    private String[] filenamesSingle;
+    private String[] filedescSingle;
+
     private JLabel lblStartHostNew;
     private JLabel lblStartHostLoad;
     private JLabel lblStartSingleNew;
@@ -1312,45 +1315,7 @@ public class MainFrame {
                     long savetime = System.currentTimeMillis();
                     net.sendMessage(String.format("save %d", savetime));
                     SaveManager.save(String.format("%d", savetime), selfGrid, foeGrid);
-
-                    File dir = new File("./SaveGames");
-                    File[] data = dir.listFiles();
-                    ArrayList<String> fn = new ArrayList<>();
-                    ArrayList<String> fd = new ArrayList<>();
-                    BufferedReader in = null;
-                    File file;
-
-                    for(int i=0;i<data.length;i++){
-                        if(data[i].isFile() && data[i].canRead()){
-                            file = data[i];
-
-                            String name = file.getName();
-                            int pos = name.lastIndexOf(".");
-                            if (pos > 0) {
-                                name = name.substring(0, pos);
-                            }
-
-                            if(name.startsWith("ai")) {
-                                continue;
-                            }
-
-                            fn.add(name);
-
-                            try {
-                                in = new BufferedReader(new FileReader(file));
-                                fd.add(in.readLine());
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    }
-                    filenames = fn.stream().toArray(String[]::new);
-                    filedesc = fd.stream().toArray(String[]::new);
-
-                    lstLoad.setListData(filedesc);
-                    lstLoad.setVisibleRowCount(filedesc.length);
-                    lstSingleLoad.setListData(filedesc);
-                    lstSingleLoad.setVisibleRowCount(filedesc.length);
+                    regenFileList();
                 }
             }
 
@@ -1507,42 +1472,7 @@ public class MainFrame {
                         f.delete();
                     }
                 }
-                ArrayList<String> fn = new ArrayList<>();
-                ArrayList<String> fd = new ArrayList<>();
-                BufferedReader in = null;
-                File file;
-
-                for(int i=0;i<data.length;i++){
-                    if(data[i].isFile() && data[i].canRead()){
-                        file = data[i];
-
-                        String name = file.getName();
-                        int pos = name.lastIndexOf(".");
-                        if (pos > 0) {
-                            name = name.substring(0, pos);
-                        }
-
-                        if(name.startsWith("ai")) {
-                            continue;
-                        }
-
-                        fn.add(name);
-
-                        try {
-                            in = new BufferedReader(new FileReader(file));
-                            fd.add(in.readLine());
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                }
-                filenames = fn.stream().toArray(String[]::new);
-                filedesc = fd.stream().toArray(String[]::new);
-
-                lstLoad.setListData(filedesc);
-                lstLoad.setVisibleRowCount(filedesc.length);
-                lstSingleLoad.setListData(filedesc);
-                lstSingleLoad.setVisibleRowCount(filedesc.length);
+                regenFileList();
             }
 
             @Override
@@ -1791,7 +1721,7 @@ public class MainFrame {
             @Override
             public void mouseClicked(MouseEvent e){
                 int idx = lstSingleLoad.getSelectedIndex();
-                runSingleplayer(filenames[idx]);
+                runSingleplayer(filenamesSingle[idx]);
             }
             public void mouseEntered(MouseEvent e) {
                 try {
@@ -1980,45 +1910,8 @@ public class MainFrame {
         lstSingleLoad.setMinimumSize(new Dimension(300,50));
         lstSingleLoad.setMaximumSize(new Dimension(300,150));
 
-        File dir = new File("./SaveGames");
-        File[] data = dir.listFiles();
-        if(data == null) {
-            dir.mkdirs();
-            data = dir.listFiles();
-        }
+        regenFileList();
 
-        ArrayList<String> fn = new ArrayList<>();
-        ArrayList<String> fd = new ArrayList<>();
-        BufferedReader in = null;
-        File file;
-
-        for(int i=0;i<data.length;i++){
-            if(data[i].isFile() && data[i].canRead()){
-                file = data[i];
-
-                String name = file.getName();
-                int pos = name.lastIndexOf(".");
-                if (pos > 0) {
-                    name = name.substring(0, pos);
-                }
-
-                if(name.startsWith("ai")) {
-                    continue;
-                }
-
-                fn.add(name);
-
-                in = new BufferedReader(new FileReader(file));
-                fd.add(in.readLine());
-            }
-        }
-        filenames = fn.stream().toArray(String[]::new);
-        filedesc = fd.stream().toArray(String[]::new);
-
-        lstLoad.setListData(filedesc);
-        lstLoad.setVisibleRowCount(filedesc.length);
-        lstSingleLoad.setListData(filedesc);
-        lstSingleLoad.setVisibleRowCount(filedesc.length);
         scrollpane = new JScrollPane();
         scrollpane.setViewportView(lstLoad);
         scrollpane.setOpaque(false);
@@ -2605,5 +2498,63 @@ public class MainFrame {
         } catch(IOException el){
             el.printStackTrace();
         }
+    }
+
+    private void regenFileList() {
+        File dir = new File("./SaveGames");
+        File[] data = dir.listFiles();
+
+        ArrayList<String> fn = new ArrayList<>();
+        ArrayList<String> fd = new ArrayList<>();
+        ArrayList<String> fnS = new ArrayList<>();
+        ArrayList<String> fdS = new ArrayList<>();
+        BufferedReader in = null;
+        File file;
+
+        for(int i=0;i<data.length;i++){
+            if(data[i].isFile() && data[i].canRead()){
+                file = data[i];
+
+                String name = file.getName();
+                int pos = name.lastIndexOf(".");
+                if (pos > 0) {
+                    name = name.substring(0, pos);
+                }
+
+                if(name.startsWith("ai")) {
+                    continue;
+                }
+                File aiFile = new File(String.format("./SaveGames/ai_%s.txt", name));
+                if(aiFile.exists()) {
+                    fnS.add(name.substring(name.indexOf("ai_") + 3));
+                    try {
+                        in = new BufferedReader(new FileReader(file));
+                        fdS.add(in.readLine());
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    continue;
+                }
+
+                fn.add(name);
+
+                try {
+                    in = new BufferedReader(new FileReader(file));
+                    fd.add(in.readLine());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        filenames = fn.stream().toArray(String[]::new);
+        filedesc = fd.stream().toArray(String[]::new);
+        filenamesSingle = fnS.stream().toArray(String[]::new);
+        filedescSingle = fdS.stream().toArray(String[]::new);
+
+        lstLoad.setListData(filedesc);
+        lstLoad.setVisibleRowCount(filedesc.length);
+        lstSingleLoad.setListData(filedescSingle);
+        lstSingleLoad.setVisibleRowCount(filedescSingle.length);
+
     }
 }
