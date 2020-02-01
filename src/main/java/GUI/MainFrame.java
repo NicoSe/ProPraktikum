@@ -2580,7 +2580,7 @@ public class MainFrame {
                 }
                 File aiFile = new File(String.format("./SaveGames/ai_%s.txt", name));
                 if(aiFile.exists()) {
-                    fnS.add(name.substring(name.indexOf("ai_") + 3));
+                    fnS.add(name);
                     try {
                         in = new BufferedReader(new FileReader(file));
                         fdS.add(in.readLine());
