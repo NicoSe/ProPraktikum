@@ -107,6 +107,9 @@ public class MainFrame {
 
     private JLabel lblSave;
     private JLabel lblTurn;
+    private JLabel lblContinue;
+    private JLabel lblYouWon;
+    private JLabel lblYouLost;
 
     private JLabel pnlFoeGrid;
     private boolean foeBigState = false;
@@ -329,6 +332,65 @@ public class MainFrame {
         lblLoading =  new JLabel();
         lblLoading.setIcon(new ImageIcon(getClass().getResource("/Sprites/Loadinanimation.gif")));
         lblLoading.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        /// label for victory screen
+        lblYouWon =  new JLabel();
+        lblYouWon.setIcon(new ImageIcon(getClass().getResource("/Sprites/YouWon.png")));
+        lblYouWon.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        /// label for defeat screen
+        lblYouLost =  new JLabel();
+        lblYouLost.setIcon(new ImageIcon(getClass().getResource("/Sprites/YouLost.png")));
+        lblYouLost.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        /// button to continue after victory/defeat
+        lblContinue = new JLabel();
+        lblContinue.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ContinueBW.png"))));
+        lblContinue.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblContinue.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                pnlButton.setVisible(false);
+                pnlButton.removeAll();
+                pnlButton.add(lblTitle);
+                pnlButton.add(lblPlay);
+                pnlButton.add(lblOptions);
+                pnlButton.add(lblCredits);
+                pnlButton.add(lblExit);
+                pnlButton.setVisible(true);
+
+            }
+            public void mouseEntered(MouseEvent e) {
+                try {
+                    lblContinue.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ContinueWB.png"))));
+                    Helpers.playSFX("/SFX/Menu_Tick.wav", 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseExited(MouseEvent e){
+                try {
+                    lblContinue.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ContinueBW.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mousePressed(MouseEvent e){
+                try {
+                    lblContinue.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ContinueOnPress.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            public void mouseReleased(MouseEvent e){
+                try {
+                    lblContinue.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/ContinueWB.png"))));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
 
         ///Play Button  moves to Mode selection
         lblPlay = new JLabel();
@@ -762,6 +824,7 @@ public class MainFrame {
         lblMulti.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
                 pnlButton.setVisible(false);
                 pnlButton.removeAll();
                 pnlButton.add(lblTitle);
@@ -1629,6 +1692,7 @@ public class MainFrame {
             @Override
             public void stateChanged(ChangeEvent e) {
                 OptionsHandler.changeSFXVolume(sldSFXSlider.getValue());
+                Helpers.playSFX("/SFX/SA2_142.wav", 1);
             }
 
         });
@@ -1867,16 +1931,7 @@ public class MainFrame {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                /*
-                if(OptionsHandler.getFullscreenMode()){
-                    jf.setSize(new Dimension(1981,1080));
-                    jf.setSize(new Dimension(1980,1080));
-                }else{
-                    jf.setSize(new Dimension(1025,851));
-                    jf.setSize(new Dimension(1024,850));
-                }
 
-                 */
                 jf.revalidate();
                 jf.repaint();
             }
@@ -2108,10 +2163,6 @@ public class MainFrame {
 
     }
 
-    private void resetThiccPanel() {
-
-    }
-
     private void runSingleplayer(String save) {
         resetNetwork();
         handleLoadEvent(save, false);
@@ -2156,10 +2207,6 @@ public class MainFrame {
             ki = new NewKI(new Client("localhost"), null, comboDifficulty.getSelectedIndex());
         });
         kiThread.start();
-    }
-
-    private void closeSinglePlayerConnection(Client client){
-        client.close();
     }
 
     private void setTurn(boolean isSelfTurn) {
@@ -2217,10 +2264,7 @@ public class MainFrame {
                 Object[] options = {"Exit"};
                 JLabel lblInformation = new JLabel("YOU LOOSE!");
                 lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-                //JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
-                 //       JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
-                //System.exit(0);
-                WinLoose();
+                Loose();
             });
             return false;
         }
@@ -2241,10 +2285,7 @@ public class MainFrame {
                 Object[] options = {"Exit"};
                 JLabel lblInformation = new JLabel("YOU WON!");
                 lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-                //JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
-                //        JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
-                //System.exit(0);
-                WinLoose();
+                Win();
             });
             return false;
         }
@@ -2267,10 +2308,6 @@ public class MainFrame {
                     break;
                 case "save":
                     SaveManager.save(String.format("%s", cmd[1]), selfGrid, foeGrid);
-                    //net.close();
-                    //System.exit(0);
-                    //return;
-
                     c.sendMessage("pass");
                     break;
                 case "confirmed":
@@ -2301,11 +2338,7 @@ public class MainFrame {
                             Object[] options = {"Exit"};
                             JLabel lblInformation = new JLabel("YOU WON!");
                             lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-                            //JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
-                            //        JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
-                            //c.close();
-                            //System.exit(0);
-                            WinLoose();
+                            Win();
                         });
                         return;
                     }
@@ -2334,11 +2367,7 @@ public class MainFrame {
                             Object[] options = {"Exit"};
                             JLabel lblInformation = new JLabel("YOU LOOSE!");
                             lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
-                            //JOptionPane.showOptionDialog(null,lblInformation,"Information", JOptionPane.DEFAULT_OPTION,
-                            //        JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
-                            //net.close();
-                            //System.exit(0);
-                            WinLoose();
+                            Loose();
                         });
                         return;
                     }
@@ -2464,22 +2493,12 @@ public class MainFrame {
         resizeFoeGridListener = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                            /*
-                            pnlFoeGrid.setPreferredSize(new Dimension(foeBigState ? 390 : 250, foeBigState ? 390 : 250));
-                            pnlFoeGrid.revalidate();
-                            pnlFoeGrid.repaint();
-                            */
                 pnlGrid1.setBorder(BorderFactory.createLineBorder(Color.RED));
                 System.out.println("enter");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                            /*
-                            pnlFoeGrid.setPreferredSize(new Dimension(foeBigState ? 375 : 225, foeBigState ? 400 : 225));
-                            pnlFoeGrid.revalidate();
-                            pnlFoeGrid.repaint();
-                            */
                 pnlGrid1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 System.out.println("ima head out");
             }
@@ -2495,18 +2514,15 @@ public class MainFrame {
         };
         pnlGrid1.addMouseListener(resizeFoeGridListener);
 
-
         pnlField.setBorder(null);
         pnlGridWrapper.remove(pnlReady);
         pnlGridWrapper.remove(pnlGrid1);
-
 
         pnlGridWrapper.add(pnlGrid2);
         setReadyPanelStatus(false);
         pnlGridWrapper.add(pnlReady);
         backgroundPanel.add(pnlFoeGrid, BorderLayout.SOUTH);
 
-        //pnlDummy.add(pnlFoeGrid);
         gcF.setInteractionState(GridState.SHOOT);
         pnlGridWrapper.revalidate();
         pnlGridWrapper.repaint();
@@ -2563,24 +2579,13 @@ public class MainFrame {
             ex.printStackTrace();
         }
 
-        /*
-        if(OptionsHandler.getFullscreenMode()){
-            jf.setSize(new Dimension(1981,1080));
-            jf.setSize(new Dimension(1980,1080));
-        }else{
-            jf.setSize(new Dimension(1025,851));
-            jf.setSize(new Dimension(1024,850));
-        }
-
-         */
         jf.revalidate();
         jf.repaint();
     }
 
-    private void WinLoose(){
+    private void Win(){
         try {
             pnlReady.setVisible(false);
-            Helpers.playSFX("/SFX/firered_0017.wav", 1);
             lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
             lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
             lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
@@ -2592,16 +2597,35 @@ public class MainFrame {
             pnlButton.setVisible(false);
             pnlButton.removeAll();
             pnlButton.add(lblTitle);
-            pnlButton.add(lblPlay);
-            pnlButton.add(lblOptions);
-            pnlButton.add(lblCredits);
-            pnlButton.add(lblExit);
+            pnlButton.add(lblYouWon);
+            pnlButton.add(lblContinue);
             pnlButton.setVisible(true);
             backgroundPanel.add(pnlButton);
             resetNetwork();
+        } catch(IOException el){
+            el.printStackTrace();
+        }
+    }
 
-
-
+    private void Loose(){
+        try {
+            pnlReady.setVisible(false);
+            lblPlaceReturn.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlaceReturnBW.png"))));
+            lblPlay.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/PlayBW.png"))));
+            lblStartSingleNew.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/Sprites/NewGameBW.png"))));
+            pnlGridWrapper.setVisible(false);
+            pnlField.setBorder(BorderFactory.createEmptyBorder(jf.getHeight()/15,jf.getWidth()/15,jf.getHeight()/15,jf.getWidth()/15));
+            pnlGrid1.removeMouseListener(resizeFoeGridListener);
+            pnlFoeGrid.setVisible(false);
+            pnlFoeGrid.removeAll();
+            pnlButton.setVisible(false);
+            pnlButton.removeAll();
+            pnlButton.add(lblTitle);
+            pnlButton.add(lblYouLost);
+            pnlButton.add(lblContinue);
+            pnlButton.setVisible(true);
+            backgroundPanel.add(pnlButton);
+            resetNetwork();
         } catch(IOException el){
             el.printStackTrace();
         }
