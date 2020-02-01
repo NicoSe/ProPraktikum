@@ -351,6 +351,8 @@ public class MainFrame {
             @Override
             public void mouseClicked(MouseEvent e){
                 Helpers.playSFX("/SFX/SA2_142.wav", 1);
+                mainTheme.stop();
+                mainTheme = Helpers.playSFX("/Music/pirate.wav", 0);
                 pnlButton.setVisible(false);
                 pnlButton.removeAll();
                 pnlButton.add(lblTitle);
@@ -2260,7 +2262,7 @@ public class MainFrame {
                 if (mainTheme != null) {
                     mainTheme.stop();
                 }
-                Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
+                Helpers.playSFX("/SFX/youLoose.wav", 1);
                 Object[] options = {"Exit"};
                 JLabel lblInformation = new JLabel("YOU LOOSE!");
                 lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
@@ -2363,7 +2365,7 @@ public class MainFrame {
                             if (mainTheme != null) {
                                 mainTheme.stop();
                             }
-                            Helpers.playSFX("/SFX/youLooseDramatic.wav", 0);
+                            Helpers.playSFX("/SFX/youLoose.wav", 1);
                             Object[] options = {"Exit"};
                             JLabel lblInformation = new JLabel("YOU LOOSE!");
                             lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
