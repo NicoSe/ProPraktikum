@@ -76,8 +76,6 @@ public class NewKI
         } else {
             this.mode = KIMode.HARD;
         }
-
-        handleData(this.s);
     }
 
     public NewKI(Connector s, MainFrame mf, int bounds, int mode)
@@ -94,11 +92,16 @@ public class NewKI
         }
 
         init(bounds);
+    }
 
+    public void start() {
         //check if connector is server, create grid and send size.
         if(this.s instanceof Server) {
             this.s.connect();
-            this.s.sendMessage(String.format("size %d", bounds));
+            if(!this.s.isConnected()) {
+                return;
+            }
+            this.s.sendMessage(String.format("size %d", grid.getBound()));
         }
         handleData(this.s);
     }
