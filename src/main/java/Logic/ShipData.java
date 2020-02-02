@@ -20,10 +20,10 @@ class HarborShipData implements Cloneable {
     }
 }
 
-public class ShipHarbor {
+public class ShipData {
     private Map<Integer, Integer> harborVolume = new HashMap<Integer, Integer>();
     private Map<Integer, List<HarborShipData>> harbor = new HashMap<Integer, List<HarborShipData>>();
-    public ShipHarbor() {
+    public ShipData() {
     }
 
     public int getTotalShipCount(int gridsize) {
