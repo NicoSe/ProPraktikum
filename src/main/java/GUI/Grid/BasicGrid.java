@@ -3,9 +3,6 @@ package GUI.Grid;
 import GUI.ImageHelper;
 import Logic.*;
 import Logic.Character;
-import Misc.GridState;
-//import org.w3c.dom.css.Rect;
-
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -134,9 +131,6 @@ public class BasicGrid extends JPanel {
         baseImg = new BufferedImage(defaultSize, defaultSize, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = baseImg.createGraphics();
 
-
-        ///g2d.setColor(Color.BLUE);
-        ///g2d.fill(new Rectangle(0, 0, defaultSize, defaultSize));
 
         try {
             rocketNone = ImageIO.read(getClass().getResource("/Sprites/RocketMiss2.png"));

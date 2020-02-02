@@ -3,10 +3,9 @@ package Logic;
 import java.io.*;
 import java.lang.ClassLoader;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLOutput;
 import java.util.*;
-import java.util.stream.Collectors;
 
+///Managed die Menge an Schiffen, die für das Spiel gebraucht werden
 class HarborShipData implements Cloneable {
     public int size;
     public int amount;

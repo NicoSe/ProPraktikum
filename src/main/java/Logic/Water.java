@@ -1,8 +1,6 @@
 package Logic;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 ///Wasserobject für eigenes Grid, wird erst *nach* den Schiffen platziert!
 public class Water extends Character {
@@ -38,7 +36,6 @@ public class Water extends Character {
     }
 
     @Override
-    //für Konsolenanwendung
     public String toString() {
         if (isAlive()) return "w,1";
         else return "w,0";

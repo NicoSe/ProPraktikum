@@ -1,8 +1,5 @@
 package GUI;
-/*
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-*/
+
 import Logic.OptionsHandler;
 
 import javax.sound.sampled.AudioInputStream;

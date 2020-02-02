@@ -23,7 +23,7 @@ import Network.*;
 
 public class MainFrame {
     private JLabel lblComrade;
-    ///net
+    ///network
     Connector net;
     Connector foe;
     Thread netThread;

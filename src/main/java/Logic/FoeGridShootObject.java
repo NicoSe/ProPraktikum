@@ -1,7 +1,6 @@
 package Logic;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 ///GridObject welches den Status des zugedeckten gegnerischen Feldes zeigt
 public class FoeGridShootObject extends Character {
@@ -39,7 +38,6 @@ public class FoeGridShootObject extends Character {
     }
 
     @Override
-    /// für Konsolenanwendung
     public String toString() {
         return Integer.toString(hitStatus);
     }

@@ -2,6 +2,7 @@ package Logic;
 
 import java.io.*;
 
+/// behandelt das Optionsmenue, alle Werte sind veränderbar und abrufbar
 public class OptionsHandler {
     private static int musicVolume;
     private static int SFXVolume;
