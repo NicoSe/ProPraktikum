@@ -2157,7 +2157,7 @@ public class MainFrame {
                 if (mainTheme != null) {
                     mainTheme.stop();
                 }
-                Helpers.playSFX("/SFX/youLoose.wav", 1);
+                Helpers.playSFX("/SFX/youloose.wav", 1);
                 Object[] options = {"Exit"};
                 JLabel lblInformation = new JLabel("YOU LOST!");
                 lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
@@ -2260,7 +2260,7 @@ public class MainFrame {
                             if (mainTheme != null) {
                                 mainTheme.stop();
                             }
-                            Helpers.playSFX("/SFX/youLoose.wav", 1);
+                            Helpers.playSFX("/SFX/youloose.wav", 1);
                             Object[] options = {"Exit"};
                             JLabel lblInformation = new JLabel("YOU LOST!");
                             lblInformation.setFont(new Font("Sprites/PrStart.ttf", Font.BOLD, 20));
