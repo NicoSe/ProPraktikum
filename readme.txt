@@ -121,13 +121,8 @@ Neue Spielstände werden im Installationsverzeichnis in "SaveGames/" gespeichert
 5. Installationsanleitung
 ---------------------------------------------------------------------------------------
 
-    1. Führen Sie die Battleships.exe Datei aus!
-    2. Folgen Sie den Anweisungen der Installation.
-       Um das SPiel später leichter starten zu können machen Sie ein Hacken bei der
-       Option "Shortcut am Desktop erstellen".
-    3. Im Installationsverzeichnis oder wenn die Sie den Tipp von 2. befolgt haben
-       am Desktop, finden sie eine Datei Battleships.exe.
-    4. Zum Spielen führen Sie die Datei "Battleships.exe" aus!
+Zum spielen wird lediglich die Datei "Battleships.exe" benötigt. Öffnen Sie diese um das
+Spiel zu starten.
 
-    Hinweis : Informationen zum Compilieren einer .jar Datei lesen Sie sich die
-              compile.txt durch.
+Hinweis : Informationen zum Compilieren der .jar Datei lesen Sie sich die
+          compile.txt durch.
