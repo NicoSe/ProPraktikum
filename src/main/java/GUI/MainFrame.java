@@ -2078,6 +2078,7 @@ public class MainFrame {
 
         kiThread = new Thread(() -> {
             ki = new NewKI(new Client("localhost"), null, comboDifficulty.getSelectedIndex());
+            ki.start();
         });
         kiThread.start();
     }
@@ -2100,6 +2101,7 @@ public class MainFrame {
 
         kiThread = new Thread(() -> {
             ki = new NewKI(new Client("localhost"), null, comboDifficulty.getSelectedIndex());
+            ki.start();
         });
         kiThread.start();
     }
@@ -2288,6 +2290,10 @@ public class MainFrame {
         if(foe != null) {
             foe.close();
         }
+        if(ki != null) {
+            ki.close();
+        }
+        ki = null;
         net = null;
         foe = null;
     }
@@ -2319,6 +2325,7 @@ public class MainFrame {
 
         kiThread = new Thread(() -> {
             ki = new NewKI(new Server(), this, bound, difficulty);
+            ki.start();
         });
         kiThread.start();
     }
@@ -2336,6 +2343,7 @@ public class MainFrame {
 
         kiThread = new Thread(() -> {
             ki = new NewKI(new Client(host), this, difficulty);
+            ki.start();
         });
         kiThread.start();
     }
