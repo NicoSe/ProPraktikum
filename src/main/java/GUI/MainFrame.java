@@ -2175,7 +2175,7 @@ public class MainFrame {
                 if (mainTheme != null) {
                     mainTheme.stop();
                 }
-                Helpers.playSFX("/SFX/youwincomrad.wav", 0);
+                Helpers.playSFX("/SFX/youwin.wav", 1);
                 pnlFoeGrid.setVisible(false);
                 //pnlFoeGrid.add(lblComrade);
                 pnlFoeGrid.setVisible(true);
@@ -2228,7 +2228,7 @@ public class MainFrame {
                             if (mainTheme != null) {
                                 mainTheme.stop();
                             }
-                            Helpers.playSFX("/SFX/youwin.wav", 0);
+                            Helpers.playSFX("/SFX/youwin.wav", 1);
                             pnlFoeGrid.setVisible(false);
                             //pnlFoeGrid.add(lblComrade);
                             pnlFoeGrid.setVisible(true);

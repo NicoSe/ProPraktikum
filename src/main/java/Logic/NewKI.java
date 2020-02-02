@@ -163,6 +163,10 @@ public class NewKI
                         }
                         return null;
                     });
+                    if (mode == KIMode.HARD)
+                    {
+                        setChessPattern();//TODO:find better placement?
+                    }
                     shoot();
                     break;
                 case "confirmed":
