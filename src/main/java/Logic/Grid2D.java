@@ -1,12 +1,11 @@
 package Logic;
 
 import java.util.*;
-import java.util.function.Function;
 
 public class Grid2D implements Cloneable {
     private int bound;
     private Character[][] characters;
-    private ShipHarbor harbor;
+    private ShipData harbor;
     private int shipsAlive;
 
     public Grid2D(int bound) {
@@ -16,7 +15,7 @@ public class Grid2D implements Cloneable {
 
         this.bound = bound;
         this.characters = new Character[bound][bound];
-        this.harbor = new ShipHarbor();
+        this.harbor = new ShipData();
         this.harbor.load();
         shipsAlive = harbor.getTotalShipCount(bound);
     }
