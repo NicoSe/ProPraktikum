@@ -2565,6 +2565,13 @@ public class MainFrame {
     private void regenFileList() {
         File dir = new File("./SaveGames");
         File[] data = dir.listFiles();
+        if(data == null) {
+            if(dir.mkdir()) {
+                data = dir.listFiles();
+            } else {
+                return;
+            }
+        }
 
         ArrayList<String> fn = new ArrayList<>();
         ArrayList<String> fd = new ArrayList<>();
